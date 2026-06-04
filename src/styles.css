@@ -27,54 +27,149 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 }
 
+/* ─────────────────────────────────────────
+   COLOR SYSTEM — single source of truth
+   All hex values live ONLY in this block.
+───────────────────────────────────────── */
 :root {
-  --background: #0F1A14;
-  --foreground: #FFFFFF;
-  --primary: #F4845F;
+  /* Brand colors */
+  --color-bg: #FFF8F0;
+  --color-primary: #1D6FE8;
+  --color-accent: #F5C518;
+  --color-text: #2D2D2D;
+  --color-surface: #FFFFFF;
+  --color-border: #E8DDD4;
+
+  /* Tailwind semantic mappings */
+  --background: #FFF8F0;
+  --foreground: #2D2D2D;
+  --primary: #1D6FE8;
   --primary-foreground: #FFFFFF;
-  --secondary: #2D6A4F;
-  --secondary-foreground: #FFFFFF;
-  --muted: #1A2820;
-  --muted-foreground: #B8C4BB;
-  --accent: #F4845F;
-  --accent-foreground: #FFFFFF;
-  --border: #1F2D24;
-  --input: #1F2D24;
-  --ring: #F4845F;
-  --card: #1A2820;
-  --card-foreground: #FFFFFF;
-  --popover: #1A2820;
-  --popover-foreground: #FFFFFF;
-  --destructive: #DC2626;
+  --secondary: #F5C518;
+  --secondary-foreground: #2D2D2D;
+  --muted: #F0EAE4;
+  --muted-foreground: #8A7A6E;
+  --accent: #F5C518;
+  --accent-foreground: #2D2D2D;
+  --border: #E8DDD4;
+  --input: #FFFFFF;
+  --ring: #1D6FE8;
+  --card: #FFFFFF;
+  --card-foreground: #2D2D2D;
+  --popover: #FFFFFF;
+  --popover-foreground: #2D2D2D;
+  --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --radius: 8px;
+  --success: #22c55e;
+  --success-foreground: #FFFFFF;
+  --radius: 12px;
+
+  /* Component tokens (derived) */
+  --auth-panel-gradient: linear-gradient(160deg, #0a2d7a 0%, #1045b8 55%, #1D6FE8 100%);
+  --shadow-card: 0 2px 16px rgba(45, 45, 45, 0.07);
+  --shadow-card-hover: 0 8px 32px rgba(29, 111, 232, 0.18);
+  --shadow-btn: 0 4px 14px rgba(245, 197, 24, 0.35);
 }
 
+/* ── Base styles ── */
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
+  * { border-color: var(--border); }
   html, body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    color: var(--primary);
   }
 }
 
+/* ── Animations ── */
 @keyframes ravito-ticker {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
-.animate-ticker {
-  animation: ravito-ticker 40s linear infinite;
+.animate-ticker { animation: ravito-ticker 40s linear infinite; }
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(2); opacity: 0; }
+}
+.animate-pulse-ring { animation: pulse-ring 2s ease-in-out infinite; }
+
+/* ── Reusable form input ── */
+.inp {
+  background: var(--input);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  width: 100%;
+  color: var(--foreground);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.inp:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+.inp::placeholder { color: var(--muted-foreground); }
+.inp-error {
+  border-color: var(--destructive) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--destructive) 10%, transparent) !important;
+}
+
+/* ── Card base ── */
+.card-base {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+
+/* ── CTA button (yellow) ── */
+.btn-cta {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 12px;
+  padding: 0.875rem 2rem;
+  box-shadow: var(--shadow-btn);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-cta:hover { opacity: 0.9; }
+.btn-cta:active { transform: scale(0.97); }
+.btn-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Outline button (blue) ── */
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 12px;
+  padding: 0.75rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
 }

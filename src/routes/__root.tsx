@@ -79,11 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ravito — Bénévoles & trails en France" },
-      { name: "description", content: "Ravito met en relation les bénévoles passionnés et les organisateurs de trails et courses en France." },
-      { property: "og:title", content: "Ravito — Bénévoles & trails en France" },
-      { property: "og:description", content: "Trouve un trail qui cherche du renfort, ou recrute des bénévoles en 2 minutes." },
+      { title: "Ravito — Bénévoles pour événements sportifs en France" },
+      { name: "description", content: "Ravito met en relation les bénévoles passionnés et les organisateurs de trails, courses, triathlons et cyclosportives partout en France." },
+      { property: "og:site_name", content: "Ravito" },
+      { property: "og:title", content: "Ravito — Bénévoles pour événements sportifs en France" },
+      { property: "og:description", content: "Trails, courses à pied, vélo, triathlon… Trouve des bénévoles ou engage-toi sur un événement en 2 minutes." },
       { property: "og:type", content: "website" },
+      { name: "theme-color", content: "#1D6FE8" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

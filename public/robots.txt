@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /mon-espace
+Disallow: /mes-candidatures
+Disallow: /publier
+
+Sitemap: https://ravito.fr/sitemap.xml

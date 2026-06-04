@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { MapPin, Calendar, Users, Tag, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { useAuth } from "@/lib/auth-context";
@@ -12,6 +14,12 @@ interface Ev {
 }
 
 export const Route = createFileRoute("/annonce/$id")({
+  head: () => ({
+    meta: [
+      { title: "Détail de l'événement — Ravito" },
+      { name: "description", content: "Consultez les détails de cet événement sportif et postulez comme bénévole en quelques clics." },
+    ],
+  }),
   component: AnnonceDetail,
 });
 
@@ -21,6 +29,7 @@ function AnnonceDetail() {
   const navigate = useNavigate();
   const [ev, setEv] = useState<Ev | null>(null);
   const [loading, setLoading] = useState(true);
+  const [success, setSuccess] = useState(false);
 
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
@@ -31,10 +40,8 @@ function AnnonceDetail() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    supabase.from("events_public").select("*").eq("id", id).maybeSingle().then(({ data }) => {
-      setEv(data as Ev | null);
-      setLoading(false);
-    });
+    supabase.from("events_public").select("*").eq("id", id).maybeSingle()
+      .then(({ data }) => { setEv(data as Ev | null); setLoading(false); });
   }, [id]);
 
   useEffect(() => {
@@ -43,15 +50,8 @@ function AnnonceDetail() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("Connecte-toi pour postuler");
-      navigate({ to: "/connexion" });
-      return;
-    }
-    if (role !== "benevole") {
-      toast.error("Seuls les bénévoles peuvent postuler");
-      return;
-    }
+    if (!user) { toast.error("Connecte-toi pour postuler"); navigate({ to: "/connexion" }); return; }
+    if (role !== "benevole") { toast.error("Seuls les bénévoles peuvent postuler"); return; }
     setSubmitting(true);
     const { error } = await supabase.from("candidatures").insert({
       event_id: id, benevole_id: user.id, prenom, nom, email,
@@ -59,93 +59,166 @@ function AnnonceDetail() {
     });
     setSubmitting(false);
     if (error) { toast.error("Erreur : " + error.message); return; }
+    setSuccess(true);
     toast.success("Candidature envoyée !");
-    navigate({ to: "/mes-candidatures" });
+    setTimeout(() => navigate({ to: "/mes-candidatures" }), 2000);
   };
 
-  if (loading) return <PageShell><div className="px-6 py-20 text-center">Chargement…</div></PageShell>;
-  if (!ev) return <PageShell><div className="px-6 py-20 text-center">Annonce introuvable.</div></PageShell>;
+  if (loading) return (
+    <PageShell>
+      <div className="px-6 py-20 max-w-4xl mx-auto">
+        <div className="h-8 w-48 bg-muted animate-pulse rounded-lg mb-6" />
+        <div className="h-72 bg-muted animate-pulse rounded-2xl mb-8" />
+        <div className="space-y-4">
+          {[1,2,3].map(i => <div key={i} className="h-4 bg-muted animate-pulse rounded" />)}
+        </div>
+      </div>
+    </PageShell>
+  );
+
+  if (!ev) return (
+    <PageShell>
+      <div className="px-6 py-20 text-center">
+        <p className="text-muted-foreground text-lg">Annonce introuvable.</p>
+        <Link to="/annonces" className="text-primary font-semibold hover:underline mt-4 inline-block">← Retour aux annonces</Link>
+      </div>
+    </PageShell>
+  );
 
   const dateFmt = new Date(ev.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
 
   return (
     <PageShell>
-      <img src="https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80" alt={ev.nom} className="w-full h-72 md:h-96 object-cover" />
+      {/* Hero image */}
+      <div className="w-full h-64 md:h-80 overflow-hidden relative">
+        <img
+          src="https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80"
+          alt={ev.nom}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(255,248,240,0.95))" }} />
+        <div className="absolute bottom-6 left-6">
+          <span className="inline-block bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+            {ev.type_sport}
+          </span>
+        </div>
+      </div>
 
-      <section className="px-6 py-16">
+      <section className="px-6 pb-16">
         <div className="mx-auto max-w-4xl">
-          <h1 className="text-4xl md:text-6xl font-bold uppercase mb-6" style={{ fontFamily: '"Syne", sans-serif' }}>
-            {ev.nom}
-          </h1>
-          <div className="flex flex-wrap gap-6 text-sm text-muted-foreground mb-10">
-            <span><strong className="text-foreground">Ville :</strong> {ev.ville}</span>
-            <span><strong className="text-foreground">Date :</strong> {dateFmt}</span>
-            <span><strong className="text-foreground">Type :</strong> {ev.type_sport}</span>
-            <span><strong className="text-foreground">Bénévoles :</strong> {ev.nb_benevoles}</span>
-          </div>
+          {/* Back link */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-5">
+            <Link to="/annonces" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft size={15} /> Toutes les annonces
+            </Link>
+          </motion.div>
 
-          {ev.description && <p className="text-lg leading-relaxed mb-10 whitespace-pre-wrap">{ev.description}</p>}
-
-          {ev.missions && ev.missions.length > 0 && (
-            <div className="mb-12">
-              <h2 className="text-xl font-bold uppercase mb-4" style={{ fontFamily: '"Syne", sans-serif' }}>Missions disponibles</h2>
-              <div className="flex flex-wrap gap-2">
-                {ev.missions.map((m) => <span key={m} className="bg-muted px-4 py-2 rounded-full text-sm">{m}</span>)}
-              </div>
+          {/* Title + meta */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+            <h1 className="font-display text-4xl md:text-5xl font-black mb-5 leading-tight">{ev.nom}</h1>
+            <div className="flex flex-wrap gap-5 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2"><MapPin size={15} className="text-primary" /> {ev.ville}, {ev.region}</span>
+              <span className="flex items-center gap-2"><Calendar size={15} className="text-primary" /> {dateFmt}</span>
+              <span className="flex items-center gap-2"><Users size={15} className="text-primary" /> {ev.nb_benevoles} bénévoles recherchés</span>
             </div>
-          )}
+          </motion.div>
 
-          <div className="border-t border-border pt-12">
-            <h2 className="text-2xl md:text-3xl font-bold uppercase mb-8" style={{ fontFamily: '"Syne", sans-serif' }}>
-              Envoyer ma candidature
-            </h2>
-            {!user ? (
-              <p className="text-muted-foreground">
-                <Link to="/connexion" className="underline font-semibold">Connecte-toi</Link> pour postuler à cette annonce.
-              </p>
-            ) : role === "organisateur" ? (
-              <p className="text-muted-foreground">Seuls les comptes bénévoles peuvent postuler.</p>
-            ) : (
-              <form onSubmit={onSubmit} className="grid gap-5">
-                <div className="grid md:grid-cols-2 gap-5">
-                  <Field label="Prénom"><input required value={prenom} onChange={(e) => setPrenom(e.target.value)} className="input" /></Field>
-                  <Field label="Nom"><input required value={nom} onChange={(e) => setNom(e.target.value)} className="input" /></Field>
-                </div>
-                <Field label="Email"><input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input" /></Field>
-                <Field label="Mission souhaitée">
-                  <select value={mission} onChange={(e) => setMission(e.target.value)} className="input">
-                    <option value="">— Choisir —</option>
-                    {(ev.missions ?? []).map((m) => <option key={m} value={m}>{m}</option>)}
-                  </select>
-                </Field>
-                <Field label="Disponible toute la journée">
-                  <select value={dispo ? "oui" : "non"} onChange={(e) => setDispo(e.target.value === "oui")} className="input">
-                    <option value="oui">Oui</option>
-                    <option value="non">Non</option>
-                  </select>
-                </Field>
-                <Field label="Expérience bénévole (optionnel)">
-                  <textarea value={exp} onChange={(e) => setExp(e.target.value)} className="input min-h-28" />
-                </Field>
-                <button disabled={submitting} className="bg-primary text-primary-foreground py-4 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
-                  {submitting ? "Envoi…" : "Envoyer ma candidature"}
-                </button>
-              </form>
-            )}
+          <div className="grid gap-10 md:grid-cols-5">
+            <div className="md:col-span-3">
+              {ev.description && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+                  <h2 className="font-display text-xl font-black mb-4">À propos</h2>
+                  <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap mb-8">{ev.description}</p>
+                </motion.div>
+              )}
+
+              {ev.missions && ev.missions.length > 0 && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}>
+                  <h2 className="font-display text-xl font-black mb-4">Missions disponibles</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {ev.missions.map((m) => (
+                      <span key={m} className="flex items-center gap-1.5 px-4 py-2 rounded-full border-2 border-border bg-card text-sm font-medium">
+                        <Tag size={13} className="text-primary" /> {m}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Application form */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="md:col-span-2"
+            >
+              <div className="bg-card border border-border rounded-2xl p-6 sticky top-24" style={{ boxShadow: "var(--shadow-card)" }}>
+                <h2 className="font-display text-xl font-black mb-5">Postuler</h2>
+
+                {!user ? (
+                  <div className="text-center py-6">
+                    <p className="text-muted-foreground text-sm mb-4">Connecte-toi pour postuler à cette annonce.</p>
+                    <Link to="/connexion" className="btn-cta inline-block">Se connecter</Link>
+                  </div>
+                ) : role === "organisateur" ? (
+                  <p className="text-muted-foreground text-sm">Seuls les comptes bénévoles peuvent postuler.</p>
+                ) : success ? (
+                  <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                    className="flex flex-col items-center py-8 text-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                      <CheckCircle2 size={32} className="text-green-600" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-green-600">Candidature envoyée !</p>
+                      <p className="text-xs text-muted-foreground mt-1">Redirection…</p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={onSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Prénom</label>
+                        <input required value={prenom} onChange={(e) => setPrenom(e.target.value)} className="inp" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Nom</label>
+                        <input required value={nom} onChange={(e) => setNom(e.target.value)} className="inp" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Email</label>
+                      <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="inp" />
+                    </div>
+                    {ev.missions && ev.missions.length > 0 && (
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Mission souhaitée</label>
+                        <select value={mission} onChange={(e) => setMission(e.target.value)} className="inp">
+                          <option value="">— Choisir —</option>
+                          {ev.missions.map((m) => <option key={m} value={m}>{m}</option>)}
+                        </select>
+                      </div>
+                    )}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Disponible toute la journée ?</label>
+                      <select value={dispo ? "oui" : "non"} onChange={(e) => setDispo(e.target.value === "oui")} className="inp">
+                        <option value="oui">Oui</option>
+                        <option value="non">Non</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Expérience bénévole (optionnel)</label>
+                      <textarea value={exp} onChange={(e) => setExp(e.target.value)} className="inp min-h-20 resize-none" />
+                    </div>
+                    <motion.button type="submit" disabled={submitting} whileTap={{ scale: 0.97 }}
+                      className="btn-cta w-full flex items-center justify-center gap-2">
+                      {submitting ? <Loader2 size={17} className="animate-spin" /> : <>Envoyer ma candidature</>}
+                    </motion.button>
+                  </form>
+                )}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
-
-      <style>{`.input{background:var(--background);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;font-size:.95rem;width:100%;}`}</style>
     </PageShell>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="block text-xs font-bold uppercase tracking-wider mb-2">{label}</span>
-      {children}
-    </label>
   );
 }
