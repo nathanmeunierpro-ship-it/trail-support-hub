@@ -28,16 +28,20 @@ export function Navbar() {
 
           <ul className="hidden lg:flex items-center gap-7 text-[13px] font-bold uppercase tracking-wider">
             {links.map((l) => (
-              <li key={l.to}><Link to={l.to} className="hover:opacity-80 transition-opacity">{l.label}</Link></li>
+              <li key={l.to}>
+                <Link to={l.to} className="relative text-foreground hover:text-primary transition-colors after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">
+                  {l.label}
+                </Link>
+              </li>
             ))}
             <li>
               {session ? (
                 <div className="flex items-center gap-4">
-                  <Link to={dashboardLink} className="hover:opacity-80">Mon espace</Link>
-                  <button onClick={signOut} className="hover:opacity-80">Déconnexion</button>
+                  <Link to={dashboardLink} className="hover:text-primary transition-colors">Mon espace</Link>
+                  <button onClick={signOut} className="bg-primary text-primary-foreground px-5 py-2 rounded-full hover:bg-primary/90 transition">Déconnexion</button>
                 </div>
               ) : (
-                <Link to="/connexion" className="hover:opacity-80">Se connecter</Link>
+                <Link to="/connexion" className="bg-primary text-primary-foreground px-5 py-2 rounded-full hover:bg-primary/90 transition">Se connecter</Link>
               )}
             </li>
           </ul>
