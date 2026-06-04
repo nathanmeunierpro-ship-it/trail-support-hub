@@ -69,62 +69,107 @@ function Home() {
 
   return (
     <PageShell>
-      {/* ── HERO ── */}
-      <section className="relative -mt-16 h-[92vh] min-h-[640px] w-full overflow-hidden">
-        <motion.img
-          initial={{ scale: 1.08 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.8, ease: "easeOut" }}
-          src={HERO_IMG}
-          alt="Coureurs en pleine course nature"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="font-display text-white font-black uppercase leading-[0.95] tracking-tight max-w-5xl"
-            style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)" }}
-          >
-            Bénévoles & Événements
-            <br />
-            Sportifs en France
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-6 text-white/90 max-w-xl text-base md:text-lg leading-relaxed"
-          >
-            Trails, running, vélo, triathlon, cyclosportives… Trouve ton
-            événement en 2 minutes.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-10"
-          >
-            <Link
-              to="/annonces"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-9 py-5 text-primary text-2xl md:text-3xl shadow-2xl hover:scale-[1.03] transition-transform"
-              style={{ fontFamily: "Pacifico, cursive" }}
+      {/* ── HERO — FILOS style : titre + 2 photos côte à côte ── */}
+      <section className="relative pt-28 md:pt-32 pb-16 px-6 bg-background">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center max-w-5xl mx-auto mb-14">
+            <motion.span
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-block text-xs uppercase tracking-[0.3em] text-primary/60 mb-6 font-semibold"
             >
-              trouver un événement
-              <ArrowRight size={22} />
-            </Link>
-          </motion.div>
+              — Plateforme associative —
+            </motion.span>
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.05 }}
+              className="font-display text-primary font-black uppercase leading-[0.95] tracking-tight"
+              style={{ fontSize: "clamp(2.25rem, 6.5vw, 5.5rem)" }}
+            >
+              Bénévoles & Événements
+              <br />
+              Sportifs en France
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="mt-8 text-foreground/70 max-w-2xl mx-auto text-base md:text-lg leading-relaxed"
+            >
+              Trails, running, vélo, triathlon, cyclosportives… Trouve ton
+              événement en 2 minutes.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="mt-10"
+            >
+              <Link
+                to="/annonces"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-9 py-5 text-primary-foreground text-2xl md:text-3xl shadow-xl hover:scale-[1.03] transition-transform"
+                style={{ fontFamily: "Pacifico, cursive" }}
+              >
+                trouver un événement
+                <ArrowRight size={22} />
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* 2 photos côte à côte — éditorial FILOS */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-3xl shadow-lg aspect-[4/5] md:aspect-[5/6] md:mt-12"
+            >
+              <img
+                src={HERO_IMG}
+                alt="Coureurs en pleine course nature"
+                className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-[1200ms]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <span className="inline-block text-[10px] uppercase tracking-[0.25em] opacity-80 mb-1">
+                  La course
+                </span>
+                <p
+                  className="leading-tight"
+                  style={{ fontFamily: "Pacifico, cursive", fontSize: "clamp(1.5rem, 2.2vw, 2rem)" }}
+                >
+                  l'effort partagé
+                </p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-3xl shadow-lg aspect-[4/5] md:aspect-[5/6]"
+            >
+              <img
+                src={IMG_COMMUNITY}
+                alt="Communauté de bénévoles sportifs"
+                className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-[1200ms]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <span className="inline-block text-[10px] uppercase tracking-[0.25em] opacity-80 mb-1">
+                  Les bénévoles
+                </span>
+                <p
+                  className="leading-tight"
+                  style={{ fontFamily: "Pacifico, cursive", fontSize: "clamp(1.5rem, 2.2vw, 2rem)" }}
+                >
+                  l'esprit d'équipe
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70 text-xs uppercase tracking-[0.3em]"
-        >
-          ↓ découvrir
-        </motion.div>
       </section>
 
       <Ticker />
