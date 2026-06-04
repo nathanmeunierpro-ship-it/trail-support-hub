@@ -17,10 +17,10 @@ export function EventRow({ ev }: { ev: EventRowData }) {
     <Link
       to="/annonce/$id"
       params={{ id: ev.id }}
-      className="group grid grid-cols-1 md:grid-cols-12 items-center gap-3 md:gap-6 border-b border-border py-6 px-2 hover:bg-muted transition-colors"
+      className="group grid grid-cols-1 md:grid-cols-12 items-center gap-3 md:gap-6 border-l-4 border-l-transparent hover:border-l-primary bg-card hover:bg-muted/60 transition-colors py-6 px-4 mb-2 rounded-r"
     >
       <div className="md:col-span-5">
-        <h3 className="text-lg md:text-xl font-bold uppercase tracking-tight" style={{ fontFamily: '"Syne", sans-serif' }}>
+        <h3 className="text-lg md:text-xl font-bold uppercase tracking-tight text-foreground" style={{ fontFamily: '"Syne", sans-serif' }}>
           {ev.nom}
         </h3>
       </div>
@@ -31,7 +31,7 @@ export function EventRow({ ev }: { ev: EventRowData }) {
         </span>
       </div>
       <div className="md:col-span-1 md:text-right">
-        <span className="inline-block text-xs font-bold uppercase border border-foreground px-3 py-2 rounded-md group-hover:bg-foreground group-hover:text-background transition-colors">
+        <span className="inline-block text-xs font-bold uppercase border border-primary text-primary px-3 py-2 rounded-md group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
           Je postule
         </span>
       </div>
