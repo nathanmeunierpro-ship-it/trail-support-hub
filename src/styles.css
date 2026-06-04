@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Syne", "Inter", sans-serif;
+  --font-sans: "Quicksand", system-ui, sans-serif;
+  --font-display: "More Sugar", "Fredoka", "Quicksand", cursive;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -26,6 +26,10 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-surface: var(--surface);
+  --color-bg: var(--bg);
+  --color-text-dark: var(--text-dark);
+  --color-text-light: var(--text-light);
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -36,59 +40,73 @@
    All hex values live ONLY in this block.
 ───────────────────────────────────────── */
 :root {
-  /* Brand colors */
-  --color-bg: #FFF8F0;
-  --color-primary: #1D6FE8;
-  --color-accent: #F5C518;
-  --color-text: #2D2D2D;
-  --color-surface: #FFFFFF;
-  --color-border: #E8DDD4;
+  /* Brand palette */
+  --primary: #F55D3E;            /* orange — buttons, CTAs, accents */
+  --bg: #8CC4D8;                 /* light blue — page background */
+  --surface: #FFFFFF;            /* white — cards, inputs, navbar */
+  --text-dark: #1A1A1A;          /* dark text on light surfaces */
+  --text-light: #FFFFFF;         /* white text on orange/blue */
 
-  /* Tailwind semantic mappings */
-  --background: #FFF8F0;
-  --foreground: #2D2D2D;
-  --primary: #1D6FE8;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F5C518;
-  --secondary-foreground: #2D2D2D;
-  --muted: #F0EAE4;
-  --muted-foreground: #8A7A6E;
-  --accent: #F5C518;
-  --accent-foreground: #2D2D2D;
-  --border: #E8DDD4;
-  --input: #FFFFFF;
-  --ring: #1D6FE8;
-  --card: #FFFFFF;
-  --card-foreground: #2D2D2D;
-  --popover: #FFFFFF;
-  --popover-foreground: #2D2D2D;
+  /* Tailwind semantic mappings (derived only) */
+  --background: var(--bg);
+  --foreground: var(--text-dark);
+  --primary-foreground: var(--text-light);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--primary);
+  --muted: var(--surface);
+  --muted-foreground: var(--text-dark);
+  --accent: var(--primary);
+  --accent-foreground: var(--text-light);
+  --border: var(--text-dark);
+  --input: var(--surface);
+  --ring: var(--primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-dark);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-dark);
   --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
+  --destructive-foreground: var(--text-light);
   --success: #22c55e;
-  --success-foreground: #FFFFFF;
+  --success-foreground: var(--text-light);
   --radius: 12px;
 
   /* Component tokens (derived) */
-  --auth-panel-gradient: linear-gradient(160deg, #0a2d7a 0%, #1045b8 55%, #1D6FE8 100%);
-  --shadow-card: 0 2px 16px rgba(45, 45, 45, 0.07);
-  --shadow-card-hover: 0 8px 32px rgba(29, 111, 232, 0.18);
-  --shadow-btn: 0 4px 14px rgba(245, 197, 24, 0.35);
+  --auth-panel-gradient: linear-gradient(160deg, var(--primary) 0%, var(--primary) 100%);
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.07);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --shadow-btn: 0 4px 14px rgba(245, 93, 62, 0.35);
 }
 
 /* ── Base styles ── */
 @layer base {
-  * { border-color: var(--border); }
+  * { border-color: color-mix(in srgb, var(--text-dark) 12%, transparent); }
   html, body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans);
+    font-family: "Quicksand", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+    font-family: "More Sugar", "Fredoka", "Quicksand", cursive;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: var(--primary);
+  }
+  p, span, a, li, button, input, textarea, select, label {
+    font-family: "Quicksand", system-ui, sans-serif;
+  }
+}
+
+/* Hero h1 sizing override */
+.hero-title,
+section h1 {
+  font-size: 2.5rem;
+  line-height: 1.05;
+}
+@media (min-width: 768px) {
+  .hero-title,
+  section h1 {
+    font-size: 3.5rem;
   }
 }
 
@@ -108,7 +126,7 @@
 /* ── Reusable form input ── */
 .inp {
   background: var(--input);
-  border: 1.5px solid var(--border);
+  border: 1.5px solid color-mix(in srgb, var(--text-dark) 15%, transparent);
   border-radius: 10px;
   padding: 0.875rem 1rem;
   font-size: 0.95rem;
@@ -116,12 +134,13 @@
   color: var(--foreground);
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
+  font-family: "Quicksand", system-ui, sans-serif;
 }
 .inp:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
 }
-.inp::placeholder { color: var(--muted-foreground); }
+.inp::placeholder { color: color-mix(in srgb, var(--text-dark) 45%, transparent); }
 .inp-error {
   border-color: var(--destructive) !important;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--destructive) 10%, transparent) !important;
@@ -130,46 +149,48 @@
 /* ── Card base ── */
 .card-base {
   background: var(--card);
-  border: 1.5px solid var(--border);
+  border: 1.5px solid color-mix(in srgb, var(--text-dark) 10%, transparent);
   border-radius: 16px;
   box-shadow: var(--shadow-card);
   transition: box-shadow 0.25s, transform 0.25s;
 }
 
-/* ── CTA button (yellow) ── */
+/* ── CTA button (primary orange) ── */
 .btn-cta {
-  background: var(--secondary);
-  color: var(--secondary-foreground);
+  background: var(--primary);
+  color: var(--text-light);
   font-weight: 700;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border-radius: 12px;
+  border-radius: 9999px;
   padding: 0.875rem 2rem;
   box-shadow: var(--shadow-btn);
   border: none;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s;
+  font-family: "Quicksand", system-ui, sans-serif;
 }
 .btn-cta:hover { opacity: 0.9; }
 .btn-cta:active { transform: scale(0.97); }
 .btn-cta:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ── Outline button (blue) ── */
+/* ── Outline button (orange border) ── */
 .btn-outline {
-  background: transparent;
+  background: var(--surface);
   color: var(--primary);
   border: 2px solid var(--primary);
   font-weight: 700;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border-radius: 12px;
+  border-radius: 9999px;
   padding: 0.75rem 2rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  font-family: "Quicksand", system-ui, sans-serif;
 }
 .btn-outline:hover {
   background: var(--primary);
-  color: var(--primary-foreground);
+  color: var(--text-light);
 }
