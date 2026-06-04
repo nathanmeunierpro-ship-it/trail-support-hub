@@ -109,14 +109,14 @@ export function Navbar() {
                         >
                           <div className="bg-white rounded-xl shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] py-2 overflow-hidden ring-1 ring-black/5">
                             {l.children.map((c) => (
-                              <a
+                              <Link
                                 key={c.href}
-                                href={c.href}
+                                to={c.href}
                                 onClick={() => setOpenDropdown(null)}
                                 className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-[#F0F5FF] transition-colors"
                               >
                                 {c.label}
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </motion.div>
@@ -214,14 +214,14 @@ export function Navbar() {
                             className="overflow-hidden pl-3"
                           >
                             {l.children.map((c) => (
-                              <a
+                              <Link
                                 key={c.href}
-                                href={c.href}
+                                to={c.href}
                                 onClick={() => { setOpen(false); setMobileSub(null); }}
                                 className="block px-4 py-2.5 text-sm font-semibold text-primary-foreground/80 hover:text-primary-foreground"
                               >
                                 · {c.label}
-                              </a>
+                              </Link>
                             ))}
                           </motion.div>
                         )}
