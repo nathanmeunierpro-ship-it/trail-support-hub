@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import ravitoLogo from "@/assets/ravito-logo.png";
 
 const links = [
   { to: "/annonces", label: "Les courses" },
