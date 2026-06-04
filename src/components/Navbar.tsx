@@ -29,7 +29,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileSub, setMobileSub] = useState<string | null>(null);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
   const { session, role, signOut } = useAuth();
   const state = useRouterState();
   const currentPath = state.location.pathname;
