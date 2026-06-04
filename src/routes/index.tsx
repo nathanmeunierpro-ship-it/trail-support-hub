@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Trails, running, vélo, triathlon, cyclosportives… Trouve des bénévoles passionnés ou engage-toi sur un événement près de chez toi.",
+          "Trails, running, vélo, triathlon — trouve des bénévoles motivés ou postule sur un événement près de chez toi. Gratuit pour les 20 premiers organisateurs.",
       },
     ],
   }),
@@ -90,12 +90,10 @@ function Home() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.05 }}
-              className="font-display text-primary font-black uppercase leading-[0.92] tracking-tight"
-              style={{ fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)" }}
+              className="font-display text-primary font-black leading-tight tracking-tight"
+              style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
             >
-              Bénévoles & Événements
-              <br />
-              Sportifs en France
+              Trouve des bénévoles pour ton événement sportif
             </motion.h1>
 
             <motion.p
@@ -104,9 +102,7 @@ function Home() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="mt-8 text-foreground/70 max-w-lg text-base md:text-lg leading-relaxed"
             >
-              Trails, running, vélo, triathlon, cyclosportives… Ravito connecte
-              les bénévoles passionnés aux organisateurs d'événements, partout
-              en France.
+              Trails, running, vélo, triathlon… Connecte organisateurs et bénévoles partout en France. Gratuit pour les 20 premiers.
             </motion.p>
 
             <motion.div
@@ -119,13 +115,13 @@ function Home() {
                 to="/annonces"
                 className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-7 py-4 text-sm font-bold uppercase tracking-wider shadow-lg hover:scale-[1.03] transition-transform"
               >
-                Trouver un événement <ArrowRight size={16} />
+                Voir les annonces <ArrowRight size={16} />
               </Link>
               <Link
                 to="/publier"
                 className="inline-flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider hover:gap-3 transition-all border-b-2 border-primary/30 hover:border-primary pb-1"
               >
-                J'organise une course
+                Publier mon événement
               </Link>
             </motion.div>
 
@@ -149,34 +145,6 @@ function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-              {/* tag en haut */}
-              <div className="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur px-4 py-2 shadow">
-                <span className="h-2 w-2 rounded-full bg-secondary animate-pulse" />
-                <span className="text-[11px] uppercase tracking-widest font-bold text-primary">
-                  En direct
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Carte flottante : prochain événement */}
-            <motion.div
-              initial={{ opacity: 0, x: -30, y: 30 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden sm:flex absolute -bottom-6 -left-6 lg:-left-12 bg-white rounded-2xl p-5 shadow-2xl items-center gap-4 max-w-[280px]"
-            >
-              <div className="flex-shrink-0 h-14 w-14 rounded-xl overflow-hidden">
-                <img src={IMG_COMMUNITY} alt="" className="h-full w-full object-cover" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-widest text-foreground/50 font-bold mb-1">
-                  Prochain événement
-                </div>
-                <div className="font-display font-black text-primary text-sm leading-tight truncate">
-                  Trail du Mont Blanc
-                </div>
-                <div className="text-xs text-foreground/60 mt-0.5">Chamonix · 04 oct.</div>
-              </div>
             </motion.div>
 
             {/* Vignette secondaire en haut à droite */}
@@ -247,7 +215,7 @@ function Home() {
             </div>
             <div className="absolute -bottom-6 -right-6 bg-secondary text-secondary-foreground px-6 py-4 rounded-2xl shadow-xl hidden md:block">
               <div className="text-3xl font-black font-display">+2 500</div>
-              <div className="text-xs uppercase tracking-widest font-semibold">bénévoles actifs</div>
+              <div className="text-xs uppercase tracking-widest font-semibold">bénévoles en France</div>
             </div>
           </motion.div>
           <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
@@ -309,13 +277,11 @@ function Home() {
               qu'il te faut.
             </h3>
             <p className="text-foreground/70 text-lg leading-relaxed mb-8">
-              Publie ton événement gratuitement et reçois en quelques heures
-              les candidatures de bénévoles motivés, près de chez toi.
-              Concentre-toi sur l'essentiel : faire vivre une belle course.
+              Publie ton événement et reçois en quelques heures les candidatures de bénévoles motivés, près de chez toi. Gratuit pour les 20 premiers organisateurs.
             </p>
             <ul className="space-y-3 mb-10">
               {[
-                "Publication illimitée et gratuite",
+                "Gratuit pour les 20 premiers organisateurs",
                 "Candidatures qualifiées dès la première heure",
                 "Échange direct avec chaque bénévole",
               ].map((t) => (
@@ -341,8 +307,8 @@ function Home() {
               />
             </div>
             <div className="absolute -top-6 -left-6 bg-primary text-primary-foreground px-6 py-4 rounded-2xl shadow-xl hidden md:block">
-              <div className="text-3xl font-black font-display">100%</div>
-              <div className="text-xs uppercase tracking-widest font-semibold">gratuit</div>
+              <div className="text-lg font-black font-display leading-tight">GRATUIT</div>
+              <div className="text-xs uppercase tracking-widest font-semibold">pour les 20 premiers</div>
             </div>
           </motion.div>
         </div>

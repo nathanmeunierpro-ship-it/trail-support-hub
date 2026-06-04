@@ -10,7 +10,7 @@ export const Route = createFileRoute("/connexion")({
   head: () => ({
     meta: [
       { title: "Se connecter — Ravito" },
-      { name: "description", content: "Connecte-toi à ton compte Ravito pour accéder à ton espace bénévole ou organisateur." },
+      { name: "description", content: "Connecte-toi à ton espace bénévole ou organisateur sur Ravito." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -110,22 +110,10 @@ function LoginPage() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-primary-foreground text-sm leading-relaxed max-w-xs"
             >
-              Rejoins des milliers de bénévoles passionnés qui font vivre les trails de France.
+              Rejoins des milliers de bénévoles passionnés qui font vivre les événements sportifs en France.
             </motion.p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex gap-4"
-          >
-            {[["2 400+", "bénévoles"], ["180+", "courses"], ["13", "régions"]].map(([val, label]) => (
-              <div key={label} className="rounded-xl p-4 text-center" style={{ background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)" }}>
-                <div className="font-display text-2xl font-black text-primary-foreground">{val}</div>
-                <div className="text-primary-foreground/50 text-xs mt-0.5">{label}</div>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </div>
 
@@ -146,7 +134,7 @@ function LoginPage() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-md"
         >
-          <h1 className="font-display text-4xl font-black mb-1">Connexion</h1>
+          <h1 className="font-display text-4xl font-black mb-1">Connexion à ton espace Ravito</h1>
           <p className="text-muted-foreground text-sm mb-10">Content de te revoir !</p>
 
           <form onSubmit={onSubmit} className="space-y-5">

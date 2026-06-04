@@ -6,17 +6,17 @@ import { PageShell } from "@/components/PageShell";
 export const Route = createFileRoute("/organisateurs/comment-ca-marche")({
   head: () => ({
     meta: [
-      { title: "Comment ça marche — Organisateurs · Ravito" },
+      { title: "Comment ça marche — Ravito" },
       {
         name: "description",
         content:
-          "Crée ton annonce, reçois des candidatures de bénévoles et valide ton équipe en quelques clics avec Ravito.",
+          "3 étapes simples pour publier ton événement et trouver des bénévoles motivés sur Ravito.",
       },
-      { property: "og:title", content: "Comment ça marche — Organisateurs · Ravito" },
+      { property: "og:title", content: "Comment ça marche — Ravito" },
       {
         property: "og:description",
         content:
-          "Crée ton annonce, reçois des candidatures de bénévoles et valide ton équipe en quelques clics avec Ravito.",
+          "3 étapes simples pour publier ton événement et trouver des bénévoles motivés sur Ravito.",
       },
     ],
   }),
@@ -32,7 +32,7 @@ const STEPS = [
   {
     emoji: "📬",
     title: "Reçois des candidatures",
-    desc: "Les bénévoles inscrits sur Ravito postulent directement. Tu reçois leurs profils et disponibilités dans ton dashboard.",
+    desc: "Les bénévoles inscrits sur Ravito postulent directement. Tu reçois leurs profils et disponibilités dans ton espace.",
   },
   {
     emoji: "✅",
@@ -54,7 +54,7 @@ function Page() {
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-4xl md:text-6xl font-black mb-6"
           >
-            Comment ça marche
+            Comment ça marche pour les organisateurs
           </motion.h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             3 étapes simples pour trouver les bénévoles de ton prochain événement sportif.

@@ -21,11 +21,11 @@ interface EventCard {
 export const Route = createFileRoute("/annonces")({
   head: () => ({
     meta: [
-      { title: "Événements sportifs qui cherchent des bénévoles — Ravito" },
+      { title: "Événements sportifs — Ravito" },
       {
         name: "description",
         content:
-          "Parcours toutes les annonces en France : trails, courses à pied, vélo, triathlon, et bien plus. Postule en quelques clics.",
+          "Parcours les annonces de trails, running, vélo et triathlon en France. Postule comme bénévole en quelques clics.",
       },
     ],
   }),
@@ -165,7 +165,7 @@ function AnnoncesPage() {
           >
             <div>
               <h1 className="font-display text-4xl md:text-6xl font-black mb-2">
-                Événements
+                Les événements qui cherchent des bénévoles
               </h1>
               <p className="text-muted-foreground">
                 {loadingData
@@ -403,7 +403,7 @@ function AnnoncesPage() {
                                 </motion.span>
                               ) : (
                                 <motion.span key="i" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                                  Postuler
+                                  Je postule
                                 </motion.span>
                               )}
                             </AnimatePresence>

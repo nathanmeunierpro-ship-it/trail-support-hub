@@ -7,17 +7,17 @@ import { PageShell } from "@/components/PageShell";
 export const Route = createFileRoute("/organisateurs/nos-offres")({
   head: () => ({
     meta: [
-      { title: "Nos offres — Organisateurs · Ravito" },
+      { title: "Tarifs et offres — Ravito" },
       {
         name: "description",
         content:
-          "Découvre les formules Ravito pour publier ton événement sportif et trouver tes bénévoles : Starter, Essentiel et Premium.",
+          "Découvre nos offres pour publier ton événement sportif et trouver des bénévoles. Gratuit pour les 20 premiers.",
       },
-      { property: "og:title", content: "Nos offres — Organisateurs · Ravito" },
+      { property: "og:title", content: "Tarifs et offres — Ravito" },
       {
         property: "og:description",
         content:
-          "Découvre les formules Ravito pour publier ton événement sportif et trouver tes bénévoles : Starter, Essentiel et Premium.",
+          "Découvre nos offres pour publier ton événement sportif et trouver des bénévoles. Gratuit pour les 20 premiers.",
       },
     ],
   }),
@@ -46,7 +46,7 @@ const OFFERS: Offer[] = [
     name: "Starter",
     badge: "GRATUIT — 20 PREMIERS",
     price: "0€",
-    features: ["1 annonce publiée", "Réception des candidatures", "Dashboard basique"],
+    features: ["1 annonce publiée", "Réception des candidatures", "Tableau de bord basique"],
     ctaLabel: "Publier mon événement",
     ctaKind: "link",
     ctaHref: "/publier",
@@ -64,7 +64,7 @@ const OFFERS: Offer[] = [
     features: [
       "1 annonce publiée",
       "Gestion des candidatures (accepter / refuser)",
-      "Dashboard organisateur complet",
+      "Tableau de bord complet",
       'Badge "Événement vérifié"',
       "Plusieurs événements ? Me contacter",
     ],
@@ -141,7 +141,7 @@ function Page() {
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-4xl md:text-6xl font-black mb-6"
           >
-            Nos offres
+            Nos offres pour les organisateurs
           </motion.h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Choisis la formule qui correspond à ton événement et à tes ambitions de visibilité.

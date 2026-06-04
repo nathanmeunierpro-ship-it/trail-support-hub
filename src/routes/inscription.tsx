@@ -10,8 +10,8 @@ import { useAuth } from "@/lib/auth-context";
 export const Route = createFileRoute("/inscription")({
   head: () => ({
     meta: [
-      { title: "Créer un compte bénévole ou organisateur — Ravito" },
-      { name: "description", content: "Rejoins Ravito gratuitement. Inscris-toi comme bénévole pour postuler sur des événements sportifs, ou comme organisateur pour recruter des bénévoles." },
+      { title: "Créer un compte — Ravito" },
+      { name: "description", content: "Inscris-toi comme bénévole ou organisateur et rejoins la communauté sportive Ravito en France." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -146,7 +146,7 @@ function SignupPage() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-primary-foreground text-sm leading-relaxed max-w-xs"
             >
-              Bénévoles et organisateurs, ensemble pour faire vivre le trail français.
+              Bénévoles et organisateurs, ensemble pour faire vivre le sport français.
             </motion.p>
           </div>
 
@@ -176,12 +176,12 @@ function SignupPage() {
               <motion.div key="role"
                 variants={slideVariants} initial="enter" animate="center" exit="exit"
                 transition={{ duration: 0.3 }}>
-                <h1 className="font-display text-4xl font-black mb-2">Je suis…</h1>
+                <h1 className="font-display text-4xl font-black mb-2">Rejoins la communauté Ravito</h1>
                 <p className="text-muted-foreground text-sm mb-10">Choisis ton profil pour commencer.</p>
 
                 <div className="grid gap-4">
                   {([
-                    { val: "benevole" as Role, icon: <Users size={28} />, title: "Bénévole", desc: "Je veux aider à l'organisation d'événements sportifs near me." },
+                    { val: "benevole" as Role, icon: <Users size={28} />, title: "Bénévole", desc: "Je veux aider à l'organisation d'événements sportifs près de chez moi." },
                     { val: "organisateur" as Role, icon: <ClipboardList size={28} />, title: "Organisateur", desc: "Je cherche des bénévoles pour mon événement sportif." },
                   ] as const).map(({ val, icon, title, desc }) => (
                     <motion.button

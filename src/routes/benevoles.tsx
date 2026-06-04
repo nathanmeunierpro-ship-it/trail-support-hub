@@ -6,11 +6,11 @@ import { PageShell } from "@/components/PageShell";
 export const Route = createFileRoute("/benevoles")({
   head: () => ({
     meta: [
-      { title: "Deviens bénévole sur un événement sportif — Ravito" },
+      { title: "Bénévoles — Ravito" },
       {
         name: "description",
         content:
-          "Trails, courses à pied, vélo, triathlon… Rejoins la communauté Ravito et aide les organisateurs d'événements sportifs en France.",
+          "Trouve un trail, une course à pied ou un triathlon près de chez toi et engage-toi comme bénévole. Communauté sportive partout en France.",
       },
     ],
   }),
@@ -46,7 +46,7 @@ function BenevolesPage() {
       <section className="px-6 py-16">
         <div className="mx-auto max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="font-display text-4xl md:text-6xl font-black mb-6">Bénévoles</h1>
+            <h1 className="font-display text-4xl md:text-6xl font-black mb-6">Deviens bénévole sur un événement sportif</h1>
             <p className="text-lg text-muted-foreground mb-14 max-w-2xl leading-relaxed">
               Tu adores l'ambiance des événements sportifs et tu veux contribuer ? Rejoins le réseau Ravito et choisis parmi des centaines d'annonces : trails, courses à pied, vélo, triathlon, cyclosportives et bien plus.
             </p>
@@ -78,7 +78,7 @@ function BenevolesPage() {
             className="flex flex-wrap gap-4"
           >
             <Link to="/inscription" className="btn-cta inline-flex items-center gap-2">
-              Je m'inscris comme bénévole <ArrowRight size={16} />
+              Créer mon compte <ArrowRight size={16} />
             </Link>
             <Link to="/annonces" className="btn-outline inline-flex items-center gap-2">
               Voir les événements
