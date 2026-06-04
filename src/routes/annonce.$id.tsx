@@ -127,7 +127,7 @@ function AnnonceDetail() {
                 <Field label="Expérience bénévole (optionnel)">
                   <textarea value={exp} onChange={(e) => setExp(e.target.value)} className="input min-h-28" />
                 </Field>
-                <button disabled={submitting} className="bg-secondary text-secondary-foreground py-4 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
+                <button disabled={submitting} className="bg-primary text-primary-foreground py-4 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
                   {submitting ? "Envoi…" : "Envoyer ma candidature"}
                 </button>
               </form>

@@ -17,26 +17,31 @@ export function Navbar() {
   const dashboardLink = role === "organisateur" ? "/mon-espace" : "/mes-candidatures";
 
   return (
-    <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className="mx-auto max-w-7xl rounded-full bg-background text-primary border border-primary/15 shadow-sm">
-        <div className="flex items-center justify-between px-6 py-3">
+    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-border">
+      <nav className="mx-auto max-w-7xl">
+        <div className="flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center" aria-label="Ravito accueil">
-            <img src={ravitoLogo} alt="Ravito" className="h-8 w-auto" />
+            <img src={ravitoLogo} alt="Ravito" className="h-8 w-auto brightness-0 invert" />
           </Link>
+
 
 
           <ul className="hidden lg:flex items-center gap-7 text-[13px] font-bold uppercase tracking-wider">
             {links.map((l) => (
-              <li key={l.to}><Link to={l.to} className="hover:opacity-80 transition-opacity">{l.label}</Link></li>
+              <li key={l.to}>
+                <Link to={l.to} className="relative text-foreground hover:text-primary transition-colors after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">
+                  {l.label}
+                </Link>
+              </li>
             ))}
             <li>
               {session ? (
                 <div className="flex items-center gap-4">
-                  <Link to={dashboardLink} className="hover:opacity-80">Mon espace</Link>
-                  <button onClick={signOut} className="hover:opacity-80">Déconnexion</button>
+                  <Link to={dashboardLink} className="hover:text-primary transition-colors">Mon espace</Link>
+                  <button onClick={signOut} className="bg-primary text-primary-foreground px-5 py-2 rounded-full hover:bg-primary/90 transition">Déconnexion</button>
                 </div>
               ) : (
-                <Link to="/connexion" className="hover:opacity-80">Se connecter</Link>
+                <Link to="/connexion" className="bg-primary text-primary-foreground px-5 py-2 rounded-full hover:bg-primary/90 transition">Se connecter</Link>
               )}
             </li>
           </ul>

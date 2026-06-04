@@ -38,7 +38,7 @@ function LoginPage() {
         <h1 className="text-2xl font-bold uppercase mb-2" style={{ fontFamily: '"Syne", sans-serif' }}>Se connecter</h1>
         <input required type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="border border-border rounded-md px-4 py-3" />
         <input required type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} className="border border-border rounded-md px-4 py-3" />
-        <button disabled={loading} className="bg-secondary text-secondary-foreground py-3 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
+        <button disabled={loading} className="bg-primary text-primary-foreground py-3 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
           {loading ? "…" : "Connexion"}
         </button>
         <p className="text-sm text-center text-muted-foreground">

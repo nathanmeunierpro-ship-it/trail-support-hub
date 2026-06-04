@@ -30,27 +30,32 @@ function Home() {
   return (
     <PageShell>
       {/* Hero */}
-      <section className="px-6 py-20 md:py-28">
+      <section className="relative px-6 py-24 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-card to-background" />
+          <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/20 blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-secondary/20 blur-3xl" />
+        </div>
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-5 items-center">
           <div className="md:col-span-3">
-            <h1 className="text-5xl md:text-7xl font-bold uppercase leading-[0.95] tracking-tight" style={{ fontFamily: '"Syne", sans-serif' }}>
-              Bénévoles<br />& Trails<br />en France
+            <h1 className="text-5xl md:text-7xl font-bold uppercase leading-[0.95] tracking-tight text-foreground" style={{ fontFamily: '"Syne", sans-serif' }}>
+              Bénévoles<br />& <span className="text-primary">Trails</span><br />en France
             </h1>
             <p className="mt-8 text-lg text-muted-foreground max-w-lg">
               Des événements sportifs partout en France cherchent des bénévoles. Trouve le tien en 2 minutes.
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-6">
-              <Link to="/annonces" className="bg-secondary text-secondary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-secondary/90 transition">
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link to="/annonces" className="bg-primary text-primary-foreground px-8 py-4 rounded-full font-bold uppercase text-sm tracking-wider hover:bg-primary/90 transition">
                 Voir les annonces
               </Link>
-              <Link to="/publier" className="underline underline-offset-4 text-sm font-semibold">
-                Tu organises un événement ?
+              <Link to="/publier" className="border border-foreground text-foreground px-8 py-4 rounded-full font-bold uppercase text-sm tracking-wider hover:bg-primary hover:border-primary hover:text-primary-foreground transition">
+                J'organise un événement
               </Link>
             </div>
           </div>
           <div className="md:col-span-2 grid gap-4">
-            <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=80" alt="Coureurs en trail" className="w-full h-64 object-cover" />
-            <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&q=80" alt="Trail en montagne" className="w-full h-64 object-cover" />
+            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1200&q=80" alt="Trail running en nature" className="w-full h-64 object-cover rounded-lg" />
+            <img src="https://images.unsplash.com/photo-1486218119243-13883505764c?w=1200&q=80" alt="Trail en montagne" className="w-full h-64 object-cover rounded-lg" />
           </div>
         </div>
       </section>
