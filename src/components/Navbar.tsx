@@ -1,19 +1,35 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Menu, X, LayoutDashboard, LogOut } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Menu, X, LayoutDashboard, LogOut, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth-context";
 
-const NAV_LINKS = [
+type NavLink = {
+  to: string;
+  label: string;
+  children?: { href: string; label: string }[];
+};
+
+const NAV_LINKS: NavLink[] = [
   { to: "/annonces", label: "Les courses" },
   { to: "/benevoles", label: "Bénévoles" },
-  { to: "/organisateurs", label: "Organisateurs" },
+  {
+    to: "/organisateurs",
+    label: "Organisateurs",
+    children: [
+      { href: "/organisateurs#comment-ca-marche", label: "Comment ça marche" },
+      { href: "/organisateurs#nos-offres", label: "Nos offres" },
+    ],
+  },
   { to: "/qui-sommes-nous", label: "À propos" },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileSub, setMobileSub] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
   const { session, role, signOut } = useAuth();
   const state = useRouterState();
   const currentPath = state.location.pathname;
@@ -24,6 +40,16 @@ export function Navbar() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
   return (
@@ -49,9 +75,56 @@ export function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <ul className="hidden lg:flex items-center gap-1">
+          <ul className="hidden lg:flex items-center gap-1" ref={dropdownRef}>
             {NAV_LINKS.map((l) => {
               const isActive = currentPath === l.to || currentPath.startsWith(l.to + "/");
+              if (l.children) {
+                const isOpen = openDropdown === l.to;
+                return (
+                  <li
+                    key={l.to}
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(l.to)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
+                    <button
+                      onClick={() => setOpenDropdown(isOpen ? null : l.to)}
+                      className={`flex items-center gap-1 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider transition-colors ${
+                        isActive
+                          ? "text-primary bg-primary-foreground"
+                          : "text-primary-foreground/85 hover:text-primary-foreground"
+                      }`}
+                    >
+                      {l.label}
+                      <ChevronDown size={12} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                    </button>
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute left-1/2 -translate-x-1/2 top-full pt-3 min-w-[220px] z-50"
+                        >
+                          <div className="bg-white rounded-xl shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] py-2 overflow-hidden ring-1 ring-black/5">
+                            {l.children.map((c) => (
+                              <a
+                                key={c.href}
+                                href={c.href}
+                                onClick={() => setOpenDropdown(null)}
+                                className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-[#F0F5FF] transition-colors"
+                              >
+                                {c.label}
+                              </a>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              }
               return (
                 <li key={l.to}>
                   <Link
@@ -120,21 +193,58 @@ export function Navbar() {
             className="lg:hidden mt-2 mx-auto max-w-7xl rounded-3xl bg-primary p-4 shadow-xl"
           >
             <ul className="flex flex-col gap-1">
-              {NAV_LINKS.map((l) => (
-                <li key={l.to}>
-                  <Link
-                    to={l.to}
-                    onClick={() => setOpen(false)}
-                    className={`block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider ${
-                      currentPath === l.to
-                        ? "bg-primary-foreground text-primary"
-                        : "text-primary-foreground/85 hover:bg-primary-foreground/10"
-                    }`}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
+              {NAV_LINKS.map((l) => {
+                if (l.children) {
+                  const isSubOpen = mobileSub === l.to;
+                  return (
+                    <li key={l.to}>
+                      <button
+                        onClick={() => setMobileSub(isSubOpen ? null : l.to)}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-primary-foreground/85 hover:bg-primary-foreground/10"
+                      >
+                        {l.label}
+                        <ChevronDown size={14} className={`transition-transform ${isSubOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      <AnimatePresence>
+                        {isSubOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden pl-3"
+                          >
+                            {l.children.map((c) => (
+                              <a
+                                key={c.href}
+                                href={c.href}
+                                onClick={() => { setOpen(false); setMobileSub(null); }}
+                                className="block px-4 py-2.5 text-sm font-semibold text-primary-foreground/80 hover:text-primary-foreground"
+                              >
+                                · {c.label}
+                              </a>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={l.to}>
+                    <Link
+                      to={l.to}
+                      onClick={() => setOpen(false)}
+                      className={`block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider ${
+                        currentPath === l.to
+                          ? "bg-primary-foreground text-primary"
+                          : "text-primary-foreground/85 hover:bg-primary-foreground/10"
+                      }`}
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                );
+              })}
               {session ? (
                 <>
                   <li>
