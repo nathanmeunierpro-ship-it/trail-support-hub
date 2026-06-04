@@ -33,27 +33,27 @@
 
 :root {
   --color-primary-hex: #6B3A2A;
-  --color-secondary-hex: #6B3A2A;
-  --color-background-hex: #FFFFFF;
+  --color-secondary-hex: #7D9B4E;
+  --color-background-hex: #F5F0E8;
   --color-text-hex: #6B3A2A;
-  --color-text-inverse: #FFFFFF;
+  --color-text-inverse: #F5F0E8;
 
-  --background: #FFFFFF;
+  --background: #F5F0E8;
   --foreground: #6B3A2A;
   --primary: #6B3A2A;
-  --primary-foreground: #FFFFFF;
-  --secondary: #6B3A2A;
-  --secondary-foreground: #FFFFFF;
-  --muted: #F5F2EE;
-  --muted-foreground: #8A6F63;
-  --accent: #6B3A2A;
-  --accent-foreground: #FFFFFF;
-  --border: #E8E0DA;
-  --input: #E8E0DA;
+  --primary-foreground: #F5F0E8;
+  --secondary: #7D9B4E;
+  --secondary-foreground: #F5F0E8;
+  --muted: #EDE8DE;
+  --muted-foreground: #8A7A6E;
+  --accent: #7D9B4E;
+  --accent-foreground: #F5F0E8;
+  --border: #E0D8CC;
+  --input: #E0D8CC;
   --ring: #6B3A2A;
-  --card: #FFFFFF;
+  --card: #FAF7F0;
   --card-foreground: #6B3A2A;
-  --popover: #FFFFFF;
+  --popover: #FAF7F0;
   --popover-foreground: #6B3A2A;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
