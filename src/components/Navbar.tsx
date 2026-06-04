@@ -263,7 +263,7 @@ export function Navbar() {
                   <Link
                     to="/inscription"
                     onClick={() => setOpen(false)}
-                    className="block px-4 py-3 rounded-2xl bg-primary-foreground text-primary text-sm font-bold uppercase tracking-wider text-center"
+                    className="block px-4 py-3 rounded-2xl bg-primary text-text-light text-sm font-bold uppercase tracking-wider text-center"
                   >
                     S'inscrire
                   </Link>
