@@ -9,38 +9,235 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as QuiSommesNousRouteImport } from './routes/qui-sommes-nous'
+import { Route as PublierRouteImport } from './routes/publier'
+import { Route as OrganisateursRouteImport } from './routes/organisateurs'
+import { Route as MonEspaceRouteImport } from './routes/mon-espace'
+import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
+import { Route as InscriptionRouteImport } from './routes/inscription'
+import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as BenevolesRouteImport } from './routes/benevoles'
+import { Route as AnnoncesRouteImport } from './routes/annonces'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
 
+const QuiSommesNousRoute = QuiSommesNousRouteImport.update({
+  id: '/qui-sommes-nous',
+  path: '/qui-sommes-nous',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublierRoute = PublierRouteImport.update({
+  id: '/publier',
+  path: '/publier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganisateursRoute = OrganisateursRouteImport.update({
+  id: '/organisateurs',
+  path: '/organisateurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonEspaceRoute = MonEspaceRouteImport.update({
+  id: '/mon-espace',
+  path: '/mon-espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
+  id: '/mes-candidatures',
+  path: '/mes-candidatures',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BenevolesRoute = BenevolesRouteImport.update({
+  id: '/benevoles',
+  path: '/benevoles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnnoncesRoute = AnnoncesRouteImport.update({
+  id: '/annonces',
+  path: '/annonces',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnnonceIdRoute = AnnonceIdRouteImport.update({
+  id: '/annonce/$id',
+  path: '/annonce/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/annonces': typeof AnnoncesRoute
+  '/benevoles': typeof BenevolesRoute
+  '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
+  '/mes-candidatures': typeof MesCandidaturesRoute
+  '/mon-espace': typeof MonEspaceRoute
+  '/organisateurs': typeof OrganisateursRoute
+  '/publier': typeof PublierRoute
+  '/qui-sommes-nous': typeof QuiSommesNousRoute
+  '/annonce/$id': typeof AnnonceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/annonces': typeof AnnoncesRoute
+  '/benevoles': typeof BenevolesRoute
+  '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
+  '/mes-candidatures': typeof MesCandidaturesRoute
+  '/mon-espace': typeof MonEspaceRoute
+  '/organisateurs': typeof OrganisateursRoute
+  '/publier': typeof PublierRoute
+  '/qui-sommes-nous': typeof QuiSommesNousRoute
+  '/annonce/$id': typeof AnnonceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/annonces': typeof AnnoncesRoute
+  '/benevoles': typeof BenevolesRoute
+  '/connexion': typeof ConnexionRoute
+  '/inscription': typeof InscriptionRoute
+  '/mes-candidatures': typeof MesCandidaturesRoute
+  '/mon-espace': typeof MonEspaceRoute
+  '/organisateurs': typeof OrganisateursRoute
+  '/publier': typeof PublierRoute
+  '/qui-sommes-nous': typeof QuiSommesNousRoute
+  '/annonce/$id': typeof AnnonceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/annonces'
+    | '/benevoles'
+    | '/connexion'
+    | '/inscription'
+    | '/mes-candidatures'
+    | '/mon-espace'
+    | '/organisateurs'
+    | '/publier'
+    | '/qui-sommes-nous'
+    | '/annonce/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/annonces'
+    | '/benevoles'
+    | '/connexion'
+    | '/inscription'
+    | '/mes-candidatures'
+    | '/mon-espace'
+    | '/organisateurs'
+    | '/publier'
+    | '/qui-sommes-nous'
+    | '/annonce/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/annonces'
+    | '/benevoles'
+    | '/connexion'
+    | '/inscription'
+    | '/mes-candidatures'
+    | '/mon-espace'
+    | '/organisateurs'
+    | '/publier'
+    | '/qui-sommes-nous'
+    | '/annonce/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnnoncesRoute: typeof AnnoncesRoute
+  BenevolesRoute: typeof BenevolesRoute
+  ConnexionRoute: typeof ConnexionRoute
+  InscriptionRoute: typeof InscriptionRoute
+  MesCandidaturesRoute: typeof MesCandidaturesRoute
+  MonEspaceRoute: typeof MonEspaceRoute
+  OrganisateursRoute: typeof OrganisateursRoute
+  PublierRoute: typeof PublierRoute
+  QuiSommesNousRoute: typeof QuiSommesNousRoute
+  AnnonceIdRoute: typeof AnnonceIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/qui-sommes-nous': {
+      id: '/qui-sommes-nous'
+      path: '/qui-sommes-nous'
+      fullPath: '/qui-sommes-nous'
+      preLoaderRoute: typeof QuiSommesNousRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publier': {
+      id: '/publier'
+      path: '/publier'
+      fullPath: '/publier'
+      preLoaderRoute: typeof PublierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organisateurs': {
+      id: '/organisateurs'
+      path: '/organisateurs'
+      fullPath: '/organisateurs'
+      preLoaderRoute: typeof OrganisateursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mon-espace': {
+      id: '/mon-espace'
+      path: '/mon-espace'
+      fullPath: '/mon-espace'
+      preLoaderRoute: typeof MonEspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mes-candidatures': {
+      id: '/mes-candidatures'
+      path: '/mes-candidatures'
+      fullPath: '/mes-candidatures'
+      preLoaderRoute: typeof MesCandidaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/benevoles': {
+      id: '/benevoles'
+      path: '/benevoles'
+      fullPath: '/benevoles'
+      preLoaderRoute: typeof BenevolesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/annonces': {
+      id: '/annonces'
+      path: '/annonces'
+      fullPath: '/annonces'
+      preLoaderRoute: typeof AnnoncesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +245,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/annonce/$id': {
+      id: '/annonce/$id'
+      path: '/annonce/$id'
+      fullPath: '/annonce/$id'
+      preLoaderRoute: typeof AnnonceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnnoncesRoute: AnnoncesRoute,
+  BenevolesRoute: BenevolesRoute,
+  ConnexionRoute: ConnexionRoute,
+  InscriptionRoute: InscriptionRoute,
+  MesCandidaturesRoute: MesCandidaturesRoute,
+  MonEspaceRoute: MonEspaceRoute,
+  OrganisateursRoute: OrganisateursRoute,
+  PublierRoute: PublierRoute,
+  QuiSommesNousRoute: QuiSommesNousRoute,
+  AnnonceIdRoute: AnnonceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
