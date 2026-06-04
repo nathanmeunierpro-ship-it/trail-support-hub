@@ -1,0 +1,1 @@
+REVOKE SELECT (email_contact) ON public.events FROM anon;
