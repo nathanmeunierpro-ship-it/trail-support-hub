@@ -18,7 +18,7 @@ export function Navbar() {
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className="mx-auto max-w-7xl rounded-full bg-primary text-primary-foreground shadow-sm">
+      <nav className="mx-auto max-w-7xl rounded-full bg-background text-primary border border-primary/15 shadow-sm">
         <div className="flex items-center justify-between px-6 py-3">
           <Link to="/" className="flex items-center" aria-label="Ravito accueil">
             <img src={ravitoLogo} alt="Ravito" className="h-8 w-auto" />
