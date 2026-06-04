@@ -14,10 +14,215 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      benevoles: {
+        Row: {
+          created_at: string
+          departement: string | null
+          disponibilites: string[] | null
+          id: string
+          niveau_trail: string | null
+          nom: string | null
+          prenom: string | null
+        }
+        Insert: {
+          created_at?: string
+          departement?: string | null
+          disponibilites?: string[] | null
+          id: string
+          niveau_trail?: string | null
+          nom?: string | null
+          prenom?: string | null
+        }
+        Update: {
+          created_at?: string
+          departement?: string | null
+          disponibilites?: string[] | null
+          id?: string
+          niveau_trail?: string | null
+          nom?: string | null
+          prenom?: string | null
+        }
+        Relationships: []
+      }
+      candidatures: {
+        Row: {
+          benevole_id: string
+          created_at: string
+          disponibilite: boolean
+          email: string
+          event_id: string
+          experience: string | null
+          id: string
+          mission_souhaitee: string | null
+          nom: string
+          prenom: string
+          statut: string
+        }
+        Insert: {
+          benevole_id: string
+          created_at?: string
+          disponibilite?: boolean
+          email: string
+          event_id: string
+          experience?: string | null
+          id?: string
+          mission_souhaitee?: string | null
+          nom: string
+          prenom: string
+          statut?: string
+        }
+        Update: {
+          benevole_id?: string
+          created_at?: string
+          disponibilite?: boolean
+          email?: string
+          event_id?: string
+          experience?: string | null
+          id?: string
+          mission_souhaitee?: string | null
+          nom?: string
+          prenom?: string
+          statut?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidatures_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidatures_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          date: string
+          description: string | null
+          email_contact: string
+          id: string
+          missions: string[] | null
+          nb_benevoles: number
+          nom: string
+          region: string
+          statut: string
+          type_sport: string
+          user_id: string
+          ville: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          description?: string | null
+          email_contact: string
+          id?: string
+          missions?: string[] | null
+          nb_benevoles: number
+          nom: string
+          region: string
+          statut?: string
+          type_sport: string
+          user_id: string
+          ville: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          email_contact?: string
+          id?: string
+          missions?: string[] | null
+          nb_benevoles?: number
+          nom?: string
+          region?: string
+          statut?: string
+          type_sport?: string
+          user_id?: string
+          ville?: string
+        }
+        Relationships: []
+      }
+      organisateurs: {
+        Row: {
+          created_at: string
+          departement: string | null
+          id: string
+          nom_organisation: string | null
+          site_web: string | null
+          type_organisation: string | null
+        }
+        Insert: {
+          created_at?: string
+          departement?: string | null
+          id: string
+          nom_organisation?: string | null
+          site_web?: string | null
+          type_organisation?: string | null
+        }
+        Update: {
+          created_at?: string
+          departement?: string | null
+          id?: string
+          nom_organisation?: string | null
+          site_web?: string | null
+          type_organisation?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      events_public: {
+        Row: {
+          created_at: string | null
+          date: string | null
+          description: string | null
+          id: string | null
+          missions: string[] | null
+          nb_benevoles: number | null
+          nom: string | null
+          region: string | null
+          statut: string | null
+          type_sport: string | null
+          user_id: string | null
+          ville: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string | null
+          missions?: string[] | null
+          nb_benevoles?: number | null
+          nom?: string | null
+          region?: string | null
+          statut?: string | null
+          type_sport?: string | null
+          user_id?: string | null
+          ville?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string | null
+          missions?: string[] | null
+          nb_benevoles?: number | null
+          nom?: string | null
+          region?: string | null
+          statut?: string | null
+          type_sport?: string | null
+          user_id?: string | null
+          ville?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
