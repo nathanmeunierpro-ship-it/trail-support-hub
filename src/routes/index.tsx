@@ -129,28 +129,6 @@ function Home() {
               </Link>
             </motion.div>
 
-            {/* mini stats inline */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-              className="mt-14 flex items-center gap-8 pt-8 border-t border-border"
-            >
-              <div>
-                <div className="font-display text-3xl font-black text-primary">+2 500</div>
-                <div className="text-xs uppercase tracking-widest text-foreground/50 mt-1">bénévoles</div>
-              </div>
-              <div className="h-10 w-px bg-border" />
-              <div>
-                <div className="font-display text-3xl font-black text-primary">180</div>
-                <div className="text-xs uppercase tracking-widest text-foreground/50 mt-1">événements</div>
-              </div>
-              <div className="h-10 w-px bg-border" />
-              <div>
-                <div className="font-display text-3xl font-black text-primary">100%</div>
-                <div className="text-xs uppercase tracking-widest text-foreground/50 mt-1">gratuit</div>
-              </div>
-            </motion.div>
           </div>
 
           {/* Visuel — grande image + carte flottante */}
@@ -308,38 +286,6 @@ function Home() {
               Voir les événements <ArrowRight size={16} />
             </Link>
           </motion.div>
-        </div>
-      </section>
-
-      {/* ── FULL BLEED IMMERSIVE ── */}
-      <section className="relative h-[70vh] min-h-[480px] my-12 overflow-hidden">
-        <motion.img
-          initial={{ scale: 1.1 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-          src={IMG_WIDE}
-          alt="Trail en montagne au lever du soleil"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 flex items-center justify-center px-6">
-          <motion.blockquote
-            {...fadeUp}
-            className="text-center text-white max-w-4xl"
-          >
-            <p
-              className="leading-[1.1]"
-              style={{ fontFamily: "Pacifico, cursive", fontSize: "clamp(2rem, 5vw, 4.5rem)" }}
-            >
-              « seul on va plus vite,
-              <br />
-              ensemble on va plus loin »
-            </p>
-            <footer className="mt-8 text-sm uppercase tracking-[0.3em] opacity-80">
-              — Proverbe africain
-            </footer>
-          </motion.blockquote>
         </div>
       </section>
 
