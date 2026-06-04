@@ -164,9 +164,16 @@ function LoginPage() {
             </motion.div>
           </form>
 
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
+            className="text-center mt-4">
+            <Link to="/mot-de-passe-oublie" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              Mot de passe oublié ?
+            </Link>
+          </motion.div>
+
           <motion.p
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-            className="mt-8 text-center text-sm text-muted-foreground"
+            className="mt-4 text-center text-sm text-muted-foreground"
           >
             Pas encore de compte ?{" "}
             <Link to="/inscription" className="text-primary font-semibold hover:underline">S'inscrire</Link>

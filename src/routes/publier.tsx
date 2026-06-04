@@ -218,7 +218,7 @@ function PublierPage() {
                   transition={{ duration: 0.3 }}
                   className="p-8 space-y-6"
                 >
-                  <div className="grid grid-cols-2 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Ville</label>
                       <input value={ville}

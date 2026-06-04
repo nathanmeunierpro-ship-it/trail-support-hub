@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Plus, ChevronDown, CheckCircle2, XCircle, Trash2,
+  Plus, ChevronDown, CheckCircle2, XCircle, Trash2, Pencil, Lock,
   Users, FileText, UserCheck, MapPin, Calendar, Tag, Loader2, Star
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/mon-espace")({
 interface Ev {
   id: string; nom: string; ville: string; date: string;
   type_sport: string; nb_benevoles: number; statut: string;
+  status?: string;
 }
 interface Cand {
   id: string; event_id: string; benevole_id: string;
@@ -182,6 +183,16 @@ function MonEspace() {
     if (error) toast.error(error.message); else { toast.success("Annonce supprimée"); load(); }
   };
 
+  const closeEvent = async (id: string, currentStatus: string | undefined) => {
+    const isClosed = currentStatus === "closed";
+    const msg = isClosed ? "Réouvrir cette annonce ?" : "Clore cette annonce ? Elle ne sera plus visible publiquement.";
+    if (!confirm(msg)) return;
+    const newStatus = isClosed ? "active" : "closed";
+    const { error } = await (supabase.from("events") as any).update({ status: newStatus }).eq("id", id);
+    if (error) toast.error(error.message);
+    else { toast.success(isClosed ? "Annonce réouverte" : "Annonce clôturée"); load(); }
+  };
+
   const setStatutCand = async (candId: string, statut: string) => {
     setConfirming((s) => ({ ...s, [candId]: "loading" }));
     const { error } = await supabase.from("candidatures").update({ statut }).eq("id", candId);
@@ -293,13 +304,19 @@ function MonEspace() {
                     <div className="p-6">
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
                             <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-primary text-primary-foreground">
                               {ev.type_sport}
                             </span>
-                            <span className={`text-xs font-semibold ${ev.statut === "publie" ? "text-green-600" : "text-muted-foreground"}`}>
-                              {ev.statut === "publie" ? "Publié" : ev.statut}
-                            </span>
+                            {ev.status === "closed" ? (
+                              <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                                CLÔTURÉE
+                              </span>
+                            ) : (
+                              <span className={`text-xs font-semibold ${ev.statut === "publie" ? "text-green-600" : "text-muted-foreground"}`}>
+                                {ev.statut === "publie" ? "Publié" : ev.statut}
+                              </span>
+                            )}
                           </div>
                           <h3 className="font-display text-xl font-black text-foreground mb-2">{ev.nom}</h3>
                           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -309,7 +326,18 @@ function MonEspace() {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 flex-shrink-0">
+                        <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+                          <Link to="/modifier-annonce/$id" params={{ id: ev.id }}
+                            className="p-2 rounded-xl text-primary hover:bg-primary/10 transition-colors"
+                            title="Modifier">
+                            <Pencil size={17} />
+                          </Link>
+                          <motion.button whileTap={{ scale: 0.9 }}
+                            onClick={() => closeEvent(ev.id, ev.status)}
+                            className={`p-2 rounded-xl transition-colors ${ev.status === "closed" ? "text-green-600 hover:bg-green-100" : "text-orange-600 hover:bg-orange-100"}`}
+                            title={ev.status === "closed" ? "Réouvrir" : "Clore l'annonce"}>
+                            <Lock size={17} />
+                          </motion.button>
                           <motion.button
                             whileTap={{ scale: 0.9 }}
                             onClick={() => deleteEvent(ev.id)}

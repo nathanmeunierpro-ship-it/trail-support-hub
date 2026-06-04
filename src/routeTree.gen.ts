@@ -9,21 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as QuiSommesNousRouteImport } from './routes/qui-sommes-nous'
 import { Route as PublierRouteImport } from './routes/publier'
 import { Route as OrganisateursRouteImport } from './routes/organisateurs'
+import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
 import { Route as MonEspaceRouteImport } from './routes/mon-espace'
 import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as CguRouteImport } from './routes/cgu'
 import { Route as BenevolesRouteImport } from './routes/benevoles'
 import { Route as AnnoncesRouteImport } from './routes/annonces'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrganisateursIndexRouteImport } from './routes/organisateurs.index'
 import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateurs.nos-offres'
 import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
+import { Route as ModifierAnnonceIdRouteImport } from './routes/modifier-annonce.$id'
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuiSommesNousRoute = QuiSommesNousRouteImport.update({
   id: '/qui-sommes-nous',
   path: '/qui-sommes-nous',
@@ -39,6 +49,11 @@ const OrganisateursRoute = OrganisateursRouteImport.update({
   path: '/organisateurs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
+  id: '/mot-de-passe-oublie',
+  path: '/mot-de-passe-oublie',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MonEspaceRoute = MonEspaceRouteImport.update({
   id: '/mon-espace',
   path: '/mon-espace',
@@ -49,6 +64,11 @@ const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
   path: '/mes-candidatures',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InscriptionRoute = InscriptionRouteImport.update({
   id: '/inscription',
   path: '/inscription',
@@ -57,6 +77,11 @@ const InscriptionRoute = InscriptionRouteImport.update({
 const ConnexionRoute = ConnexionRouteImport.update({
   id: '/connexion',
   path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CguRoute = CguRouteImport.update({
+  id: '/cgu',
+  path: '/cgu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BenevolesRoute = BenevolesRouteImport.update({
@@ -90,6 +115,11 @@ const OrganisateursCommentCaMarcheRoute =
     path: '/comment-ca-marche',
     getParentRoute: () => OrganisateursRoute,
   } as any)
+const ModifierAnnonceIdRoute = ModifierAnnonceIdRouteImport.update({
+  id: '/modifier-annonce/$id',
+  path: '/modifier-annonce/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnnonceIdRoute = AnnonceIdRouteImport.update({
   id: '/annonce/$id',
   path: '/annonce/$id',
@@ -100,14 +130,19 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/annonces': typeof AnnoncesRoute
   '/benevoles': typeof BenevolesRoute
+  '/cgu': typeof CguRoute
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/organisateurs': typeof OrganisateursRouteWithChildren
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs/': typeof OrganisateursIndexRoute
@@ -116,13 +151,18 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/annonces': typeof AnnoncesRoute
   '/benevoles': typeof BenevolesRoute
+  '/cgu': typeof CguRoute
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs': typeof OrganisateursIndexRoute
@@ -132,14 +172,19 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/annonces': typeof AnnoncesRoute
   '/benevoles': typeof BenevolesRoute
+  '/cgu': typeof CguRoute
   '/connexion': typeof ConnexionRoute
   '/inscription': typeof InscriptionRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/organisateurs': typeof OrganisateursRouteWithChildren
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs/': typeof OrganisateursIndexRoute
@@ -150,14 +195,19 @@ export interface FileRouteTypes {
     | '/'
     | '/annonces'
     | '/benevoles'
+    | '/cgu'
     | '/connexion'
     | '/inscription'
+    | '/mentions-legales'
     | '/mes-candidatures'
     | '/mon-espace'
+    | '/mot-de-passe-oublie'
     | '/organisateurs'
     | '/publier'
     | '/qui-sommes-nous'
+    | '/reset-password'
     | '/annonce/$id'
+    | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
     | '/organisateurs/'
@@ -166,13 +216,18 @@ export interface FileRouteTypes {
     | '/'
     | '/annonces'
     | '/benevoles'
+    | '/cgu'
     | '/connexion'
     | '/inscription'
+    | '/mentions-legales'
     | '/mes-candidatures'
     | '/mon-espace'
+    | '/mot-de-passe-oublie'
     | '/publier'
     | '/qui-sommes-nous'
+    | '/reset-password'
     | '/annonce/$id'
+    | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
     | '/organisateurs'
@@ -181,14 +236,19 @@ export interface FileRouteTypes {
     | '/'
     | '/annonces'
     | '/benevoles'
+    | '/cgu'
     | '/connexion'
     | '/inscription'
+    | '/mentions-legales'
     | '/mes-candidatures'
     | '/mon-espace'
+    | '/mot-de-passe-oublie'
     | '/organisateurs'
     | '/publier'
     | '/qui-sommes-nous'
+    | '/reset-password'
     | '/annonce/$id'
+    | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
     | '/organisateurs/'
@@ -198,18 +258,30 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnnoncesRoute: typeof AnnoncesRoute
   BenevolesRoute: typeof BenevolesRoute
+  CguRoute: typeof CguRoute
   ConnexionRoute: typeof ConnexionRoute
   InscriptionRoute: typeof InscriptionRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MonEspaceRoute: typeof MonEspaceRoute
+  MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   OrganisateursRoute: typeof OrganisateursRouteWithChildren
   PublierRoute: typeof PublierRoute
   QuiSommesNousRoute: typeof QuiSommesNousRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   AnnonceIdRoute: typeof AnnonceIdRoute
+  ModifierAnnonceIdRoute: typeof ModifierAnnonceIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/qui-sommes-nous': {
       id: '/qui-sommes-nous'
       path: '/qui-sommes-nous'
@@ -231,6 +303,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganisateursRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mot-de-passe-oublie': {
+      id: '/mot-de-passe-oublie'
+      path: '/mot-de-passe-oublie'
+      fullPath: '/mot-de-passe-oublie'
+      preLoaderRoute: typeof MotDePasseOublieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mon-espace': {
       id: '/mon-espace'
       path: '/mon-espace'
@@ -245,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MesCandidaturesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inscription': {
       id: '/inscription'
       path: '/inscription'
@@ -257,6 +343,13 @@ declare module '@tanstack/react-router' {
       path: '/connexion'
       fullPath: '/connexion'
       preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cgu': {
+      id: '/cgu'
+      path: '/cgu'
+      fullPath: '/cgu'
+      preLoaderRoute: typeof CguRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/benevoles': {
@@ -301,6 +394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganisateursCommentCaMarcheRouteImport
       parentRoute: typeof OrganisateursRoute
     }
+    '/modifier-annonce/$id': {
+      id: '/modifier-annonce/$id'
+      path: '/modifier-annonce/$id'
+      fullPath: '/modifier-annonce/$id'
+      preLoaderRoute: typeof ModifierAnnonceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/annonce/$id': {
       id: '/annonce/$id'
       path: '/annonce/$id'
@@ -331,14 +431,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnnoncesRoute: AnnoncesRoute,
   BenevolesRoute: BenevolesRoute,
+  CguRoute: CguRoute,
   ConnexionRoute: ConnexionRoute,
   InscriptionRoute: InscriptionRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
   MesCandidaturesRoute: MesCandidaturesRoute,
   MonEspaceRoute: MonEspaceRoute,
+  MotDePasseOublieRoute: MotDePasseOublieRoute,
   OrganisateursRoute: OrganisateursRouteWithChildren,
   PublierRoute: PublierRoute,
   QuiSommesNousRoute: QuiSommesNousRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   AnnonceIdRoute: AnnonceIdRoute,
+  ModifierAnnonceIdRoute: ModifierAnnonceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

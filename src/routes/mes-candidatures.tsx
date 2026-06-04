@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import {
   MapPin, Calendar, Tag, Clock, CheckCircle2, XCircle, ArrowRight,
-  Heart, User, History, Star, Save, Loader2, CalendarPlus,
+  Heart, User, History, Star, Save, Loader2, CalendarPlus, Trash2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
@@ -177,6 +177,14 @@ function MesCandidatures() {
     }));
   };
 
+  const withdrawCandidature = async (candId: string) => {
+    if (!confirm("Es-tu sûr(e) de vouloir retirer ta candidature ?")) return;
+    const { error } = await supabase.from("candidatures").delete().eq("id", candId);
+    if (error) { toast.error(error.message); return; }
+    setRows((r) => r.filter((x) => x.id !== candId));
+    toast.success("Candidature retirée.");
+  };
+
   const removeFavori = async (favoriId: string, eventId: string) => {
     if (!session) return;
     await supabase.from("favoris").delete().eq("id", favoriId);
@@ -342,6 +350,11 @@ function MesCandidatures() {
                               </div>
                               <p className="text-sm text-muted-foreground mt-3">L'organisateur examine ta candidature. Tu seras notifié(e) dès qu'une décision est prise.</p>
                               <p className="text-xs text-muted-foreground mt-2">Postulé le {createdFmt}</p>
+                              <motion.button whileTap={{ scale: 0.95 }}
+                                onClick={() => withdrawCandidature(r.id)}
+                                className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:border-destructive hover:text-destructive transition-all">
+                                <Trash2 size={13} /> Retirer ma candidature
+                              </motion.button>
                             </div>
                           </div>
                         </motion.div>

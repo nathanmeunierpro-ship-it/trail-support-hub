@@ -42,6 +42,10 @@ export function Footer() {
         <div className="md:text-right">
           <p className="text-xs uppercase tracking-widest opacity-50 font-semibold">France · 2026</p>
           <p className="text-sm opacity-60 mt-3">Ravito — Tous droits réservés</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 md:justify-end">
+            <Link to="/cgu" className="text-xs opacity-60 hover:opacity-100 transition-opacity">CGU</Link>
+            <Link to="/mentions-legales" className="text-xs opacity-60 hover:opacity-100 transition-opacity">Mentions légales</Link>
+          </div>
         </div>
       </div>
     </footer>

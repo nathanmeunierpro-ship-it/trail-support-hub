@@ -65,6 +65,7 @@ function AnnoncesPage() {
     supabase
       .from("events_public")
       .select("id, nom, ville, region, date, type_sport, nb_benevoles, missions")
+      .or("status.is.null,status.eq.active")
       .order("date", { ascending: true })
       .then(({ data }) => {
         setEvents((data as EventCard[]) ?? []);
