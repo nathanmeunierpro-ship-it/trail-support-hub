@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="bg-secondary text-secondary-foreground mt-20">
+    <footer className="bg-primary text-primary-foreground mt-20">
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-10 md:grid-cols-3">
         <div>
           <p className="text-3xl font-bold" style={{ fontFamily: '"Syne", sans-serif' }}>Ravito</p>

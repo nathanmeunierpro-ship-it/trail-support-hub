@@ -40,7 +40,7 @@ function Home() {
               Des événements sportifs partout en France cherchent des bénévoles. Trouve le tien en 2 minutes.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <Link to="/annonces" className="bg-primary text-primary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider hover:opacity-90 transition">
+              <Link to="/annonces" className="bg-secondary text-secondary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider hover:bg-secondary/90 transition">
                 Voir les annonces
               </Link>
               <Link to="/publier" className="underline underline-offset-4 text-sm font-semibold">

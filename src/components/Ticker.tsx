@@ -3,7 +3,7 @@ const ITEMS = ["Trail", "Running", "Cyclo", "Triathlon", "Bénévole", "Renfort"
 export function Ticker() {
   const loop = [...ITEMS, ...ITEMS, ...ITEMS, ...ITEMS];
   return (
-    <div className="bg-primary text-primary-foreground py-5 overflow-hidden">
+    <div className="bg-secondary text-secondary-foreground py-5 overflow-hidden">
       <div className="flex whitespace-nowrap animate-ticker w-max">
         {loop.map((t, i) => (
           <span key={i} className="mx-6 text-xl md:text-2xl font-bold uppercase tracking-wide" style={{ fontFamily: '"Syne", sans-serif' }}>

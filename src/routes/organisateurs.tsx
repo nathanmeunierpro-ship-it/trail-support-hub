@@ -29,7 +29,7 @@ function OrgPage() {
             ))}
           </ul>
           <div className="flex flex-wrap gap-4">
-            <Link to="/inscription" className="bg-primary text-primary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider">
+            <Link to="/inscription" className="bg-secondary text-secondary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider">
               Créer mon compte
             </Link>
             <Link to="/publier" className="border-2 border-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider">

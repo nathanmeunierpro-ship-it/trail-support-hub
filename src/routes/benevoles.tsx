@@ -28,7 +28,7 @@ function BenevolesPage() {
               </li>
             ))}
           </ul>
-          <Link to="/inscription" className="bg-primary text-primary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider">
+          <Link to="/inscription" className="bg-secondary text-secondary-foreground px-8 py-4 rounded-md font-bold uppercase text-sm tracking-wider">
             Je m'inscris comme bénévole
           </Link>
         </div>
