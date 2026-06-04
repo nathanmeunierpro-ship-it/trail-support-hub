@@ -71,7 +71,19 @@ function SignupPage() {
       return;
     }
 
-    const uid = data.user?.id;
+    // Ensure we have an authenticated session so auth.uid() matches the inserted id (RLS requirement)
+    let { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError || !signInData.session) {
+        setLoading(false);
+        toast.error("Erreur lors de la connexion automatique. Connecte-toi manuellement.");
+        return;
+      }
+      sessionData = { session: signInData.session };
+    }
+
+    const uid = sessionData.session.user.id;
     if (!uid) { setLoading(false); toast.error("Erreur lors de la création du compte."); return; }
 
     if (role === "benevole") {
