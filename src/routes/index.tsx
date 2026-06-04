@@ -91,7 +91,7 @@ function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.05 }}
               className="font-display text-primary font-black uppercase leading-[0.92] tracking-tight"
-              style={{ fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)" }}
+              style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}
             >
               Bénévoles & Événements
               <br />
