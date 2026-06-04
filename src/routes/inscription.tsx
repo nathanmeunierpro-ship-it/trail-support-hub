@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Users, ClipboardList, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DEPARTEMENTS_FR } from "@/lib/regions";
-import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/inscription")({
   head: () => ({
@@ -34,7 +33,6 @@ const slideVariants = {
 
 function SignupPage() {
   const navigate = useNavigate();
-  const { refreshRole } = useAuth();
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -86,6 +84,12 @@ function SignupPage() {
     const uid = sessionData.session.user.id;
     if (!uid) { setLoading(false); toast.error("Erreur lors de la création du compte."); return; }
 
+    if (!data.session) {
+      setLoading(false);
+      toast.error("La vérification d'email est encore active dans Supabase. Désactive-la dans Authentication → Providers → Email.");
+      return;
+    }
+
     if (role === "benevole") {
       const { error: e2 } = await supabase.from("benevoles").insert({
         id: uid, prenom, nom, departement: dept, niveau_trail: niveau, disponibilites: dispos,
@@ -99,7 +103,6 @@ function SignupPage() {
       if (e2) { setLoading(false); toast.error(e2.message); return; }
     }
 
-    await refreshRole();
     setLoading(false);
     toast.success("Compte créé !");
     navigate({ to: role === "organisateur" ? "/mon-espace" : "/mes-candidatures" });
