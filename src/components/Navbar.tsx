@@ -17,8 +17,8 @@ const NAV_LINKS: NavLink[] = [
     to: "/organisateurs",
     label: "Organisateurs",
     children: [
-      { href: "/organisateurs/comment-ca-marche", label: "Comment ça marche" },
-      { href: "/organisateurs/nos-offres", label: "Nos offres" },
+      { href: "/organisateurs#comment-ca-marche", label: "Comment ça marche" },
+      { href: "/organisateurs#nos-offres", label: "Nos offres" },
     ],
   },
   { to: "/qui-sommes-nous", label: "À propos" },
@@ -259,9 +259,13 @@ export function Navbar() {
                   </li>
                 </>
               ) : (
-                <li>
-                  <Link to="/connexion" onClick={() => setOpen(false)} className="block px-4 py-3 rounded-2xl bg-primary-foreground text-primary text-sm font-bold uppercase tracking-wider text-center mt-1">
-                    Se connecter
+                <li className="mt-1">
+                  <Link
+                    to="/inscription"
+                    onClick={() => setOpen(false)}
+                    className="block px-4 py-3 rounded-2xl bg-primary-foreground text-primary text-sm font-bold uppercase tracking-wider text-center"
+                  >
+                    S'inscrire
                   </Link>
                 </li>
               )}

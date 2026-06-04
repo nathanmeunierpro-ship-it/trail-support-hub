@@ -56,13 +56,30 @@ function SignupPage() {
     e.preventDefault();
     if (!role) return;
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email, password,
-      options: { emailRedirectTo: `${window.location.origin}/` },
-    });
-    if (error) { setLoading(false); toast.error(error.message); return; }
+
+    const { data, error } = await supabase.auth.signUp({ email, password });
+
+    if (error) {
+      setLoading(false);
+      if (error.message.toLowerCase().includes("rate limit") || error.message.includes("second")) {
+        toast.error("Trop de tentatives. Attends quelques secondes puis réessaie.");
+      } else if (error.message.includes("already registered")) {
+        toast.error("Cet email est déjà utilisé. Connecte-toi à la place.");
+      } else {
+        toast.error(error.message);
+      }
+      return;
+    }
+
     const uid = data.user?.id;
-    if (!uid) { setLoading(false); toast.error("Erreur création compte"); return; }
+    if (!uid) { setLoading(false); toast.error("Erreur lors de la création du compte."); return; }
+
+    // If Supabase requires email confirmation, session is null → inform the user
+    if (!data.session) {
+      setLoading(false);
+      toast.success("Vérifie ton email et clique sur le lien pour activer ton compte !");
+      return;
+    }
 
     if (role === "benevole") {
       const { error: e2 } = await supabase.from("benevoles").insert({
