@@ -27,6 +27,7 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-surface: var(--surface);
+  --color-bg: var(--bg);
   --color-text-dark: var(--text-dark);
   --color-text-light: var(--text-light);
   --radius-sm: 4px;
