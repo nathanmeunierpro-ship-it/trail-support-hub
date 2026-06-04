@@ -78,10 +78,10 @@ function SignupPage() {
           <h1 className="text-2xl font-bold uppercase text-center mb-4" style={{ fontFamily: '"Syne", sans-serif' }}>
             Je suis…
           </h1>
-          <button onClick={() => setRole("benevole")} className="bg-secondary text-secondary-foreground p-6 rounded-lg font-bold uppercase">
+          <button onClick={() => setRole("benevole")} className="bg-primary text-primary-foreground p-6 rounded-lg font-bold uppercase">
             Bénévole
           </button>
-          <button onClick={() => setRole("organisateur")} className="bg-secondary text-secondary-foreground p-6 rounded-lg font-bold uppercase">
+          <button onClick={() => setRole("organisateur")} className="bg-primary text-primary-foreground p-6 rounded-lg font-bold uppercase">
             Organisateur
           </button>
           <p className="text-sm text-center text-muted-foreground mt-4">
@@ -138,7 +138,7 @@ function SignupPage() {
             </>
           )}
 
-          <button disabled={loading} className="bg-secondary text-secondary-foreground py-3 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
+          <button disabled={loading} className="bg-primary text-primary-foreground py-3 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
             {loading ? "…" : "Créer mon compte"}
           </button>
         </form>
