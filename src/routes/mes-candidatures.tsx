@@ -54,7 +54,7 @@ function MesCandidatures() {
           {rows.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-muted-foreground mb-6">Tu n'as pas encore postulé à une annonce.</p>
-              <Link to="/annonces" className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-bold uppercase text-sm">Voir les annonces</Link>
+              <Link to="/annonces" className="bg-secondary text-secondary-foreground px-6 py-3 rounded-md font-bold uppercase text-sm">Voir les annonces</Link>
             </div>
           ) : (
             <div className="border-t border-border">

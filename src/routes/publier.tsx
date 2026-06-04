@@ -91,7 +91,7 @@ function PublierPage() {
             </Field>
             <Field label="Description"><textarea value={description} onChange={(e) => setDescription(e.target.value)} className="inp min-h-32" /></Field>
             <Field label="Email de contact"><input required type="email" value={emailContact} onChange={(e) => setEmailContact(e.target.value)} className="inp" /></Field>
-            <button disabled={submitting} className="bg-primary text-primary-foreground py-4 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
+            <button disabled={submitting} className="bg-secondary text-secondary-foreground py-4 rounded-md font-bold uppercase tracking-wider disabled:opacity-60">
               {submitting ? "Publication…" : "Publier gratuitement"}
             </button>
           </form>

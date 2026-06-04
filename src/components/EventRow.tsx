@@ -26,7 +26,7 @@ export function EventRow({ ev }: { ev: EventRowData }) {
       </div>
       <div className="md:col-span-4 text-sm text-muted-foreground">{ev.ville} · {dateFmt}</div>
       <div className="md:col-span-2">
-        <span className="inline-block text-xs font-semibold uppercase tracking-wider bg-muted px-3 py-1 rounded-full">
+        <span className="inline-block text-xs font-semibold uppercase tracking-wider bg-primary text-primary-foreground px-3 py-1 rounded-full">
           {ev.type_sport}
         </span>
       </div>

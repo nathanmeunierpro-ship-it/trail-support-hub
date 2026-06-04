@@ -70,7 +70,7 @@ function MonEspace() {
         <div className="mx-auto max-w-6xl">
           <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
             <h1 className="text-4xl md:text-5xl font-bold uppercase" style={{ fontFamily: '"Syne", sans-serif' }}>Mon espace</h1>
-            <Link to="/publier" className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-bold uppercase text-sm tracking-wider">
+            <Link to="/publier" className="bg-secondary text-secondary-foreground px-6 py-3 rounded-md font-bold uppercase text-sm tracking-wider">
               + Nouvelle annonce
             </Link>
           </div>
