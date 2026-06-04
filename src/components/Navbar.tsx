@@ -17,12 +17,13 @@ export function Navbar() {
   const dashboardLink = role === "organisateur" ? "/mon-espace" : "/mes-candidatures";
 
   return (
-    <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className="mx-auto max-w-7xl rounded-full bg-background text-primary border border-primary/15 shadow-sm">
-        <div className="flex items-center justify-between px-6 py-3">
+    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-border">
+      <nav className="mx-auto max-w-7xl">
+        <div className="flex items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center" aria-label="Ravito accueil">
-            <img src={ravitoLogo} alt="Ravito" className="h-8 w-auto" />
+            <img src={ravitoLogo} alt="Ravito" className="h-8 w-auto brightness-0 invert" />
           </Link>
+
 
 
           <ul className="hidden lg:flex items-center gap-7 text-[13px] font-bold uppercase tracking-wider">
