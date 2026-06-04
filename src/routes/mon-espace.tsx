@@ -29,6 +29,11 @@ interface Cand {
   id: string; event_id: string; benevole_id: string;
   prenom: string; nom: string; mission_souhaitee: string | null;
   disponibilite: boolean; statut: string; email: string;
+  telephone: string | null;
+  disponibilite_horaire: string | null;
+  transport: string | null;
+  niveau: string | null;
+  message_perso: string | null;
 }
 interface BenProfile {
   id: string; region: string | null; sports_pratiques: string[] | null;
@@ -94,6 +99,7 @@ function MonEspace() {
   const [confirming, setConfirming] = useState<Record<string, string>>({});
   const [fetching, setFetching] = useState(true);
   const [benProfiles, setBenProfiles] = useState<Record<string, BenProfile>>({});
+  const [benPastCounts, setBenPastCounts] = useState<Record<string, number>>({});
   const [avisGiven, setAvisGiven] = useState<Set<string>>(new Set());
   const [ratingState, setRatingState] = useState<Record<string, AvisGiven>>({});
   const [submittingAvis, setSubmittingAvis] = useState<Set<string>>(new Set());
@@ -112,7 +118,7 @@ function MonEspace() {
     if (evs.length > 0) {
       const ids = evs.map((x) => x.id);
       const { data: c } = await supabase.from("candidatures").select("*").in("event_id", ids);
-      const candList = (c as Cand[]) ?? [];
+      const candList = (c as unknown as Cand[]) ?? [];
       setCands(candList);
       const uniqueBenIds = [...new Set(candList.map((x) => x.benevole_id))];
       if (uniqueBenIds.length > 0) {
@@ -123,6 +129,21 @@ function MonEspace() {
           const map: Record<string, BenProfile> = {};
           (profiles as BenProfile[]).forEach((p) => { map[p.id] = p; });
           setBenProfiles(map);
+        }
+        const pastDate = new Date().toISOString().split("T")[0];
+        const { data: pastCands } = await supabase
+          .from("candidatures")
+          .select("benevole_id, events:event_id(date)")
+          .in("benevole_id", uniqueBenIds)
+          .eq("statut", "accepte");
+        if (pastCands) {
+          const counts: Record<string, number> = {};
+          (pastCands as any[]).forEach((c) => {
+            if (c.events?.date && c.events.date < pastDate) {
+              counts[c.benevole_id] = (counts[c.benevole_id] ?? 0) + 1;
+            }
+          });
+          setBenPastCounts(counts);
         }
       }
     }
@@ -357,22 +378,30 @@ function MonEspace() {
                                       <div className="flex flex-col sm:flex-row sm:items-start gap-3">
                                         <div className="flex-1 min-w-0">
                                           <p className="font-semibold text-sm">{c.prenom} {c.nom}</p>
-                                          <p className="text-xs text-muted-foreground mt-0.5 truncate">{c.email}</p>
-                                          {c.mission_souhaitee && (
-                                            <span className="inline-flex items-center gap-1 text-xs mt-1 text-muted-foreground">
-                                              <Tag size={11} /> {c.mission_souhaitee}
-                                            </span>
-                                          )}
+                                          <p className="text-xs text-muted-foreground mt-0.5">{c.email}</p>
+                                          {/* New candidature fields */}
+                                          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                                            {c.disponibilite_horaire && <span>🕐 {c.disponibilite_horaire}</span>}
+                                            {c.transport && <span>🚗 {c.transport}</span>}
+                                            {c.niveau && <span>🏅 {c.niveau}</span>}
+                                            {c.mission_souhaitee && <span className="flex items-center gap-1"><Tag size={10} /> {c.mission_souhaitee}</span>}
+                                            {benPastCounts[c.benevole_id] ? (
+                                              <span className="font-semibold text-green-700">{benPastCounts[c.benevole_id]} événement{benPastCounts[c.benevole_id] > 1 ? "s" : ""} réalisé{benPastCounts[c.benevole_id] > 1 ? "s" : ""}</span>
+                                            ) : null}
+                                          </div>
                                           {benProfiles[c.benevole_id] && (() => {
                                             const p = benProfiles[c.benevole_id];
                                             return (
-                                              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                                              <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
                                                 {p.region && <span className="flex items-center gap-1"><MapPin size={10} /> {p.region}</span>}
                                                 {p.sports_pratiques?.length ? <span>{p.sports_pratiques.join(", ")}</span> : null}
-                                                {p.bio && <span className="italic line-clamp-1 w-full">{p.bio}</span>}
+                                                {p.bio && <span className="italic line-clamp-2 w-full mt-0.5">{p.bio}</span>}
                                               </div>
                                             );
                                           })()}
+                                          {c.message_perso && (
+                                            <p className="mt-2 text-xs italic text-foreground/70 border-l-2 border-primary pl-2">{c.message_perso}</p>
+                                          )}
                                         </div>
 
                                       <div className="flex items-center gap-2 flex-shrink-0">
@@ -418,6 +447,17 @@ function MonEspace() {
                                         )}
                                       </div>
                                       </div>
+
+                                      {/* WhatsApp button for accepted bénévoles */}
+                                      {c.statut === "accepte" && c.telephone && (
+                                        <a
+                                          href={`https://wa.me/${c.telephone.replace(/\s/g, "")}?text=${encodeURIComponent(`Bonjour ${c.prenom}, tu as été accepté(e) comme bénévole pour ${ev.nom} sur Ravito 🎉`)}`}
+                                          target="_blank" rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider bg-green-600 text-white hover:bg-green-700 transition-colors"
+                                        >
+                                          📱 Contacter sur WhatsApp
+                                        </a>
+                                      )}
 
                                       {/* Rating UI for accepted bénévoles on past events */}
                                       {c.statut === "accepte" && ev.date < today && (() => {

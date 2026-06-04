@@ -16,6 +16,7 @@ interface EventCard {
   date: string;
   type_sport: string;
   nb_benevoles: number | null;
+  missions: string[] | null;
 }
 
 export const Route = createFileRoute("/annonces")({
@@ -63,7 +64,7 @@ function AnnoncesPage() {
   useEffect(() => {
     supabase
       .from("events_public")
-      .select("id, nom, ville, region, date, type_sport, nb_benevoles")
+      .select("id, nom, ville, region, date, type_sport, nb_benevoles, missions")
       .order("date", { ascending: true })
       .then(({ data }) => {
         setEvents((data as EventCard[]) ?? []);
@@ -399,11 +400,22 @@ function AnnoncesPage() {
                         </span>
                         {ev.nb_benevoles && (
                           <span className="flex items-center gap-2">
-                            <Users size={13} className="text-primary flex-shrink-0" />
+                            <span>👥</span>
                             {ev.nb_benevoles} bénévoles recherchés
                           </span>
                         )}
                       </div>
+
+                      {/* Missions tags */}
+                      {ev.missions && ev.missions.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {ev.missions.slice(0, 4).map((m) => (
+                            <span key={m} className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold border border-border bg-muted text-muted-foreground">
+                              {m}
+                            </span>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Actions */}
                       <div className="mt-auto flex gap-3">

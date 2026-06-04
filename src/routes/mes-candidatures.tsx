@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
 import {
   MapPin, Calendar, Tag, Clock, CheckCircle2, XCircle, ArrowRight,
-  Heart, User, History, Star, Save, Loader2,
+  Heart, User, History, Star, Save, Loader2, CalendarPlus,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
@@ -26,7 +27,9 @@ type Tab = "candidatures" | "favoris" | "profil" | "historique";
 
 interface CandRow {
   id: string; statut: string; mission_souhaitee: string | null; event_id: string;
-  created_at: string;
+  created_at: string; telephone: string | null;
+  disponibilite_horaire: string | null; transport: string | null;
+  niveau: string | null; message_perso: string | null;
   events: { nom: string; ville: string; date: string; type_sport: string } | null;
 }
 
@@ -63,6 +66,17 @@ const TABS: { id: Tab; label: string; icon: typeof Heart }[] = [
   { id: "historique", label: "Historique", icon: History },
 ];
 
+function fireConfetti() {
+  confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ["#1D6FE8", "#F5C518", "#22c55e", "#F55D3E"] });
+}
+
+function googleCalendarUrl(nom: string, date: string, ville: string) {
+  const d = new Date(date);
+  const fmt = (n: number) => n.toString().padStart(2, "0");
+  const day = `${d.getFullYear()}${fmt(d.getMonth() + 1)}${fmt(d.getDate())}`;
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(nom)}&dates=${day}/${day}&details=${encodeURIComponent("Bénévolat Ravito")}&location=${encodeURIComponent(ville)}`;
+}
+
 function Stars({ note }: { note: number }) {
   return (
     <span className="flex items-center gap-0.5">
@@ -84,6 +98,7 @@ function MesCandidatures() {
   const [avisRecus, setAvisRecus] = useState<AvisRow[]>([]);
   const [fetching, setFetching] = useState(true);
 
+  const confettiFired = useRef(false);
   const today = new Date().toISOString().split("T")[0];
   const historique = rows.filter(
     (r) => r.statut === "accepte" && r.events?.date && r.events.date < today
@@ -222,87 +237,153 @@ function MesCandidatures() {
           {activeTab === "candidatures" && (
             <>
               {fetching ? (
-                <div className="space-y-6">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex gap-6">
-                      <div className="w-8 h-8 rounded-full bg-muted animate-pulse flex-shrink-0" />
-                      <div className="flex-1 h-28 rounded-2xl bg-muted animate-pulse" />
-                    </div>
-                  ))}
+                <div className="space-y-4">
+                  {[1, 2, 3].map((i) => <div key={i} className="h-36 rounded-2xl bg-muted animate-pulse" />)}
                 </div>
               ) : rows.length === 0 ? (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-20">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-5">
                     <Tag size={28} className="text-muted-foreground" />
                   </div>
-                  <p className="text-muted-foreground text-lg mb-6">Tu n'as pas encore postulé.</p>
+                  <p className="text-muted-foreground text-lg mb-2">Tu n'as pas encore postulé.</p>
+                  <p className="text-muted-foreground text-sm mb-6">Trouve un événement près de chez toi !</p>
                   <Link to="/annonces" className="btn-cta inline-flex items-center gap-2">
-                    Voir les annonces <ArrowRight size={16} />
+                    Voir les événements <ArrowRight size={16} />
                   </Link>
                 </motion.div>
               ) : (
-                <div className="relative">
-                  <div className="absolute left-4 top-4 bottom-4 w-0.5" style={{ background: "var(--border)" }} />
-                  <motion.div className="space-y-6" initial="hidden" animate="visible"
-                    variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
-                    {rows.map((r) => {
-                      const cfg = STATUS_CONFIG[r.statut] ?? STATUS_CONFIG.en_attente;
-                      const StatusIcon = cfg.icon;
-                      const dotColor = DOT_COLORS[r.statut] ?? "var(--secondary)";
-                      const dateFmt = r.events
-                        ? new Date(r.events.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-                        : "";
-                      const createdFmt = new Date(r.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+                <motion.div className="space-y-4" initial="hidden" animate="visible"
+                  variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
+                  {rows.map((r, idx) => {
+                    const dateFmt = r.events
+                      ? new Date(r.events.date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+                      : "";
+                    const createdFmt = new Date(r.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
 
+                    /* ── ACCEPTÉ ── */
+                    if (r.statut === "accepte") {
                       return (
                         <motion.div key={r.id}
-                          variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
-                          className="flex gap-6">
-                          <div className="relative flex-shrink-0 z-10">
-                            <div className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-card"
-                              style={{ backgroundColor: dotColor }}>
-                              <StatusIcon size={14} color="white" />
+                          variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+                          onAnimationComplete={() => {
+                            if (idx === 0 && !confettiFired.current) {
+                              confettiFired.current = true;
+                              fireConfetti();
+                            }
+                          }}
+                          className="rounded-2xl p-6 border-l-4 relative overflow-hidden"
+                          style={{ borderLeftColor: "#22c55e", background: "rgba(34,197,94,0.05)", border: "1px solid rgba(34,197,94,0.2)", borderLeftWidth: "4px", boxShadow: "var(--shadow-card)" }}
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                              <CheckCircle2 size={26} className="text-green-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-green-700 font-black text-lg">Tu es dans l'équipe ! 🎉</p>
+                              <Link to="/annonce/$id" params={{ id: r.event_id }}
+                                className="font-display text-xl font-black text-foreground hover:text-primary transition-colors line-clamp-1 mt-0.5 block">
+                                {r.events?.nom ?? "Événement"}
+                              </Link>
+                              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
+                                {r.events && (
+                                  <>
+                                    <span className="flex items-center gap-1.5"><MapPin size={12} className="text-green-600" /> {r.events.ville}</span>
+                                    <span className="flex items-center gap-1.5"><Calendar size={12} className="text-green-600" /> {dateFmt}</span>
+                                  </>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground mt-3">L'organisateur va te contacter avec les infos pratiques.</p>
+                              <div className="flex flex-wrap gap-3 mt-4">
+                                {r.events && (
+                                  <a href={googleCalendarUrl(r.events.nom, r.events.date, r.events.ville)}
+                                    target="_blank" rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-green-600 text-green-700 text-sm font-bold uppercase tracking-wider hover:bg-green-600 hover:text-white transition-all">
+                                    <CalendarPlus size={14} /> Ajouter au calendrier
+                                  </a>
+                                )}
+                              </div>
                             </div>
                           </div>
-                          <motion.div whileHover={{ y: -2 }}
-                            className="flex-1 bg-card border border-border rounded-2xl p-5 transition-shadow"
-                            style={{ boxShadow: "var(--shadow-card)" }}>
-                            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                              <div className="flex-1">
-                                <Link to="/annonce/$id" params={{ id: r.event_id }}
-                                  className="font-display text-xl font-black text-foreground hover:text-primary transition-colors line-clamp-1">
-                                  {r.events?.nom ?? "Événement"}
-                                </Link>
-                                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
-                                  {r.events && (
-                                    <>
-                                      <span className="flex items-center gap-1.5"><MapPin size={12} className="text-primary" /> {r.events.ville}</span>
-                                      <span className="flex items-center gap-1.5"><Calendar size={12} className="text-primary" /> {dateFmt}</span>
-                                    </>
-                                  )}
-                                  {r.mission_souhaitee && (
-                                    <span className="flex items-center gap-1.5"><Tag size={12} className="text-primary" /> {r.mission_souhaitee}</span>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                                <AnimatePresence mode="wait">
-                                  <motion.span key={r.statut}
-                                    initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${cfg.bg} ${cfg.color}`}>
-                                    <StatusIcon size={12} />
-                                    {cfg.label}
-                                  </motion.span>
-                                </AnimatePresence>
-                                <span className="text-xs text-muted-foreground">Postulé le {createdFmt}</span>
-                              </div>
-                            </div>
-                          </motion.div>
                         </motion.div>
                       );
-                    })}
-                  </motion.div>
-                </div>
+                    }
+
+                    /* ── EN ATTENTE ── */
+                    if (r.statut === "en_attente") {
+                      return (
+                        <motion.div key={r.id}
+                          variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+                          className="rounded-2xl p-6 relative overflow-hidden"
+                          style={{ borderLeft: "4px solid #f97316", background: "rgba(249,115,22,0.04)", border: "1px solid rgba(249,115,22,0.2)", borderLeftWidth: "4px", boxShadow: "var(--shadow-card)" }}
+                        >
+                          <motion.div
+                            animate={{ opacity: [1, 0.5, 1] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl"
+                            style={{ background: "#f97316" }}
+                          />
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 text-2xl">
+                              ⏳
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-orange-700 font-black text-lg">Candidature en cours d'examen</p>
+                              <Link to="/annonce/$id" params={{ id: r.event_id }}
+                                className="font-display text-xl font-black text-foreground hover:text-primary transition-colors line-clamp-1 mt-0.5 block">
+                                {r.events?.nom ?? "Événement"}
+                              </Link>
+                              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
+                                {r.events && (
+                                  <>
+                                    <span className="flex items-center gap-1.5"><MapPin size={12} className="text-primary" /> {r.events.ville}</span>
+                                    <span className="flex items-center gap-1.5"><Calendar size={12} className="text-primary" /> {dateFmt}</span>
+                                  </>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground mt-3">L'organisateur examine ta candidature. Tu seras notifié(e) dès qu'une décision est prise.</p>
+                              <p className="text-xs text-muted-foreground mt-2">Postulé le {createdFmt}</p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    }
+
+                    /* ── REFUSÉ ── */
+                    return (
+                      <motion.div key={r.id}
+                        variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
+                        className="rounded-2xl p-6"
+                        style={{ borderLeft: "4px solid #9ca3af", background: "rgba(156,163,175,0.04)", border: "1px solid rgba(156,163,175,0.2)", borderLeftWidth: "4px", boxShadow: "var(--shadow-card)" }}
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                            <XCircle size={24} className="text-muted-foreground" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-muted-foreground font-bold text-lg">Candidature non retenue</p>
+                            <Link to="/annonce/$id" params={{ id: r.event_id }}
+                              className="font-display text-lg font-black text-foreground/60 hover:text-primary transition-colors line-clamp-1 mt-0.5 block">
+                              {r.events?.nom ?? "Événement"}
+                            </Link>
+                            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
+                              {r.events && (
+                                <>
+                                  <span className="flex items-center gap-1.5"><MapPin size={12} /> {r.events.ville}</span>
+                                  <span className="flex items-center gap-1.5"><Calendar size={12} /> {dateFmt}</span>
+                                </>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-3">Ta candidature n'a pas été retenue cette fois. Ne te décourage pas !</p>
+                            <Link to="/annonces"
+                              className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary transition-all">
+                              Voir d'autres événements <ArrowRight size={13} />
+                            </Link>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
               )}
             </>
           )}

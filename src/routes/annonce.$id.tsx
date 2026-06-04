@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, Users, Tag, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
+import { MapPin, Calendar, Users, Tag, ArrowLeft, Loader2, CheckCircle2, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { useAuth } from "@/lib/auth-context";
@@ -34,9 +34,12 @@ function AnnonceDetail() {
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
   const [mission, setMission] = useState("");
-  const [dispo, setDispo] = useState(true);
-  const [exp, setExp] = useState("");
+  const [dispoHoraire, setDispoHoraire] = useState("");
+  const [transport, setTransport] = useState("");
+  const [niveau, setNiveau] = useState("");
+  const [messagePerso, setMessagePerso] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -44,18 +47,45 @@ function AnnonceDetail() {
       .then(({ data }) => { setEv(data as Ev | null); setLoading(false); });
   }, [id]);
 
+  // Pre-fill from bénévole profile
   useEffect(() => {
-    if (user?.email) setEmail(user.email);
+    if (!user) return;
+    if (user.email) setEmail(user.email);
+    supabase.from("benevoles")
+      .select("prenom, nom, telephone, niveau_trail")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data) return;
+        const d = data as any;
+        if (d.prenom) setPrenom(d.prenom);
+        if (d.nom) setNom(d.nom);
+        if (d.telephone) setTelephone(d.telephone);
+        if (d.niveau_trail) {
+          const map: Record<string, string> = { débutant: "Débutant", intermédiaire: "Intermédiaire", passionné: "Confirmé" };
+          setNiveau(map[d.niveau_trail] ?? "");
+        }
+      });
   }, [user]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) { toast.error("Connecte-toi pour postuler"); navigate({ to: "/connexion" }); return; }
     if (role !== "benevole") { toast.error("Seuls les bénévoles peuvent postuler"); return; }
+    if (!dispoHoraire) { toast.error("Indique ta disponibilité horaire"); return; }
+    if (!transport) { toast.error("Indique ton moyen de transport"); return; }
+    if (!niveau) { toast.error("Indique ton niveau sportif"); return; }
     setSubmitting(true);
-    const { error } = await supabase.from("candidatures").insert({
+    const { error } = await (supabase.from("candidatures") as any).insert({
       event_id: id, benevole_id: user.id, prenom, nom, email,
-      mission_souhaitee: mission, disponibilite: dispo, experience: exp || null,
+      telephone: telephone || null,
+      mission_souhaitee: mission || null,
+      disponibilite: true,
+      disponibilite_horaire: dispoHoraire,
+      transport,
+      niveau,
+      message_perso: messagePerso || null,
+      experience: null,
     });
     setSubmitting(false);
     if (error) { toast.error("Erreur : " + error.message); return; }
@@ -106,14 +136,12 @@ function AnnonceDetail() {
 
       <section className="px-6 pb-16">
         <div className="mx-auto max-w-4xl">
-          {/* Back link */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-5">
             <Link to="/annonces" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
               <ArrowLeft size={15} /> Toutes les annonces
             </Link>
           </motion.div>
 
-          {/* Title + meta */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
             <h1 className="font-display text-4xl md:text-5xl font-black mb-5 leading-tight">{ev.nom}</h1>
             <div className="flex flex-wrap gap-5 text-sm text-muted-foreground">
@@ -174,20 +202,32 @@ function AnnonceDetail() {
                   </motion.div>
                 ) : (
                   <form onSubmit={onSubmit} className="space-y-4">
+                    {/* Identity */}
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Prénom</label>
+                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Prénom *</label>
                         <input required value={prenom} onChange={(e) => setPrenom(e.target.value)} className="inp" />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Nom</label>
+                        <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Nom *</label>
                         <input required value={nom} onChange={(e) => setNom(e.target.value)} className="inp" />
                       </div>
                     </div>
+
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Email</label>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Email *</label>
                       <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="inp" />
                     </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground flex items-center gap-1.5">
+                        <Phone size={11} /> Téléphone *
+                      </label>
+                      <input required type="tel" placeholder="06 00 00 00 00" value={telephone}
+                        onChange={(e) => setTelephone(e.target.value)} className="inp" />
+                    </div>
+
+                    {/* Mission */}
                     {ev.missions && ev.missions.length > 0 && (
                       <div>
                         <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Mission souhaitée</label>
@@ -197,17 +237,49 @@ function AnnonceDetail() {
                         </select>
                       </div>
                     )}
+
+                    {/* Disponibilité horaire */}
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Disponible toute la journée ?</label>
-                      <select value={dispo ? "oui" : "non"} onChange={(e) => setDispo(e.target.value === "oui")} className="inp">
-                        <option value="oui">Oui</option>
-                        <option value="non">Non</option>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Disponibilité horaire *</label>
+                      <select required value={dispoHoraire} onChange={(e) => setDispoHoraire(e.target.value)} className="inp">
+                        <option value="">— Choisir —</option>
+                        <option value="Matin">Matin</option>
+                        <option value="Après-midi">Après-midi</option>
+                        <option value="Journée complète">Journée complète</option>
+                        <option value="Weekend">Weekend</option>
                       </select>
                     </div>
+
+                    {/* Transport */}
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Expérience bénévole (optionnel)</label>
-                      <textarea value={exp} onChange={(e) => setExp(e.target.value)} className="inp min-h-20 resize-none" />
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Moyen de transport *</label>
+                      <select required value={transport} onChange={(e) => setTransport(e.target.value)} className="inp">
+                        <option value="">— Choisir —</option>
+                        <option value="Voiture">Voiture</option>
+                        <option value="Transport en commun">Transport en commun</option>
+                        <option value="Les deux">Les deux</option>
+                      </select>
                     </div>
+
+                    {/* Niveau sportif */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Niveau sportif *</label>
+                      <select required value={niveau} onChange={(e) => setNiveau(e.target.value)} className="inp">
+                        <option value="">— Choisir —</option>
+                        <option value="Débutant">Débutant</option>
+                        <option value="Intermédiaire">Intermédiaire</option>
+                        <option value="Confirmé">Confirmé</option>
+                      </select>
+                    </div>
+
+                    {/* Message personnalisé */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1.5 text-muted-foreground">Message personnalisé</label>
+                      <textarea value={messagePerso} onChange={(e) => setMessagePerso(e.target.value)}
+                        className="inp min-h-20 resize-none"
+                        placeholder="Présente-toi en quelques mots à l'organisateur…" />
+                    </div>
+
                     <motion.button type="submit" disabled={submitting} whileTap={{ scale: 0.97 }}
                       className="btn-cta w-full flex items-center justify-center gap-2">
                       {submitting ? <Loader2 size={17} className="animate-spin" /> : <>Envoyer ma candidature</>}
