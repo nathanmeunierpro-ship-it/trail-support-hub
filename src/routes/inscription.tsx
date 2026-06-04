@@ -74,13 +74,6 @@ function SignupPage() {
     const uid = data.user?.id;
     if (!uid) { setLoading(false); toast.error("Erreur lors de la création du compte."); return; }
 
-    // If Supabase requires email confirmation, session is null → inform the user
-    if (!data.session) {
-      setLoading(false);
-      toast.success("Vérifie ton email et clique sur le lien pour activer ton compte !");
-      return;
-    }
-
     if (role === "benevole") {
       const { error: e2 } = await supabase.from("benevoles").insert({
         id: uid, prenom, nom, departement: dept, niveau_trail: niveau, disponibilites: dispos,
