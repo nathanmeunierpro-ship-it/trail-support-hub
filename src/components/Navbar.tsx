@@ -55,8 +55,8 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
       <nav
-        className={`mx-auto max-w-7xl rounded-full bg-surface transition-shadow duration-300 ${
-          scrolled ? "shadow-[0_10px_30px_-10px_rgba(0,0,0,0.18)]" : "shadow-[0_4px_16px_-8px_rgba(0,0,0,0.12)]"
+        className={`mx-auto max-w-7xl rounded-full bg-primary transition-shadow duration-300 ${
+          scrolled ? "shadow-[0_10px_30px_-10px_rgba(29,111,232,0.55)]" : "shadow-[0_4px_16px_-8px_rgba(29,111,232,0.35)]"
         }`}
       >
         <div className="flex items-center justify-between h-14 pl-3 pr-2">
@@ -71,7 +71,7 @@ export function Navbar() {
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
               }}
             />
-            <span className="font-display text-xl font-black text-text-dark hidden">Ravito</span>
+            <span className="font-display text-xl font-black text-primary-foreground hidden">Ravito</span>
           </Link>
 
           {/* Desktop links */}
@@ -91,8 +91,8 @@ export function Navbar() {
                       onClick={() => setOpenDropdown(isOpen ? null : l.to)}
                       className={`flex items-center gap-1 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider transition-colors ${
                         isActive
-                          ? "text-primary"
-                          : "text-text-dark hover:text-primary"
+                          ? "text-primary bg-primary-foreground"
+                          : "text-primary-foreground/85 hover:text-primary-foreground"
                       }`}
                     >
                       {l.label}
@@ -107,13 +107,13 @@ export function Navbar() {
                           transition={{ duration: 0.15 }}
                           className="absolute left-1/2 -translate-x-1/2 top-full pt-3 min-w-[220px] z-50"
                         >
-                          <div className="bg-surface rounded-xl shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] py-2 overflow-hidden ring-1 ring-black/5">
+                          <div className="bg-white rounded-xl shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] py-2 overflow-hidden ring-1 ring-black/5">
                             {l.children.map((c) => (
                               <Link
                                 key={c.href}
                                 to={c.href}
                                 onClick={() => setOpenDropdown(null)}
-                                className="block px-4 py-2.5 text-sm font-semibold text-text-dark hover:text-primary hover:bg-bg/30 transition-colors"
+                                className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-[#F0F5FF] transition-colors"
                               >
                                 {c.label}
                               </Link>
@@ -131,8 +131,8 @@ export function Navbar() {
                     to={l.to}
                     className={`px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider transition-colors ${
                       isActive
-                        ? "text-primary"
-                        : "text-text-dark hover:text-primary"
+                        ? "text-primary bg-primary-foreground"
+                        : "text-primary-foreground/85 hover:text-primary-foreground"
                     }`}
                   >
                     {l.label}
@@ -148,14 +148,14 @@ export function Navbar() {
               <>
                 <Link
                   to={dashboardLink}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider text-text-dark hover:text-primary transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider text-primary-foreground/85 hover:text-primary-foreground transition-colors"
                 >
                   <LayoutDashboard size={14} />
                   Mon espace
                 </Link>
                 <button
                   onClick={signOut}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider bg-primary text-text-light hover:opacity-90 transition-opacity"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider bg-primary-foreground text-primary hover:opacity-90 transition-opacity"
                 >
                   <LogOut size={14} />
                   Déconnexion
@@ -164,7 +164,7 @@ export function Navbar() {
             ) : (
               <Link
                 to="/connexion"
-                className="px-5 py-2.5 rounded-full bg-primary text-text-light text-[13px] font-bold uppercase tracking-wider hover:opacity-90 transition-opacity"
+                className="px-5 py-2.5 rounded-full bg-primary-foreground text-primary text-[13px] font-bold uppercase tracking-wider hover:opacity-90 transition-opacity"
               >
                 Se connecter
               </Link>
@@ -173,7 +173,7 @@ export function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 mr-1 rounded-full text-text-dark bg-bg/30"
+            className="lg:hidden p-2 mr-1 rounded-full text-primary-foreground bg-primary-foreground/10"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
           >
@@ -190,7 +190,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden mt-2 mx-auto max-w-7xl rounded-3xl bg-surface p-4 shadow-xl"
+            className="lg:hidden mt-2 mx-auto max-w-7xl rounded-3xl bg-primary p-4 shadow-xl"
           >
             <ul className="flex flex-col gap-1">
               {NAV_LINKS.map((l) => {
@@ -200,7 +200,7 @@ export function Navbar() {
                     <li key={l.to}>
                       <button
                         onClick={() => setMobileSub(isSubOpen ? null : l.to)}
-                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-text-dark hover:text-primary"
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-primary-foreground/85 hover:bg-primary-foreground/10"
                       >
                         {l.label}
                         <ChevronDown size={14} className={`transition-transform ${isSubOpen ? "rotate-180" : ""}`} />
@@ -218,7 +218,7 @@ export function Navbar() {
                                 key={c.href}
                                 to={c.href}
                                 onClick={() => { setOpen(false); setMobileSub(null); }}
-                                className="block px-4 py-2.5 text-sm font-semibold text-text-dark hover:text-primary"
+                                className="block px-4 py-2.5 text-sm font-semibold text-primary-foreground/80 hover:text-primary-foreground"
                               >
                                 · {c.label}
                               </Link>
@@ -236,8 +236,8 @@ export function Navbar() {
                       onClick={() => setOpen(false)}
                       className={`block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider ${
                         currentPath === l.to
-                          ? "text-primary"
-                          : "text-text-dark hover:text-primary"
+                          ? "bg-primary-foreground text-primary"
+                          : "text-primary-foreground/85 hover:bg-primary-foreground/10"
                       }`}
                     >
                       {l.label}
@@ -248,12 +248,12 @@ export function Navbar() {
               {session ? (
                 <>
                   <li>
-                    <Link to={dashboardLink} onClick={() => setOpen(false)} className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-text-dark hover:text-primary">
+                    <Link to={dashboardLink} onClick={() => setOpen(false)} className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-primary-foreground/85">
                       Mon espace
                     </Link>
                   </li>
                   <li>
-                    <button onClick={() => { setOpen(false); signOut(); }} className="w-full text-left px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider bg-primary text-text-light mt-1">
+                    <button onClick={() => { setOpen(false); signOut(); }} className="w-full text-left px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider bg-primary-foreground text-primary mt-1">
                       Déconnexion
                     </button>
                   </li>
@@ -263,7 +263,7 @@ export function Navbar() {
                   <Link
                     to="/inscription"
                     onClick={() => setOpen(false)}
-                    className="block px-4 py-3 rounded-2xl bg-primary text-text-light text-sm font-bold uppercase tracking-wider text-center"
+                    className="block px-4 py-3 rounded-2xl bg-primary-foreground text-primary text-sm font-bold uppercase tracking-wider text-center"
                   >
                     S'inscrire
                   </Link>
