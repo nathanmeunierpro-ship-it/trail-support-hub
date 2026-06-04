@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, ChevronDown, CheckCircle2, XCircle, Trash2,
-  Users, FileText, UserCheck, MapPin, Calendar, Tag, Loader2
+  Users, FileText, UserCheck, MapPin, Calendar, Tag, Loader2, Star
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
@@ -29,6 +29,24 @@ interface Cand {
   id: string; event_id: string; benevole_id: string;
   prenom: string; nom: string; mission_souhaitee: string | null;
   disponibilite: boolean; statut: string; email: string;
+}
+interface BenProfile {
+  id: string; region: string | null; sports_pratiques: string[] | null;
+  bio: string | null; niveau_trail: string | null;
+}
+interface AvisGiven { note: number; commentaire: string; }
+function StarPicker({ value, onChange }: { value: number; onChange: (n: number) => void }) {
+  return (
+    <span className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map((s) => (
+        <button key={s} type="button" onClick={() => onChange(s)}
+          className="transition-colors hover:text-yellow-400">
+          <Star size={18} fill={s <= value ? "currentColor" : "none"}
+            className={s <= value ? "text-yellow-400" : "text-muted-foreground"} />
+        </button>
+      ))}
+    </span>
+  );
 }
 
 function useCountUp(target: number, duration = 900) {
@@ -75,7 +93,12 @@ function MonEspace() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [confirming, setConfirming] = useState<Record<string, string>>({});
   const [fetching, setFetching] = useState(true);
+  const [benProfiles, setBenProfiles] = useState<Record<string, BenProfile>>({});
+  const [avisGiven, setAvisGiven] = useState<Set<string>>(new Set());
+  const [ratingState, setRatingState] = useState<Record<string, AvisGiven>>({});
+  const [submittingAvis, setSubmittingAvis] = useState<Set<string>>(new Set());
   const realtimeRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/connexion" });
@@ -89,7 +112,23 @@ function MonEspace() {
     if (evs.length > 0) {
       const ids = evs.map((x) => x.id);
       const { data: c } = await supabase.from("candidatures").select("*").in("event_id", ids);
-      setCands((c as Cand[]) ?? []);
+      const candList = (c as Cand[]) ?? [];
+      setCands(candList);
+      const uniqueBenIds = [...new Set(candList.map((x) => x.benevole_id))];
+      if (uniqueBenIds.length > 0) {
+        const { data: profiles } = await supabase.from("benevoles")
+          .select("id, region, sports_pratiques, bio, niveau_trail")
+          .in("id", uniqueBenIds);
+        if (profiles) {
+          const map: Record<string, BenProfile> = {};
+          (profiles as BenProfile[]).forEach((p) => { map[p.id] = p; });
+          setBenProfiles(map);
+        }
+      }
+    }
+    if (session) {
+      const { data: given } = await supabase.from("avis").select("to_user, event_id").eq("from_user", session.user.id);
+      if (given) setAvisGiven(new Set((given as any[]).map((a) => `${a.to_user}_${a.event_id}`)));
     }
     setFetching(false);
   };
@@ -136,6 +175,22 @@ function MonEspace() {
       setCands((prev) => prev.map((c) => c.id === candId ? { ...c, statut } : c));
     }, 1200);
     toast.success(`Statut mis à jour : ${statut === "accepte" ? "Accepté" : "Refusé"}`);
+  };
+
+  const submitAvis = async (toUser: string, eventId: string) => {
+    if (!session) return;
+    const key = `${toUser}_${eventId}`;
+    const state = ratingState[key];
+    if (!state?.note) { toast.error("Sélectionne une note."); return; }
+    setSubmittingAvis((s) => new Set([...s, key]));
+    const { error } = await supabase.from("avis").insert({
+      from_user: session.user.id, to_user: toUser, event_id: eventId,
+      note: state.note, commentaire: state.commentaire || null,
+    });
+    setSubmittingAvis((s) => { const n = new Set(s); n.delete(key); return n; });
+    if (error) { toast.error(error.code === "23505" ? "Avis déjà soumis." : error.message); return; }
+    setAvisGiven((s) => new Set([...s, key]));
+    toast.success("Avis envoyé !");
   };
 
   const totalCands = cands.length;
@@ -297,17 +352,28 @@ function MonEspace() {
                                     <motion.div
                                       key={c.id}
                                       layout
-                                      className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl bg-background border border-border"
+                                      className="flex flex-col gap-3 p-4 rounded-xl bg-background border border-border"
                                     >
-                                      <div className="flex-1 min-w-0">
-                                        <p className="font-semibold text-sm">{c.prenom} {c.nom}</p>
-                                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{c.email}</p>
-                                        {c.mission_souhaitee && (
-                                          <span className="inline-flex items-center gap-1 text-xs mt-1 text-muted-foreground">
-                                            <Tag size={11} /> {c.mission_souhaitee}
-                                          </span>
-                                        )}
-                                      </div>
+                                      <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+                                        <div className="flex-1 min-w-0">
+                                          <p className="font-semibold text-sm">{c.prenom} {c.nom}</p>
+                                          <p className="text-xs text-muted-foreground mt-0.5 truncate">{c.email}</p>
+                                          {c.mission_souhaitee && (
+                                            <span className="inline-flex items-center gap-1 text-xs mt-1 text-muted-foreground">
+                                              <Tag size={11} /> {c.mission_souhaitee}
+                                            </span>
+                                          )}
+                                          {benProfiles[c.benevole_id] && (() => {
+                                            const p = benProfiles[c.benevole_id];
+                                            return (
+                                              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                                                {p.region && <span className="flex items-center gap-1"><MapPin size={10} /> {p.region}</span>}
+                                                {p.sports_pratiques?.length ? <span>{p.sports_pratiques.join(", ")}</span> : null}
+                                                {p.bio && <span className="italic line-clamp-1 w-full">{p.bio}</span>}
+                                              </div>
+                                            );
+                                          })()}
+                                        </div>
 
                                       <div className="flex items-center gap-2 flex-shrink-0">
                                         {/* Current status badge */}
@@ -351,6 +417,43 @@ function MonEspace() {
                                           </motion.button>
                                         )}
                                       </div>
+                                      </div>
+
+                                      {/* Rating UI for accepted bénévoles on past events */}
+                                      {c.statut === "accepte" && ev.date < today && (() => {
+                                        const key = `${c.benevole_id}_${ev.id}`;
+                                        if (avisGiven.has(key)) {
+                                          return (
+                                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                              <Star size={11} className="text-yellow-400" fill="currentColor" /> Avis soumis
+                                            </p>
+                                          );
+                                        }
+                                        const rs = ratingState[key] ?? { note: 0, commentaire: "" };
+                                        return (
+                                          <div className="border-t border-border pt-3 mt-1">
+                                            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Évaluer ce bénévole</p>
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                                              <StarPicker value={rs.note} onChange={(n) =>
+                                                setRatingState((s) => ({ ...s, [key]: { ...rs, note: n } }))} />
+                                              <input
+                                                value={rs.commentaire}
+                                                onChange={(e) => setRatingState((s) => ({ ...s, [key]: { ...rs, commentaire: e.target.value } }))}
+                                                placeholder="Commentaire (optionnel)"
+                                                className="inp text-xs flex-1"
+                                              />
+                                              <motion.button
+                                                whileTap={{ scale: 0.96 }}
+                                                onClick={() => submitAvis(c.benevole_id, ev.id)}
+                                                disabled={submittingAvis.has(key) || !rs.note}
+                                                className="px-3 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider disabled:opacity-50 flex items-center gap-1"
+                                              >
+                                                {submittingAvis.has(key) ? <Loader2 size={12} className="animate-spin" /> : "Envoyer"}
+                                              </motion.button>
+                                            </div>
+                                          </div>
+                                        );
+                                      })()}
                                     </motion.div>
                                   );
                                 })}

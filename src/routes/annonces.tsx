@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Calendar, Users, ChevronDown, Check, Loader2, Filter, Search } from "lucide-react";
+import { MapPin, Calendar, Users, ChevronDown, Check, Loader2, Filter, Search, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { REGIONS_FR, TYPES_SPORT } from "@/lib/regions";
@@ -51,6 +51,8 @@ function AnnoncesPage() {
   const [postules, setPostules] = useState<Set<string>>(new Set());
   const [applyStatus, setApplyStatus] = useState<Record<string, ApplyStatus>>({});
   const [benProfile, setBenProfile] = useState<{ prenom: string; nom: string } | null>(null);
+  const [favoris, setFavoris] = useState<Set<string>>(new Set());
+  const [favoriLoading, setFavoriLoading] = useState<Set<string>>(new Set());
   const [loadingData, setLoadingData] = useState(true);
   const [region, setRegion] = useState("");
   const [type, setType] = useState("");
@@ -73,6 +75,7 @@ function AnnoncesPage() {
     if (!user) {
       setPostules(new Set());
       setBenProfile(null);
+      setFavoris(new Set());
       return;
     }
     supabase
@@ -81,6 +84,13 @@ function AnnoncesPage() {
       .eq("benevole_id", user.id)
       .then(({ data }) =>
         setPostules(new Set((data ?? []).map((c: any) => c.event_id)))
+      );
+    supabase
+      .from("favoris")
+      .select("event_id")
+      .eq("benevole_id", user.id)
+      .then(({ data }) =>
+        setFavoris(new Set((data ?? []).map((f: any) => f.event_id)))
       );
     if (role === "benevole") {
       supabase
@@ -91,6 +101,19 @@ function AnnoncesPage() {
         .then(({ data }) => setBenProfile(data as any));
     }
   }, [user, role]);
+
+  const toggleFavori = async (eventId: string) => {
+    if (!user) { navigate({ to: "/connexion" }); return; }
+    setFavoriLoading((s) => new Set([...s, eventId]));
+    if (favoris.has(eventId)) {
+      await supabase.from("favoris").delete().eq("benevole_id", user.id).eq("event_id", eventId);
+      setFavoris((s) => { const n = new Set(s); n.delete(eventId); return n; });
+    } else {
+      await supabase.from("favoris").insert({ benevole_id: user.id, event_id: eventId });
+      setFavoris((s) => new Set([...s, eventId]));
+    }
+    setFavoriLoading((s) => { const n = new Set(s); n.delete(eventId); return n; });
+  };
 
   const filtered = useMemo(
     () =>
@@ -340,11 +363,26 @@ function AnnoncesPage() {
                     <div className="h-1.5 bg-secondary" />
 
                     <div className="p-6 flex flex-col flex-1">
-                      <span
-                        className={`inline-flex w-fit text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 ${TYPE_COLORS[ev.type_sport] ?? "bg-muted text-foreground"}`}
-                      >
-                        {ev.type_sport}
-                      </span>
+                      <div className="flex items-center justify-between mb-3">
+                        <span
+                          className={`inline-flex w-fit text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full ${TYPE_COLORS[ev.type_sport] ?? "bg-muted text-foreground"}`}
+                        >
+                          {ev.type_sport}
+                        </span>
+                        <motion.button
+                          whileTap={{ scale: 0.85 }}
+                          onClick={() => toggleFavori(ev.id)}
+                          disabled={favoriLoading.has(ev.id)}
+                          title={favoris.has(ev.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                          className="p-1.5 rounded-full transition-colors hover:bg-muted disabled:opacity-50"
+                        >
+                          <Heart
+                            size={18}
+                            className={favoris.has(ev.id) ? "text-red-500" : "text-muted-foreground"}
+                            fill={favoris.has(ev.id) ? "currentColor" : "none"}
+                          />
+                        </motion.button>
+                      </div>
 
                       <h2 className="font-display text-xl font-black text-foreground group-hover:text-primary transition-colors mb-3 leading-tight line-clamp-2">
                         {ev.nom}
