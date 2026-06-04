@@ -19,6 +19,7 @@ import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as BenevolesRouteImport } from './routes/benevoles'
 import { Route as AnnoncesRouteImport } from './routes/annonces'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrganisateursIndexRouteImport } from './routes/organisateurs.index'
 import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateurs.nos-offres'
 import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
@@ -73,6 +74,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganisateursIndexRoute = OrganisateursIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OrganisateursRoute,
+} as any)
 const OrganisateursNosOffresRoute = OrganisateursNosOffresRouteImport.update({
   id: '/nos-offres',
   path: '/nos-offres',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/annonce/$id': typeof AnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
+  '/organisateurs/': typeof OrganisateursIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -113,12 +120,12 @@ export interface FileRoutesByTo {
   '/inscription': typeof InscriptionRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
-  '/organisateurs': typeof OrganisateursRouteWithChildren
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
+  '/organisateurs': typeof OrganisateursIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,6 +142,7 @@ export interface FileRoutesById {
   '/annonce/$id': typeof AnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
+  '/organisateurs/': typeof OrganisateursIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,6 +160,7 @@ export interface FileRouteTypes {
     | '/annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
+    | '/organisateurs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -161,12 +170,12 @@ export interface FileRouteTypes {
     | '/inscription'
     | '/mes-candidatures'
     | '/mon-espace'
-    | '/organisateurs'
     | '/publier'
     | '/qui-sommes-nous'
     | '/annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
+    | '/organisateurs'
   id:
     | '__root__'
     | '/'
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
+    | '/organisateurs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -270,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organisateurs/': {
+      id: '/organisateurs/'
+      path: '/'
+      fullPath: '/organisateurs/'
+      preLoaderRoute: typeof OrganisateursIndexRouteImport
+      parentRoute: typeof OrganisateursRoute
+    }
     '/organisateurs/nos-offres': {
       id: '/organisateurs/nos-offres'
       path: '/nos-offres'
@@ -297,11 +314,13 @@ declare module '@tanstack/react-router' {
 interface OrganisateursRouteChildren {
   OrganisateursCommentCaMarcheRoute: typeof OrganisateursCommentCaMarcheRoute
   OrganisateursNosOffresRoute: typeof OrganisateursNosOffresRoute
+  OrganisateursIndexRoute: typeof OrganisateursIndexRoute
 }
 
 const OrganisateursRouteChildren: OrganisateursRouteChildren = {
   OrganisateursCommentCaMarcheRoute: OrganisateursCommentCaMarcheRoute,
   OrganisateursNosOffresRoute: OrganisateursNosOffresRoute,
+  OrganisateursIndexRoute: OrganisateursIndexRoute,
 }
 
 const OrganisateursRouteWithChildren = OrganisateursRoute._addFileChildren(

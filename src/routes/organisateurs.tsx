@@ -1,7 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/organisateurs")({
-  beforeLoad: () => {
-    throw redirect({ to: "/organisateurs/comment-ca-marche" });
-  },
+  component: () => <Outlet />,
 });
