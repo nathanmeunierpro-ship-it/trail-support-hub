@@ -162,12 +162,22 @@ export function Navbar() {
                 </button>
               </>
             ) : (
-              <Link
-                to="/connexion"
-                className="px-5 py-2.5 rounded-full bg-primary-foreground text-primary text-[13px] font-bold uppercase tracking-wider hover:opacity-90 transition-opacity"
-              >
-                Se connecter
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/connexion"
+                  className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
+                  style={{ background: "#F55D3E", color: "#fff" }}
+                >
+                  Se connecter
+                </Link>
+                <Link
+                  to="/inscription"
+                  className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
+                  style={{ border: "2px solid #F55D3E", color: "#F55D3E", background: "transparent" }}
+                >
+                  S'inscrire
+                </Link>
+              </div>
             )}
           </div>
 
@@ -259,15 +269,28 @@ export function Navbar() {
                   </li>
                 </>
               ) : (
-                <li className="mt-1">
-                  <Link
-                    to="/inscription"
-                    onClick={() => setOpen(false)}
-                    className="block px-4 py-3 rounded-2xl bg-primary-foreground text-primary text-sm font-bold uppercase tracking-wider text-center"
-                  >
-                    S'inscrire
-                  </Link>
-                </li>
+                <>
+                  <li className="mt-1">
+                    <Link
+                      to="/connexion"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
+                      style={{ background: "#F55D3E", color: "#fff" }}
+                    >
+                      Se connecter
+                    </Link>
+                  </li>
+                  <li className="mt-1">
+                    <Link
+                      to="/inscription"
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
+                      style={{ border: "2px solid #F55D3E", color: "#F55D3E" }}
+                    >
+                      S'inscrire
+                    </Link>
+                  </li>
+                </>
               )}
             </ul>
           </motion.div>
