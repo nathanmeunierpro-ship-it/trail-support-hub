@@ -41,29 +41,30 @@
 ───────────────────────────────────────── */
 :root {
   /* Brand palette */
-  --primary: #F55D3E;            /* orange — buttons, CTAs, accents */
-  --bg: #8CC4D8;                 /* light blue — page background */
-  --surface: #FFFFFF;            /* white — cards, inputs, navbar */
-  --text-dark: #1A1A1A;          /* dark text on light surfaces */
-  --text-light: #FFFFFF;         /* white text on orange/blue */
+  --primary: #F55D3E;            /* orange — CTAs, accents, section titles */
+  --secondary-color: #8CC4D8;    /* light blue — badges, icons, accents */
+  --bg: #FFFFFF;                 /* white — page background */
+  --surface: #FFFFFF;            /* white — cards, inputs */
+  --text: #1A1A1A;               /* dark — body text */
+  --text-light: #FFFFFF;         /* white — text on orange/blue */
 
   /* Tailwind semantic mappings (derived only) */
   --background: var(--bg);
-  --foreground: var(--text-dark);
+  --foreground: var(--text);
   --primary-foreground: var(--text-light);
-  --secondary: var(--surface);
-  --secondary-foreground: var(--primary);
-  --muted: var(--surface);
-  --muted-foreground: var(--text-dark);
-  --accent: var(--primary);
+  --secondary: var(--secondary-color);
+  --secondary-foreground: var(--text-light);
+  --muted: var(--secondary-color);
+  --muted-foreground: var(--text);
+  --accent: var(--secondary-color);
   --accent-foreground: var(--text-light);
-  --border: var(--text-dark);
+  --border: var(--secondary-color);
   --input: var(--surface);
   --ring: var(--primary);
   --card: var(--surface);
-  --card-foreground: var(--text-dark);
+  --card-foreground: var(--text);
   --popover: var(--surface);
-  --popover-foreground: var(--text-dark);
+  --popover-foreground: var(--text);
   --destructive: #EF4444;
   --destructive-foreground: var(--text-light);
   --success: #22c55e;
