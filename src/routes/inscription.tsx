@@ -55,13 +55,18 @@ function SignupPage() {
     if (!role) return;
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { role } },
+    });
 
     if (error) {
+      console.error("[signup] signUp error:", error);
       setLoading(false);
       if (error.message.toLowerCase().includes("rate limit") || error.message.includes("second")) {
         toast.error("Trop de tentatives. Attends quelques secondes puis réessaie.");
-      } else if (error.message.includes("already registered")) {
+      } else if (error.message.toLowerCase().includes("already")) {
         toast.error("Cet email est déjà utilisé. Connecte-toi à la place.");
       } else {
         toast.error(error.message);
@@ -72,17 +77,31 @@ function SignupPage() {
     const uid = data.user?.id;
     if (!uid) { setLoading(false); toast.error("Erreur lors de la création du compte."); return; }
 
+    // Ensure active session before RLS-protected inserts
+    let { data: sess } = await supabase.auth.getSession();
+    if (!sess.session) {
+      const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInErr) {
+        console.error("[signup] auto sign-in error:", signInErr);
+        setLoading(false);
+        toast.error(signInErr.message);
+        return;
+      }
+      ({ data: sess } = await supabase.auth.getSession());
+    }
+    const authedId = sess.session?.user.id ?? uid;
+
     if (role === "benevole") {
       const { error: e2 } = await supabase.from("benevoles").insert({
-        id: uid, prenom, nom, departement: dept, niveau_trail: niveau, disponibilites: dispos,
+        id: authedId, prenom, nom, departement: dept, niveau_trail: niveau, disponibilites: dispos,
       });
-      if (e2) { setLoading(false); toast.error(e2.message); return; }
+      if (e2) { console.error("[signup] benevoles insert error:", e2); setLoading(false); toast.error(e2.message); return; }
     } else {
       const { error: e2 } = await supabase.from("organisateurs").insert({
-        id: uid, nom_organisation: orgName, type_organisation: orgType,
+        id: authedId, nom_organisation: orgName, type_organisation: orgType,
         departement: dept, site_web: siteWeb || null,
       });
-      if (e2) { setLoading(false); toast.error(e2.message); return; }
+      if (e2) { console.error("[signup] organisateurs insert error:", e2); setLoading(false); toast.error(e2.message); return; }
     }
 
     setLoading(false);
