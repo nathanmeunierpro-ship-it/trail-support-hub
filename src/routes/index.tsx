@@ -30,7 +30,7 @@ interface Ev {
 }
 
 const HERO_IMG =
-  "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=2000&q=85";
+  "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=80";
 const IMG_COMMUNITY =
   "https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=1400&q=85";
 const IMG_TRAIL =
@@ -78,11 +78,10 @@ function Home() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-3 mb-8"
+              className="mb-8"
             >
-              <span className="h-px w-10 bg-primary/40" />
-              <span className="text-[11px] uppercase tracking-[0.25em] text-primary/70 font-bold">
-                Plateforme associative
+              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-[0.2em]">
+                La plateforme bénévoles sport #1 en France
               </span>
             </motion.div>
 
@@ -155,8 +154,8 @@ function Home() {
               className="hidden md:block absolute -top-6 -right-4 lg:-right-8 w-36 h-44 rounded-2xl overflow-hidden shadow-xl border-4 border-background"
             >
               <img
-                src={IMG_TRAIL}
-                alt="Sentier de trail"
+                src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&q=80"
+                alt="Coureur de trail en montagne"
                 className="h-full w-full object-cover"
               />
             </motion.div>
