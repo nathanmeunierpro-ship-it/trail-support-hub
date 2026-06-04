@@ -32,28 +32,29 @@
 }
 
 :root {
-  --color-primary-hex: #F4845F;
+  --color-primary-hex: #6B3A2A;
   --color-secondary-hex: #6B3A2A;
   --color-background-hex: #FFFFFF;
-  --color-text-hex: #2C2C2C;
+  --color-text-hex: #6B3A2A;
+  --color-text-inverse: #FFFFFF;
 
   --background: #FFFFFF;
-  --foreground: #2C2C2C;
-  --primary: #F4845F;
+  --foreground: #6B3A2A;
+  --primary: #6B3A2A;
   --primary-foreground: #FFFFFF;
   --secondary: #6B3A2A;
   --secondary-foreground: #FFFFFF;
   --muted: #F5F2EE;
-  --muted-foreground: #6B6B6B;
-  --accent: #F4845F;
+  --muted-foreground: #8A6F63;
+  --accent: #6B3A2A;
   --accent-foreground: #FFFFFF;
-  --border: #E8E4DE;
-  --input: #E8E4DE;
-  --ring: #F4845F;
+  --border: #E8E0DA;
+  --input: #E8E0DA;
+  --ring: #6B3A2A;
   --card: #FFFFFF;
-  --card-foreground: #2C2C2C;
+  --card-foreground: #6B3A2A;
   --popover: #FFFFFF;
-  --popover-foreground: #2C2C2C;
+  --popover-foreground: #6B3A2A;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
   --radius: 8px;
