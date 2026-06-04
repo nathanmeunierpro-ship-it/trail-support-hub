@@ -17,8 +17,8 @@ const NAV_LINKS: NavLink[] = [
     to: "/organisateurs",
     label: "Organisateurs",
     children: [
-      { href: "/organisateurs#comment-ca-marche", label: "Comment ça marche" },
-      { href: "/organisateurs#nos-offres", label: "Nos offres" },
+      { href: "/organisateurs/comment-ca-marche", label: "Comment ça marche" },
+      { href: "/organisateurs/nos-offres", label: "Nos offres" },
     ],
   },
   { to: "/qui-sommes-nous", label: "À propos" },
