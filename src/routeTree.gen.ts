@@ -19,6 +19,8 @@ import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as BenevolesRouteImport } from './routes/benevoles'
 import { Route as AnnoncesRouteImport } from './routes/annonces'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateurs.nos-offres'
+import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
 
 const QuiSommesNousRoute = QuiSommesNousRouteImport.update({
@@ -71,6 +73,17 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganisateursNosOffresRoute = OrganisateursNosOffresRouteImport.update({
+  id: '/nos-offres',
+  path: '/nos-offres',
+  getParentRoute: () => OrganisateursRoute,
+} as any)
+const OrganisateursCommentCaMarcheRoute =
+  OrganisateursCommentCaMarcheRouteImport.update({
+    id: '/comment-ca-marche',
+    path: '/comment-ca-marche',
+    getParentRoute: () => OrganisateursRoute,
+  } as any)
 const AnnonceIdRoute = AnnonceIdRouteImport.update({
   id: '/annonce/$id',
   path: '/annonce/$id',
@@ -85,10 +98,12 @@ export interface FileRoutesByFullPath {
   '/inscription': typeof InscriptionRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
-  '/organisateurs': typeof OrganisateursRoute
+  '/organisateurs': typeof OrganisateursRouteWithChildren
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
+  '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -98,10 +113,12 @@ export interface FileRoutesByTo {
   '/inscription': typeof InscriptionRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
-  '/organisateurs': typeof OrganisateursRoute
+  '/organisateurs': typeof OrganisateursRouteWithChildren
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
+  '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -112,10 +129,12 @@ export interface FileRoutesById {
   '/inscription': typeof InscriptionRoute
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
-  '/organisateurs': typeof OrganisateursRoute
+  '/organisateurs': typeof OrganisateursRouteWithChildren
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
+  '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +150,8 @@ export interface FileRouteTypes {
     | '/publier'
     | '/qui-sommes-nous'
     | '/annonce/$id'
+    | '/organisateurs/comment-ca-marche'
+    | '/organisateurs/nos-offres'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +165,8 @@ export interface FileRouteTypes {
     | '/publier'
     | '/qui-sommes-nous'
     | '/annonce/$id'
+    | '/organisateurs/comment-ca-marche'
+    | '/organisateurs/nos-offres'
   id:
     | '__root__'
     | '/'
@@ -157,6 +180,8 @@ export interface FileRouteTypes {
     | '/publier'
     | '/qui-sommes-nous'
     | '/annonce/$id'
+    | '/organisateurs/comment-ca-marche'
+    | '/organisateurs/nos-offres'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -167,7 +192,7 @@ export interface RootRouteChildren {
   InscriptionRoute: typeof InscriptionRoute
   MesCandidaturesRoute: typeof MesCandidaturesRoute
   MonEspaceRoute: typeof MonEspaceRoute
-  OrganisateursRoute: typeof OrganisateursRoute
+  OrganisateursRoute: typeof OrganisateursRouteWithChildren
   PublierRoute: typeof PublierRoute
   QuiSommesNousRoute: typeof QuiSommesNousRoute
   AnnonceIdRoute: typeof AnnonceIdRoute
@@ -245,6 +270,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organisateurs/nos-offres': {
+      id: '/organisateurs/nos-offres'
+      path: '/nos-offres'
+      fullPath: '/organisateurs/nos-offres'
+      preLoaderRoute: typeof OrganisateursNosOffresRouteImport
+      parentRoute: typeof OrganisateursRoute
+    }
+    '/organisateurs/comment-ca-marche': {
+      id: '/organisateurs/comment-ca-marche'
+      path: '/comment-ca-marche'
+      fullPath: '/organisateurs/comment-ca-marche'
+      preLoaderRoute: typeof OrganisateursCommentCaMarcheRouteImport
+      parentRoute: typeof OrganisateursRoute
+    }
     '/annonce/$id': {
       id: '/annonce/$id'
       path: '/annonce/$id'
@@ -255,6 +294,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface OrganisateursRouteChildren {
+  OrganisateursCommentCaMarcheRoute: typeof OrganisateursCommentCaMarcheRoute
+  OrganisateursNosOffresRoute: typeof OrganisateursNosOffresRoute
+}
+
+const OrganisateursRouteChildren: OrganisateursRouteChildren = {
+  OrganisateursCommentCaMarcheRoute: OrganisateursCommentCaMarcheRoute,
+  OrganisateursNosOffresRoute: OrganisateursNosOffresRoute,
+}
+
+const OrganisateursRouteWithChildren = OrganisateursRoute._addFileChildren(
+  OrganisateursRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnnoncesRoute: AnnoncesRoute,
@@ -263,7 +316,7 @@ const rootRouteChildren: RootRouteChildren = {
   InscriptionRoute: InscriptionRoute,
   MesCandidaturesRoute: MesCandidaturesRoute,
   MonEspaceRoute: MonEspaceRoute,
-  OrganisateursRoute: OrganisateursRoute,
+  OrganisateursRoute: OrganisateursRouteWithChildren,
   PublierRoute: PublierRoute,
   QuiSommesNousRoute: QuiSommesNousRoute,
   AnnonceIdRoute: AnnonceIdRoute,
