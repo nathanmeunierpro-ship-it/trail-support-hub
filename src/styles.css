@@ -32,29 +32,29 @@
 }
 
 :root {
-  --color-primary-hex: #6B3A2A;
-  --color-secondary-hex: #7D9B4E;
+  --color-primary-hex: #1E50E6;
+  --color-secondary-hex: #FFC72C;
   --color-background-hex: #F5F0E8;
-  --color-text-hex: #6B3A2A;
+  --color-text-hex: #1E50E6;
   --color-text-inverse: #F5F0E8;
 
   --background: #F5F0E8;
-  --foreground: #6B3A2A;
-  --primary: #6B3A2A;
+  --foreground: #1E50E6;
+  --primary: #1E50E6;
   --primary-foreground: #F5F0E8;
-  --secondary: #7D9B4E;
-  --secondary-foreground: #F5F0E8;
+  --secondary: #FFC72C;
+  --secondary-foreground: #1E50E6;
   --muted: #EDE8DE;
-  --muted-foreground: #8A7A6E;
-  --accent: #7D9B4E;
-  --accent-foreground: #F5F0E8;
-  --border: #E0D8CC;
-  --input: #E0D8CC;
-  --ring: #6B3A2A;
+  --muted-foreground: #5A78C4;
+  --accent: #FFC72C;
+  --accent-foreground: #1E50E6;
+  --border: #D8DFF0;
+  --input: #D8DFF0;
+  --ring: #1E50E6;
   --card: #FAF7F0;
-  --card-foreground: #6B3A2A;
+  --card-foreground: #1E50E6;
   --popover: #FAF7F0;
-  --popover-foreground: #6B3A2A;
+  --popover-foreground: #1E50E6;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
   --radius: 8px;
