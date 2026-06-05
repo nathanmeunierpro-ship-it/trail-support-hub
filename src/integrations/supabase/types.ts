@@ -14,96 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
-      avis: {
-        Row: {
-          id: string
-          from_user: string | null
-          to_user: string | null
-          event_id: string | null
-          note: number | null
-          commentaire: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          from_user?: string | null
-          to_user?: string | null
-          event_id?: string | null
-          note?: number | null
-          commentaire?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          from_user?: string | null
-          to_user?: string | null
-          event_id?: string | null
-          note?: number | null
-          commentaire?: string | null
-          created_at?: string
-        }
-        Relationships: []
-      }
       benevoles: {
         Row: {
-          bio: string | null
           created_at: string
           departement: string | null
           disponibilites: string[] | null
-          dispo_text: string | null
           id: string
           niveau_trail: string | null
           nom: string | null
           prenom: string | null
-          region: string | null
-          sports_pratiques: string[] | null
         }
         Insert: {
-          bio?: string | null
           created_at?: string
           departement?: string | null
           disponibilites?: string[] | null
-          dispo_text?: string | null
           id: string
           niveau_trail?: string | null
           nom?: string | null
           prenom?: string | null
-          region?: string | null
-          sports_pratiques?: string[] | null
         }
         Update: {
-          bio?: string | null
           created_at?: string
           departement?: string | null
           disponibilites?: string[] | null
-          dispo_text?: string | null
           id?: string
           niveau_trail?: string | null
           nom?: string | null
           prenom?: string | null
-          region?: string | null
-          sports_pratiques?: string[] | null
-        }
-        Relationships: []
-      }
-      favoris: {
-        Row: {
-          id: string
-          benevole_id: string | null
-          event_id: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          benevole_id?: string | null
-          event_id?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          benevole_id?: string | null
-          event_id?: string | null
-          created_at?: string
         }
         Relationships: []
       }
