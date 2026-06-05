@@ -113,7 +113,7 @@ export function Navbar() {
                                 key={c.href}
                                 to={c.href}
                                 onClick={() => setOpenDropdown(null)}
-                                className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-[#F0F5FF] transition-colors"
+                                className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-[var(--color-muted)] transition-colors"
                               >
                                 {c.label}
                               </Link>
@@ -166,14 +166,14 @@ export function Navbar() {
                 <Link
                   to="/connexion"
                   className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ background: "#F55D3E", color: "#fff" }}
+                  style={{ background: "var(--color-primary)", color: "#fff" }}
                 >
                   Se connecter
                 </Link>
                 <Link
                   to="/inscription"
                   className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ border: "2px solid #F55D3E", color: "#F55D3E", background: "transparent" }}
+                  style={{ border: "2px solid var(--color-primary)", color: "var(--color-primary)", background: "transparent" }}
                 >
                   S'inscrire
                 </Link>
@@ -275,7 +275,7 @@ export function Navbar() {
                       to="/connexion"
                       onClick={() => setOpen(false)}
                       className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "#F55D3E", color: "#fff" }}
+                      style={{ background: "var(--color-primary)", color: "#fff" }}
                     >
                       Se connecter
                     </Link>
@@ -285,7 +285,7 @@ export function Navbar() {
                       to="/inscription"
                       onClick={() => setOpen(false)}
                       className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ border: "2px solid #F55D3E", color: "#F55D3E" }}
+                      style={{ border: "2px solid var(--color-primary)", color: "var(--color-primary)" }}
                     >
                       S'inscrire
                     </Link>

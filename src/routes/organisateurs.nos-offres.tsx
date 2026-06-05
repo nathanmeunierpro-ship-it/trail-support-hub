@@ -50,10 +50,10 @@ const OFFERS: Offer[] = [
     ctaLabel: "Publier mon événement",
     ctaKind: "link",
     ctaHref: "/publier",
-    borderClass: "border-2 border-[#1D6FE8]",
+    borderClass: "border-2 border-[var(--color-primary)]",
     bgClass: "bg-white",
     textClass: "text-foreground",
-    badgeClass: "bg-[#1D6FE8]/10 text-[#1D6FE8]",
+    badgeClass: "bg-[var(--color-primary)]/10 text-[var(--color-primary)]",
   },
   {
     name: "Essentiel",
@@ -71,10 +71,10 @@ const OFFERS: Offer[] = [
     ctaLabel: "Choisir cette offre",
     ctaKind: "modal",
     modalOffer: "Essentiel — 14,99€",
-    borderClass: "border-2 border-[#1D6FE8]",
-    bgClass: "bg-[#1D6FE8]",
+    borderClass: "border-2 border-[var(--color-primary)]",
+    bgClass: "bg-[var(--color-primary)]",
     textClass: "text-white",
-    badgeClass: "bg-white text-[#1D6FE8]",
+    badgeClass: "bg-white text-[var(--color-primary)]",
   },
   {
     name: "Premium",
@@ -91,10 +91,10 @@ const OFFERS: Offer[] = [
     ctaLabel: "Nous contacter",
     ctaKind: "modal",
     modalOffer: "Premium — à partir de 49,99€",
-    borderClass: "border-2 border-[#F5C518]",
+    borderClass: "border-2 border-[var(--color-primary)]",
     bgClass: "bg-white",
     textClass: "text-foreground",
-    badgeClass: "bg-[#F5C518]/15 text-[#9a7a00]",
+    badgeClass: "bg-[var(--color-primary)]/15 text-[var(--color-primary)]",
   },
 ];
 
@@ -133,7 +133,7 @@ function Page() {
     <PageShell>
       <section className="px-6 pt-20 pb-10">
         <div className="mx-auto max-w-5xl text-center">
-          <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#1D6FE8] mb-3">
+          <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary)] mb-3">
             Organisateurs
           </span>
           <motion.h1
@@ -182,7 +182,7 @@ function Page() {
                     <li key={f} className="flex items-start gap-2 text-sm leading-relaxed">
                       <Check
                         size={16}
-                        className={`mt-0.5 shrink-0 ${o.highlighted ? "text-white" : "text-[#1D6FE8]"}`}
+                        className={`mt-0.5 shrink-0 ${o.highlighted ? "text-white" : "text-[var(--color-primary)]"}`}
                       />
                       <span>{f}</span>
                     </li>
@@ -192,7 +192,7 @@ function Page() {
                   <Link
                     to={o.ctaHref}
                     className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90 ${
-                      o.highlighted ? "bg-white text-[#1D6FE8]" : "bg-[#1D6FE8] text-white"
+                      o.highlighted ? "bg-white text-[var(--color-primary)]" : "bg-[var(--color-primary)] text-white"
                     }`}
                   >
                     {o.ctaLabel} <ArrowRight size={14} />
@@ -201,7 +201,7 @@ function Page() {
                   <button
                     onClick={() => setModalOffer(o.modalOffer!)}
                     className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90 ${
-                      o.highlighted ? "bg-white text-[#1D6FE8]" : "bg-[#1D6FE8] text-white"
+                      o.highlighted ? "bg-white text-[var(--color-primary)]" : "bg-[var(--color-primary)] text-white"
                     }`}
                   >
                     {o.ctaLabel} <ArrowRight size={14} />
@@ -329,7 +329,7 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
                   </p>
                   <button
                     onClick={handleClose}
-                    className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[#1D6FE8] text-white hover:opacity-90"
+                    className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:opacity-90"
                   >
                     Fermer
                   </button>
@@ -430,7 +430,7 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
                   <button
                     type="submit"
                     disabled={sending}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-bold uppercase tracking-wider bg-[#1D6FE8] text-white hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {sending ? "Envoi…" : "Envoyer ma demande"}
                   </button>
@@ -458,7 +458,7 @@ function Field({
   return (
     <label className="block">
       <span className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1.5">
-        {label} {required && <span className="text-[#1D6FE8]">*</span>}
+        {label} {required && <span className="text-[var(--color-primary)]">*</span>}
       </span>
       {children}
       {error && <span className="block mt-1 text-xs text-red-600">{error}</span>}
@@ -469,5 +469,5 @@ function Field({
 function inputCls(hasError: boolean) {
   return `w-full rounded-lg border ${
     hasError ? "border-red-500" : "border-gray-300"
-  } bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D6FE8]/30 focus:border-[#1D6FE8] transition-colors`;
+  } bg-white px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)] transition-colors`;
 }
