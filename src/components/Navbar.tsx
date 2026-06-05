@@ -166,7 +166,7 @@ export function Navbar() {
                 <Link
                   to="/connexion"
                   className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ background: "var(--color-primary)", color: "#fff" }}
+                  style={{ background: "var(--color-primary)", color: "var(--color-text-light)" }}
                 >
                   Se connecter
                 </Link>
@@ -275,7 +275,7 @@ export function Navbar() {
                       to="/connexion"
                       onClick={() => setOpen(false)}
                       className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "var(--color-primary)", color: "#fff" }}
+                      style={{ background: "var(--color-primary)", color: "var(--color-text-light)" }}
                     >
                       Se connecter
                     </Link>
