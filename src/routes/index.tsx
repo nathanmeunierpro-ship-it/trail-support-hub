@@ -89,17 +89,20 @@ function Home() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.05 }}
-              className="font-display text-primary font-black leading-tight tracking-tight"
-              style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
+              className="font-display font-black leading-tight tracking-tight"
+              style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}
             >
-              Trouve des bénévoles pour ton événement sportif
+              <span style={{ color: "var(--color-text)" }}>Trouve des bénévoles</span>
+              <br />
+              <span style={{ color: "var(--color-primary)" }}>pour ton événement sportif</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-8 text-foreground/70 max-w-lg text-base md:text-lg leading-relaxed"
+              className="mt-8 max-w-lg text-base leading-relaxed"
+              style={{ color: "var(--color-text-secondary)" }}
             >
               Trails, running, vélo, triathlon… Connecte organisateurs et bénévoles partout en France. Gratuit pour les 20 premiers.
             </motion.p>
@@ -154,7 +157,7 @@ function Home() {
               className="hidden md:block absolute -top-6 -right-4 lg:-right-8 w-36 h-44 rounded-2xl overflow-hidden shadow-xl border-4 border-background"
             >
               <img
-                src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&q=80"
+                src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80"
                 alt="Coureur de trail en montagne"
                 className="h-full w-full object-cover"
               />
@@ -180,7 +183,7 @@ function Home() {
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="font-display font-black uppercase leading-[1.05] mb-8"
-            style={{ fontSize: "clamp(2rem, 5vw, 4rem)", color: "var(--color-text-dark)" }}
+            style={{ fontSize: "clamp(2rem, 5vw, 4rem)", color: "var(--color-text-light)" }}
           >
             Le sport rassemble.
             <br />
@@ -219,11 +222,11 @@ function Home() {
             </div>
           </motion.div>
           <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
-            <span className="text-xs uppercase tracking-[0.3em] text-primary/60 font-semibold">
+            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
               — Pour les bénévoles
             </span>
             <h3
-              className="font-display font-black uppercase text-primary mt-4 mb-6 leading-tight"
+              className="font-display font-black uppercase text-[var(--color-text)] mt-4 mb-6 leading-tight"
               style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)" }}
             >
               Vivre l'événement
@@ -265,11 +268,11 @@ function Home() {
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="md:order-1 order-2"
           >
-            <span className="text-xs uppercase tracking-[0.3em] text-primary/60 font-semibold">
+            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
               — Pour les organisateurs
             </span>
             <h3
-              className="font-display font-black uppercase text-primary mt-4 mb-6 leading-tight"
+              className="font-display font-black uppercase text-[var(--color-text)] mt-4 mb-6 leading-tight"
               style={{ fontSize: "clamp(1.75rem, 3.5vw, 3rem)" }}
             >
               Trouve l'équipe
@@ -318,11 +321,11 @@ function Home() {
       <section className="py-28 px-6 section-light">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="text-center mb-20">
-            <span className="text-xs uppercase tracking-[0.3em] text-primary/60 font-semibold">
+            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
               — Nos engagements
             </span>
             <h2
-              className="font-display font-black uppercase text-primary mt-4 leading-tight"
+              className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-tight"
               style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
             >
               Une communauté,
@@ -342,16 +345,16 @@ function Home() {
                 transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="group relative bg-card border border-border rounded-3xl p-10 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-secondary/20 text-primary mb-6 group-hover:bg-secondary group-hover:scale-110 transition-all">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-[var(--color-primary)] mb-6 group-hover:bg-[var(--color-primary)] group-hover:text-white group-hover:scale-110 transition-all">
                   <e.Icon size={28} strokeWidth={1.8} />
                 </div>
                 <h3
                   className="mb-4"
-                  style={{ fontFamily: "Pacifico, cursive", color: "var(--color-primary)", fontSize: "1.85rem" }}
+                  style={{ fontFamily: "Pacifico, cursive", color: "var(--color-text)", fontSize: "1.85rem" }}
                 >
                   {e.title}
                 </h3>
-                <p className="text-foreground/70 leading-relaxed max-w-xs mx-auto">{e.body}</p>
+                <p className="text-[var(--color-text-secondary)] leading-relaxed max-w-xs mx-auto">{e.body}</p>
               </motion.div>
             ))}
           </div>
@@ -363,11 +366,11 @@ function Home() {
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <div>
-              <span className="text-xs uppercase tracking-[0.3em] text-primary/60 font-semibold">
+              <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
                 — À l'affiche
               </span>
               <h2
-                className="font-display font-black uppercase text-primary mt-4 leading-none"
+                className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-none"
                 style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)" }}
               >
                 Les prochains
@@ -377,7 +380,7 @@ function Home() {
             </div>
             <Link
               to="/annonces"
-              className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 text-[var(--color-text)] font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all"
             >
               Tout voir <ArrowRight size={16} />
             </Link>
@@ -386,7 +389,7 @@ function Home() {
           {events.length === 0 ? (
             <div className="text-center py-16 rounded-3xl bg-background">
               <p className="text-muted-foreground mb-4">Aucune annonce pour le moment.</p>
-              <Link to="/publier" className="text-primary font-bold hover:underline">
+              <Link to="/publier" className="text-[var(--color-text)] font-bold hover:underline">
                 Publier le premier événement →
               </Link>
             </div>
