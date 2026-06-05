@@ -99,8 +99,40 @@
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: var(--primary);
+    color: var(--color-text-dark);
   }
+}
+
+/* ── Section helpers (60/30/10 palette) ── */
+.section-dark {
+  background: var(--color-bg-dark);
+  color: var(--color-text-light);
+}
+.section-dark h1, .section-dark h2, .section-dark h3,
+.section-dark h4, .section-dark h5, .section-dark h6 {
+  color: var(--color-text-light);
+}
+.section-light {
+  background: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+.section-light h1, .section-light h2, .section-light h3,
+.section-light h4, .section-light h5, .section-light h6 {
+  color: var(--color-text-dark);
+}
+.accent-word { color: var(--color-accent); }
+
+/* Card with green left border accent */
+.card-accent {
+  background: var(--color-surface);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card-accent:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
 }
 
 /* ── Animations ── */
