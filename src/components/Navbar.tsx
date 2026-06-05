@@ -54,18 +54,18 @@ export function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
-      <nav
-        className={`mx-auto max-w-7xl rounded-full bg-primary transition-shadow duration-300 ${
-          scrolled ? "shadow-[0_10px_30px_-10px_rgba(29,111,232,0.55)]" : "shadow-[0_4px_16px_-8px_rgba(29,111,232,0.35)]"
-        }`}
-      >
+        <nav
+          className={`mx-auto max-w-7xl rounded-full bg-primary transition-shadow duration-300 ${
+            scrolled ? "shadow-[0_10px_30px_-10px_rgba(115,204,48,0.55)]" : "shadow-[0_4px_16px_-8px_rgba(115,204,48,0.35)]"
+          }`}
+        >
         <div className="flex items-center justify-between h-14 pl-3 pr-2">
           {/* Logo */}
           <Link to="/" aria-label="Ravito — Accueil" className="flex items-center pl-2">
             <img
               src="/logo.png"
               alt="Ravito"
-              className="h-8 object-contain"
+              className="h-8 object-contain brightness-0 invert"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
@@ -113,7 +113,7 @@ export function Navbar() {
                                 key={c.href}
                                 to={c.href}
                                 onClick={() => setOpenDropdown(null)}
-                                className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-[var(--color-muted)] transition-colors"
+                                className="block px-4 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-primary)] hover:text-white transition-colors"
                               >
                                 {c.label}
                               </Link>
