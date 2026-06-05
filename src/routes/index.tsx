@@ -168,30 +168,31 @@ function Home() {
       <Ticker />
 
       {/* ── INTRO MANIFESTO ── */}
-      <section className="py-28 px-6 bg-background">
+      <section className="py-28 px-6 section-dark">
         <div className="mx-auto max-w-4xl text-center">
           <motion.span
             {...fadeUp}
-            className="inline-block text-xs uppercase tracking-[0.3em] text-primary/60 mb-6 font-semibold"
+            className="inline-block text-xs uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6 font-semibold"
           >
             — Notre mission —
           </motion.span>
           <motion.h2
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display font-black uppercase text-primary leading-[1.05] mb-8"
-            style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            className="font-display font-black uppercase leading-[1.05] mb-8"
+            style={{ fontSize: "clamp(2rem, 5vw, 4rem)", color: "var(--color-text-dark)" }}
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "#FFFFFF" }}>
+            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "var(--color-text-light)" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
           <motion.p
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lg md:text-xl text-foreground/70 leading-relaxed max-w-2xl mx-auto"
+            className="text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
+            style={{ color: "var(--color-text-light)", opacity: 0.8 }}
           >
             Derrière chaque ravitaillement, chaque dossard remis, chaque
             balisage de sentier, il y a des femmes et des hommes engagés.
@@ -202,7 +203,7 @@ function Home() {
       </section>
 
       {/* ── ALT 1 : image gauche / texte droite ── */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 section-light">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
           <motion.div {...fadeUp} className="relative">
             <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl">
