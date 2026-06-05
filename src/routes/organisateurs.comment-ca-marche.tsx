@@ -46,7 +46,7 @@ function Page() {
     <PageShell>
       <section className="px-6 pt-20 pb-10">
         <div className="mx-auto max-w-5xl text-center">
-          <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[#1D6FE8] mb-3">
+          <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-primary)] mb-3">
             Organisateurs
           </span>
           <motion.h1
@@ -75,7 +75,7 @@ function Page() {
                 className="relative bg-card border border-border rounded-2xl p-7"
                 style={{ boxShadow: "var(--shadow-card)" }}
               >
-                <div className="absolute -top-4 -left-4 w-11 h-11 rounded-full bg-[#1D6FE8] text-white flex items-center justify-center font-display font-black text-lg shadow-lg">
+                <div className="absolute -top-4 -left-4 w-11 h-11 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-display font-black text-lg shadow-lg">
                   {i + 1}
                 </div>
                 <div className="text-4xl mb-4">{s.emoji}</div>
