@@ -184,7 +184,7 @@ function Home() {
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "var(--color-primary)" }}>
+            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "var(--color-text)" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
