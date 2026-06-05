@@ -38,12 +38,16 @@
 :root {
   /* Brand colors — single source of truth */
   --color-primary: #73CC30;
+  --color-accent: #73CC30;
   --color-bg: #FFFFFF;
+  --color-bg-light: #F2FAE8;
+  --color-bg-dark: #0F0F0F;
   --color-surface: #FFFFFF;
   --color-text: #1A1A1A;
+  --color-text-dark: #1A1A1A;
   --color-text-light: #FFFFFF;
   --color-border: #E5E5E5;
-  --color-muted: #F5F5F5;
+  --color-muted: #F2FAE8;
   --color-muted-foreground: #6B6B6B;
   --color-status-success: #22c55e;
   --color-status-warning: #f97316;
