@@ -36,44 +36,51 @@
    All hex values live ONLY in this block.
 ───────────────────────────────────────── */
 :root {
-  /* Brand colors */
-  --color-bg: #FFF8F0;
-  --color-primary: #1D6FE8;
-  --color-accent: #F5C518;
-  --color-text: #2D2D2D;
+  /* Brand colors — single source of truth */
+  --color-primary: #73CC30;
+  --color-bg: #FFFFFF;
   --color-surface: #FFFFFF;
-  --color-border: #E8DDD4;
+  --color-text: #1A1A1A;
+  --color-text-light: #FFFFFF;
+  --color-border: #E5E5E5;
+  --color-muted: #F5F5F5;
+  --color-muted-foreground: #6B6B6B;
+  --color-status-success: #22c55e;
+  --color-status-warning: #f97316;
+  --color-status-neutral: #9ca3af;
+  --color-destructive: #EF4444;
 
-  /* Tailwind semantic mappings */
-  --background: #FFF8F0;
-  --foreground: #2D2D2D;
-  --primary: #1D6FE8;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F5C518;
-  --secondary-foreground: #2D2D2D;
-  --muted: #F0EAE4;
-  --muted-foreground: #8A7A6E;
-  --accent: #F5C518;
-  --accent-foreground: #2D2D2D;
-  --border: #E8DDD4;
-  --input: #FFFFFF;
-  --ring: #1D6FE8;
-  --card: #FFFFFF;
-  --card-foreground: #2D2D2D;
-  --popover: #FFFFFF;
-  --popover-foreground: #2D2D2D;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --success: #22c55e;
-  --success-foreground: #FFFFFF;
+  /* Tailwind semantic mappings — all reference brand vars above */
+  --background: var(--color-bg);
+  --foreground: var(--color-text);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-text-light);
+  --secondary: var(--color-primary);
+  --secondary-foreground: var(--color-text-light);
+  --muted: var(--color-muted);
+  --muted-foreground: var(--color-muted-foreground);
+  --accent: var(--color-primary);
+  --accent-foreground: var(--color-text-light);
+  --border: var(--color-border);
+  --input: var(--color-surface);
+  --ring: var(--color-primary);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --destructive: var(--color-destructive);
+  --destructive-foreground: var(--color-text-light);
+  --success: var(--color-status-success);
+  --success-foreground: var(--color-text-light);
   --radius: 12px;
 
   /* Component tokens (derived) */
-  --auth-panel-gradient: linear-gradient(160deg, #0a2d7a 0%, #1045b8 55%, #1D6FE8 100%);
-  --shadow-card: 0 2px 16px rgba(45, 45, 45, 0.07);
-  --shadow-card-hover: 0 8px 32px rgba(29, 111, 232, 0.18);
-  --shadow-btn: 0 4px 14px rgba(245, 197, 24, 0.35);
+  --auth-panel-gradient: linear-gradient(160deg, #4a8a1f 0%, #5fb028 55%, var(--color-primary) 100%);
+  --shadow-card: 0 2px 16px rgba(26, 26, 26, 0.07);
+  --shadow-card-hover: 0 8px 32px rgba(115, 204, 48, 0.18);
+  --shadow-btn: 0 4px 14px rgba(115, 204, 48, 0.35);
 }
+
 
 /* ── Base styles ── */
 @layer base {
