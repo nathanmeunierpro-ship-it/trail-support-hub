@@ -168,30 +168,31 @@ function Home() {
       <Ticker />
 
       {/* ── INTRO MANIFESTO ── */}
-      <section className="py-28 px-6 bg-background">
+      <section className="py-28 px-6 section-dark">
         <div className="mx-auto max-w-4xl text-center">
           <motion.span
             {...fadeUp}
-            className="inline-block text-xs uppercase tracking-[0.3em] text-primary/60 mb-6 font-semibold"
+            className="inline-block text-xs uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6 font-semibold"
           >
             — Notre mission —
           </motion.span>
           <motion.h2
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display font-black uppercase text-primary leading-[1.05] mb-8"
-            style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            className="font-display font-black uppercase leading-[1.05] mb-8"
+            style={{ fontSize: "clamp(2rem, 5vw, 4rem)", color: "var(--color-text-dark)" }}
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "#FFFFFF" }}>
+            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "var(--color-text-light)" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
           <motion.p
             {...fadeUp}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lg md:text-xl text-foreground/70 leading-relaxed max-w-2xl mx-auto"
+            className="text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
+            style={{ color: "var(--color-text-light)", opacity: 0.8 }}
           >
             Derrière chaque ravitaillement, chaque dossard remis, chaque
             balisage de sentier, il y a des femmes et des hommes engagés.
@@ -202,7 +203,7 @@ function Home() {
       </section>
 
       {/* ── ALT 1 : image gauche / texte droite ── */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 section-light">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
           <motion.div {...fadeUp} className="relative">
             <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl">
@@ -314,7 +315,7 @@ function Home() {
       </section>
 
       {/* ── ENGAGEMENTS / VALEURS ── */}
-      <section className="py-28 px-6 bg-background">
+      <section className="py-28 px-6 section-light">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="text-center mb-20">
             <span className="text-xs uppercase tracking-[0.3em] text-primary/60 font-semibold">
@@ -358,7 +359,7 @@ function Home() {
       </section>
 
       {/* ── EVENTS GRID ── */}
-      <section className="py-24 px-6 bg-muted/30">
+      <section className="py-24 px-6 bg-[var(--color-bg)]">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <div>
@@ -447,20 +448,20 @@ function Home() {
       </section>
 
       {/* ── CTA FINAL ── */}
-      <section className="relative py-32 px-6 overflow-hidden">
+      <section className="relative py-32 px-6 overflow-hidden section-dark">
         <img
           src={IMG_VOLUNTEERS}
           alt="Bénévoles en action"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover opacity-25"
         />
-        <div className="absolute inset-0 bg-primary/85" />
-        <motion.div {...fadeUp} className="relative mx-auto max-w-3xl text-center text-primary-foreground">
-          <Users size={48} className="mx-auto mb-8 opacity-80" strokeWidth={1.5} />
+        <div className="absolute inset-0" style={{ background: "var(--color-bg-dark)", opacity: 0.85 }} />
+        <motion.div {...fadeUp} className="relative mx-auto max-w-3xl text-center">
+          <Users size={48} className="mx-auto mb-8 opacity-80" strokeWidth={1.5} style={{ color: "var(--color-accent)" }} />
           <h2
             className="font-display font-black uppercase leading-[1.05] mb-6"
             style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
           >
-            Rejoins la communauté
+            Rejoins la <span className="accent-word">communauté</span>
           </h2>
           <p className="text-lg md:text-xl opacity-90 mb-10 leading-relaxed max-w-xl mx-auto">
             Que tu sois bénévole ou organisateur, ta place est ici. Crée ton
@@ -469,13 +470,15 @@ function Home() {
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/inscription"
-              className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-8 py-4 text-sm font-bold uppercase tracking-wider hover:scale-105 transition-transform shadow-xl"
+              className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-wider hover:opacity-90 transition-opacity shadow-xl"
+              style={{ background: "var(--color-primary)", color: "var(--color-text-light)", minHeight: 44 }}
             >
               Créer un compte <ArrowRight size={16} />
             </Link>
             <Link
               to="/qui-sommes-nous"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-white/80 text-white px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-primary transition"
+              className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
+              style={{ border: "2px solid var(--color-text-light)", color: "var(--color-text-light)", minHeight: 44 }}
             >
               En savoir plus
             </Link>

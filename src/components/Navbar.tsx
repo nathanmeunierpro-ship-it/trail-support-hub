@@ -166,14 +166,14 @@ export function Navbar() {
                 <Link
                   to="/connexion"
                   className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ background: "var(--color-primary)", color: "var(--color-text-light)" }}
+                  style={{ background: "var(--color-bg-dark)", color: "var(--color-text-light)" }}
                 >
                   Se connecter
                 </Link>
                 <Link
                   to="/inscription"
                   className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ border: "2px solid var(--color-primary)", color: "var(--color-primary)", background: "transparent" }}
+                  style={{ background: "var(--color-surface)", color: "var(--color-primary)" }}
                 >
                   S'inscrire
                 </Link>
@@ -275,7 +275,7 @@ export function Navbar() {
                       to="/connexion"
                       onClick={() => setOpen(false)}
                       className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "var(--color-primary)", color: "var(--color-text-light)" }}
+                      style={{ background: "var(--color-bg-dark)", color: "var(--color-text-light)" }}
                     >
                       Se connecter
                     </Link>
@@ -285,7 +285,7 @@ export function Navbar() {
                       to="/inscription"
                       onClick={() => setOpen(false)}
                       className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ border: "2px solid var(--color-primary)", color: "var(--color-primary)" }}
+                      style={{ background: "var(--color-surface)", color: "var(--color-primary)" }}
                     >
                       S'inscrire
                     </Link>

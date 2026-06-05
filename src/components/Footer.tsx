@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground mt-20">
+    <footer className="section-dark mt-20" style={{ background: "var(--color-bg-dark)" }}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-10 md:grid-cols-3">
         <div>
           <Link to="/" aria-label="Ravito — Accueil">
@@ -15,7 +15,7 @@ export function Footer() {
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
               }}
             />
-            <span className="font-display text-2xl font-black text-primary-foreground hidden">Ravito</span>
+            <span className="font-display text-2xl font-black hidden" style={{ color: "var(--color-text-light)" }}>Ravito</span>
           </Link>
           <p className="text-sm opacity-70 max-w-xs leading-relaxed">
             Fait par des passionnés, pour des passionnés du trail en France.
@@ -32,7 +32,13 @@ export function Footer() {
               { to: "/qui-sommes-nous", label: "À propos" },
             ].map((l) => (
               <li key={l.to}>
-                <Link to={l.to} className="opacity-70 hover:opacity-100 transition-opacity">
+                <Link
+                  to={l.to}
+                  className="opacity-80 hover:opacity-100 transition-opacity"
+                  style={{ color: "var(--color-text-light)" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-accent)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-text-light)"; }}
+                >
                   {l.label}
                 </Link>
               </li>
