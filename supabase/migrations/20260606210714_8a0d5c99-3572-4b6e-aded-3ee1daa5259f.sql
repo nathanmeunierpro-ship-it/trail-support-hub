@@ -1,0 +1,1 @@
+UPDATE public.events SET type_sport = 'Trail' WHERE id = '7d2f1405-05a4-4964-b1d6-57cf19f5f9a5';
