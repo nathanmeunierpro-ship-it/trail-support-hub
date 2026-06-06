@@ -400,224 +400,162 @@ function Home() {
 }
 
 /* ──────────────────────────────────────────── */
-/*  SLOSH HERO                                  */
+/*  FINISHERS-STYLE HERO                        */
 /* ──────────────────────────────────────────── */
 
 function CleanHero() {
   return (
-    <>
-      <section
+    <section
+      style={{
+        minHeight: "100vh",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}
+    >
+      {/* Background image */}
+      <div
         style={{
-          background: "#73CC30",
-          minHeight: "100vh",
-          position: "relative",
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 32,
-          padding: "120px 24px 80px",
-          textAlign: "center",
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1400&q=85")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          zIndex: 0,
         }}
-      >
-        {/* Decorative stars */}
-        {[
-          { top: "12%", left: "6%", size: 18 },
-          { top: "18%", right: "8%", size: 22 },
-          { bottom: "14%", right: "10%", size: 14 },
-        ].map((s, i) => (
-          <span
-            key={i}
-            className="hero-spin hidden md:inline-block"
-            style={{
-              position: "absolute",
-              top: s.top,
-              left: s.left,
-              right: s.right,
-              bottom: s.bottom,
-              color: "#1A1A1A",
-              opacity: 0.2,
-              fontSize: s.size,
-              animationDuration: `${8 + i}s`,
-            }}
-          >
-            ✦
-          </span>
-        ))}
+      />
+      {/* Overlay gradient */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to bottom, rgba(115,204,48,0.82) 0%, rgba(115,204,48,0.55) 60%, rgba(0,0,0,0.4) 100%)",
+          zIndex: 1,
+        }}
+      />
 
-        {/* Floating pill — top left */}
-        <div
-          className="hero-wobble hidden md:block"
-          style={{
-            position: "absolute",
-            top: "22%",
-            left: "4%",
-            background: "#1A1A1A",
-            color: "#FFFFFF",
-            padding: "8px 16px",
-            borderRadius: 100,
-            fontSize: 12,
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-            animationDelay: "0s",
-          }}
-        >
-          🏃 Running · Trail · Vélo · Triathlon
-        </div>
-
-        {/* Floating pill — top right */}
-        <div
-          className="hero-wobble hidden md:block"
-          style={{
-            position: "absolute",
-            top: "20%",
-            right: "4%",
-            background: "#1A1A1A",
-            color: "#FFFFFF",
-            padding: "8px 16px",
-            borderRadius: 100,
-            fontSize: 12,
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-            animationDelay: "0.4s",
-          }}
-        >
-          300+ événements en France
-        </div>
-
-        {/* Starburst — bottom left */}
-        <div
-          className="hero-wobble hidden md:flex"
-          style={{
-            position: "absolute",
-            bottom: "28%",
-            left: "3%",
-            width: 88,
-            height: 88,
-            background: "#FFFFFF",
-            color: "#1A1A1A",
-            fontSize: 10,
-            fontWeight: 700,
-            textAlign: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            lineHeight: 1.2,
-            clipPath:
-              "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
-            animationDelay: "0.8s",
-            animationDuration: "4s",
-          }}
-        >
-          GRATUIT
-          <br />
-          pour les 20
-          <br />
-          premiers
-        </div>
-
-        {/* RAVITO title */}
+      {/* Content */}
+      <div className="finishers-hero-content">
+        {/* Title */}
         <h1
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(100px, 18vw, 220px)",
+            fontSize: "clamp(72px, 12vw, 140px)",
             color: "#FFFFFF",
-            letterSpacing: "-3px",
-            lineHeight: 0.85,
+            lineHeight: 0.9,
+            letterSpacing: "-2px",
+            fontStyle: "normal",
             margin: 0,
-            fontWeight: 400,
+            whiteSpace: "pre-line",
           }}
         >
-          RAVITO
+          {"B\u00C9N\u00C9VOLE\nOU\nORGANISATEUR ?"}
         </h1>
 
-        {/* Tagline */}
+        {/* Subtitle */}
         <p
           style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: "clamp(16px, 2.5vw, 22px)",
-            color: "#1A1A1A",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "clamp(15px, 2vw, 18px)",
+            color: "#FFFFFF",
+            opacity: 0.9,
             maxWidth: 480,
-            lineHeight: 1.5,
-            fontWeight: 400,
-            margin: 0,
+            lineHeight: 1.55,
+            marginTop: 20,
+            marginBottom: 0,
           }}
         >
-          Le sport rassemble. Les bénévoles le font vivre.
+          Trouve un événement sportif près de chez toi ou publie le tien. Trail, running, vélo, triathlon.
         </p>
 
-        {/* CTAs */}
-        <div className="clean-hero-ctas">
+        {/* Buttons */}
+        <div
+          style={{
+            marginTop: 36,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 12,
+            justifyContent: "flex-start",
+          }}
+        >
           <Link
-            to="/inscription"
-            className="clean-hero-btn"
+            to="/annonces"
             style={{
-              background: "#1A1A1A",
-              color: "#FFFFFF",
+              background: "#FFFFFF",
+              color: "#1A1A1A",
+              padding: "15px 28px",
+              borderRadius: 100,
+              fontWeight: 700,
+              fontSize: 14,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              fontFamily: "'DM Sans', sans-serif",
+              display: "inline-block",
+              transition: "transform 0.2s ease, opacity 0.2s ease",
+              textDecoration: "none",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
           >
             Je suis bénévole
           </Link>
           <Link
             to="/publier"
-            className="clean-hero-btn"
             style={{
-              background: "#FFFFFF",
-              color: "#1A1A1A",
+              background: "transparent",
+              color: "#FFFFFF",
+              padding: "15px 28px",
+              borderRadius: 100,
+              fontWeight: 700,
+              fontSize: 14,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              fontFamily: "'DM Sans', sans-serif",
+              display: "inline-block",
+              border: "2px solid rgba(255,255,255,0.7)",
+              transition: "transform 0.2s ease, background 0.2s ease",
+              textDecoration: "none",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.transform = "translateY(-2px)";
+              el.style.background = "rgba(255,255,255,0.15)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.transform = "translateY(0)";
+              el.style.background = "transparent";
             }}
           >
-            Je suis organisateur
+            Je publie un événement
           </Link>
         </div>
 
-        {/* Scroll indicator */}
-        <div
+        {/* Small text */}
+        <p
           style={{
-            position: "absolute",
-            bottom: 24,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 8,
-            opacity: 0.45,
-            color: "#1A1A1A",
+            marginTop: 16,
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 12,
+            color: "#FFFFFF",
+            opacity: 0.55,
           }}
         >
-          <span
-            style={{
-              width: 1,
-              height: 36,
-              background: "#1A1A1A",
-              display: "block",
-              animation: "scrollOpacityPulse 1.5s ease-in-out infinite",
-            }}
-          />
-          <span
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: 10,
-              textTransform: "uppercase",
-              letterSpacing: 2,
-              fontWeight: 600,
-            }}
-          >
-            Défiler
-          </span>
-        </div>
-      </section>
-
-      {/* Hero image — overlaps slightly */}
-      <img
-        src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=80"
-        alt="Bénévoles sur un événement sportif"
-        className="clean-hero-img"
-      />
-    </>
+          Gratuit pour les 20 premiers organisateurs
+        </p>
+      </div>
+    </section>
   );
 }
+
 
 

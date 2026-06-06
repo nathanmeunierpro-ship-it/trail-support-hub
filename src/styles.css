@@ -351,3 +351,18 @@
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
+
+/* ── Finishers-style hero ── */
+.finishers-hero-content {
+  padding: 140px 32px 60px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+@media (min-width: 768px) {
+  .finishers-hero-content {
+    padding: 140px 64px 80px;
+  }
+}
