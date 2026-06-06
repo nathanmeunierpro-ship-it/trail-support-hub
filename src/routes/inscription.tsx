@@ -167,7 +167,8 @@ function SignupPage() {
 
         <h1
           style={{
-            fontFamily: "'Bebas Neue', sans-serif",
+            fontFamily: "'Quicksand', sans-serif",
+            fontWeight: 900,
             fontSize: 52,
             color: "#1A1A1A",
             textAlign: "center",
