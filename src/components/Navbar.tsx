@@ -64,9 +64,9 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" aria-label="Ravito — Accueil" className="flex items-center pl-2">
             <img
-              src="/logo.png"
+              src={ravitoLogoWhite.url}
               alt="Ravito"
-              className="h-8 object-contain brightness-0 invert"
+              className="h-8 object-contain"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";

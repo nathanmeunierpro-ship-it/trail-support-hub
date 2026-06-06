@@ -154,7 +154,7 @@ function SignupPage() {
       >
         <Link to="/" className="mb-10">
           <img
-            src="/logo.png"
+            src={ravitoLogoGreen.url}
             alt="Ravito"
             className="h-12 object-contain"
             onError={(e) => {
@@ -325,7 +325,7 @@ function SignupPage() {
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "40px 24px" }}>
         <Link to="/" style={{ display: "block", textAlign: "center", marginBottom: 32 }}>
           <img
-            src="/logo.png"
+            src={ravitoLogoGreen.url}
             alt="Ravito"
             style={{ width: 100, height: "auto", margin: "0 auto", display: "block" }}
             onError={(e) => {
