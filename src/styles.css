@@ -39,8 +39,8 @@
   /* Brand colors — single source of truth */
   --color-primary: #73CC30;
   --color-accent: #73CC30;
-  --color-bg: #FFFFFF;
-  --color-bg-light: #F2FAE8;
+  --color-bg: #f0f7e6;
+  --color-bg-light: #f0f7e6;
   --color-bg-dark: #0F0F0F;
   --color-surface: #FFFFFF;
   --color-text: #1A1A1A;
