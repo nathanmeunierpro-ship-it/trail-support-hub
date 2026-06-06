@@ -36,7 +36,7 @@ const IMG_COMMUNITY =
 const IMG_TRAIL =
   "https://images.unsplash.com/photo-1502904550040-7534597429ae?w=1400&q=85";
 const IMG_VOLUNTEERS =
-  "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1400&q=85";
+  "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=1400&q=85";
 const IMG_WIDE =
   "https://images.unsplash.com/photo-1486218119243-13883505764c?w=2000&q=85";
 const CARD_IMGS = [
