@@ -443,7 +443,9 @@ function SignupPage() {
               style={inpStyle}
             />
             <p style={{ marginTop: 6, fontSize: 12, color: "#888" }}>
-              Pour la coordination WhatsApp avec les organisateurs
+              {role === "benevole"
+                ? "Pour la coordination WhatsApp avec les organisateurs"
+                : "Pour la coordination WhatsApp avec les bénévoles"}
             </p>
           </div>
 
