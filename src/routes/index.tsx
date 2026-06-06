@@ -33,10 +33,8 @@ interface Ev {
 
 const HERO_IMG =
   "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=80";
-const IMG_COMMUNITY =
-  "https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=1400&q=85";
-const IMG_TRAIL =
-  "https://images.unsplash.com/photo-1502904550040-7534597429ae?w=1400&q=85";
+const IMG_COMMUNITY = volunteerTeamAsset.url;
+const IMG_TRAIL = raceStartAsset.url;
 const IMG_VOLUNTEERS =
   "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=1400&q=85";
 const IMG_WIDE =
