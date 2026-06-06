@@ -440,17 +440,7 @@ function CleanHero() {
       />
 
       {/* Content */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          padding: "140px 32px 60px",
-          width: "100%",
-          maxWidth: 1200,
-          margin: "0 auto",
-        }}
-        className="md:!px-16"
-      >
+      <div className="finishers-hero-content">
         {/* Title */}
         <h1
           style={{
