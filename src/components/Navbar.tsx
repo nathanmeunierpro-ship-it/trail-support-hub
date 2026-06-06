@@ -266,8 +266,7 @@ export function Navbar() {
                     <Link
                       to="/connexion"
                       onClick={() => setOpen(false)}
-                      className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "var(--color-bg-dark)", color: "var(--color-text-light)" }}
+                      className="btn-secondary w-full"
                     >
                       Se connecter
                     </Link>
@@ -276,8 +275,7 @@ export function Navbar() {
                     <Link
                       to="/inscription"
                       onClick={() => setOpen(false)}
-                      className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "var(--color-surface)", color: "var(--color-primary)" }}
+                      className="btn-primary w-full"
                     >
                       S'inscrire
                     </Link>
