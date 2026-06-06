@@ -245,42 +245,6 @@ function Home() {
         </div>
       </section>
 
-      {/* ── RUNNING SEPARATOR ── */}
-      <div
-        style={{
-          width: "100%",
-          height: 80,
-          background: "#f0f7e6",
-          overflow: "hidden",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            borderTop: "2px dashed rgba(115,204,48,0.4)",
-            position: "absolute",
-            width: "100%",
-            top: "50%",
-          }}
-        />
-        <div
-          style={{
-            fontSize: 40,
-            position: "absolute",
-            bottom: 16,
-            animation: "runAcross 4s linear infinite",
-          }}
-        >
-          🏃
-        </div>
-        <style>{`
-          @keyframes runAcross {
-            0% { transform: translateX(-60px); }
-            100% { transform: translateX(calc(100vw + 60px)); }
-          }
-        `}</style>
-      </div>
-
       {/* ── EVENTS GRID ── */}
       <section className="py-24 px-6 section-light">
         <div className="mx-auto max-w-7xl">
