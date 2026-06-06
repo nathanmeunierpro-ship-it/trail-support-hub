@@ -14,33 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      avis: {
+        Row: {
+          commentaire: string | null
+          created_at: string
+          event_id: string
+          from_user: string
+          id: string
+          note: number
+          to_user: string
+        }
+        Insert: {
+          commentaire?: string | null
+          created_at?: string
+          event_id: string
+          from_user: string
+          id?: string
+          note: number
+          to_user: string
+        }
+        Update: {
+          commentaire?: string | null
+          created_at?: string
+          event_id?: string
+          from_user?: string
+          id?: string
+          note?: number
+          to_user?: string
+        }
+        Relationships: []
+      }
       benevoles: {
         Row: {
+          bio: string | null
           created_at: string
           departement: string | null
+          dispo_text: string | null
           disponibilites: string[] | null
           id: string
           niveau_trail: string | null
           nom: string | null
           prenom: string | null
+          region: string | null
+          sports_pratiques: string[] | null
         }
         Insert: {
+          bio?: string | null
           created_at?: string
           departement?: string | null
+          dispo_text?: string | null
           disponibilites?: string[] | null
           id: string
           niveau_trail?: string | null
           nom?: string | null
           prenom?: string | null
+          region?: string | null
+          sports_pratiques?: string[] | null
         }
         Update: {
+          bio?: string | null
           created_at?: string
           departement?: string | null
+          dispo_text?: string | null
           disponibilites?: string[] | null
           id?: string
           niveau_trail?: string | null
           nom?: string | null
           prenom?: string | null
+          region?: string | null
+          sports_pratiques?: string[] | null
         }
         Relationships: []
       }
@@ -146,6 +188,27 @@ export type Database = {
           type_sport?: string
           user_id?: string
           ville?: string
+        }
+        Relationships: []
+      }
+      favoris: {
+        Row: {
+          benevole_id: string
+          created_at: string
+          event_id: string
+          id: string
+        }
+        Insert: {
+          benevole_id: string
+          created_at?: string
+          event_id: string
+          id?: string
+        }
+        Update: {
+          benevole_id?: string
+          created_at?: string
+          event_id?: string
+          id?: string
         }
         Relationships: []
       }
