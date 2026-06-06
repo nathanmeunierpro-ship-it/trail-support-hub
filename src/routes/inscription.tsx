@@ -145,6 +145,155 @@ function SignupPage() {
     navigate({ to: role === "organisateur" ? "/mon-espace" : "/mes-candidatures" });
   };
 
+  if (!role) {
+    return (
+      <div
+        className="min-h-screen flex flex-col items-center justify-center px-6 py-12"
+        style={{ background: "#f0f7e6" }}
+      >
+        <Link to="/" className="mb-10">
+          <img
+            src="/logo.png"
+            alt="Ravito"
+            className="h-12 object-contain"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+              (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
+            }}
+          />
+          <span className="font-display text-3xl font-black text-primary hidden">Ravito</span>
+        </Link>
+
+        <h1
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: 52,
+            color: "#1A1A1A",
+            textAlign: "center",
+            letterSpacing: "-1px",
+            lineHeight: 1,
+            margin: 0,
+          }}
+        >
+          Tu es ici pour...
+        </h1>
+        <p
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 16,
+            color: "#6B6B6B",
+            textAlign: "center",
+            marginTop: 12,
+            marginBottom: 40,
+          }}
+        >
+          Choisis ton profil pour commencer
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 16,
+            justifyContent: "center",
+            width: "100%",
+            maxWidth: 600,
+          }}
+        >
+          {([
+            {
+              val: "benevole" as Role,
+              emoji: "🙋",
+              title: "BÉNÉVOLE",
+              desc: "Je veux aider sur un événement près de chez moi",
+              btnBg: "#73CC30",
+              btnColor: "#1A1A1A",
+            },
+            {
+              val: "organisateur" as Role,
+              emoji: "📋",
+              title: "ORGANISATEUR",
+              desc: "Je cherche des bénévoles pour mon événement sportif",
+              btnBg: "#1A1A1A",
+              btnColor: "#FFFFFF",
+            },
+          ] as const).map(({ val, emoji, title, desc, btnBg, btnColor }) => (
+            <motion.button
+              key={val}
+              type="button"
+              whileHover={{ y: -4 }}
+              onClick={() => setRole(val)}
+              style={{
+                background: "#FFFFFF",
+                borderRadius: 16,
+                padding: "32px 28px",
+                width: 260,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 16 }}>{emoji}</div>
+              <h3
+                style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 28,
+                  color: "#1A1A1A",
+                  letterSpacing: "-0.5px",
+                  margin: 0,
+                  marginBottom: 8,
+                }}
+              >
+                {title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 13,
+                  color: "#6B6B6B",
+                  lineHeight: 1.5,
+                  margin: 0,
+                  marginBottom: 20,
+                }}
+              >
+                {desc}
+              </p>
+              <span
+                style={{
+                  background: btnBg,
+                  color: btnColor,
+                  borderRadius: 100,
+                  padding: "10px 20px",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: 1,
+                  alignSelf: "stretch",
+                  textAlign: "center",
+                }}
+              >
+                Choisir →
+              </span>
+            </motion.button>
+          ))}
+        </div>
+
+        <p className="mt-10 text-center text-sm" style={{ color: "#6B6B6B" }}>
+          Déjà inscrit ?{" "}
+          <Link to="/connexion" className="text-primary font-semibold hover:underline">
+            Se connecter
+          </Link>
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex bg-background overflow-hidden">
       {/* ── Left panel ── */}
