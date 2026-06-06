@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import ravitoLogoWhite from "@/assets/ravito-logo-white.png.asset.json";
 
 export function Footer() {
   return (
@@ -7,9 +8,9 @@ export function Footer() {
         <div>
           <Link to="/" aria-label="Ravito — Accueil">
             <img
-              src="/logo.png"
+              src={ravitoLogoWhite.url}
               alt="Ravito"
-              className="h-8 object-contain brightness-0 invert mb-4"
+              className="h-8 object-contain mb-4"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
