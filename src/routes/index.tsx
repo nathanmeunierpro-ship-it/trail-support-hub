@@ -422,7 +422,7 @@ function CleanHero() {
           position: "absolute",
           inset: 0,
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1400&q=85")',
+            'url("https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=1400&q=85")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           zIndex: 0,
@@ -434,7 +434,7 @@ function CleanHero() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to bottom, rgba(115,204,48,0.82) 0%, rgba(115,204,48,0.55) 60%, rgba(0,0,0,0.4) 100%)",
+            "linear-gradient(to bottom, rgba(26,26,26,0.65) 0%, rgba(26,26,26,0.45) 50%, rgba(26,26,26,0.7) 100%)",
           zIndex: 1,
         }}
       />
@@ -452,6 +452,7 @@ function CleanHero() {
             fontStyle: "normal",
             margin: 0,
             whiteSpace: "pre-line",
+            textShadow: "0 2px 20px rgba(0,0,0,0.3)",
           }}
         >
           {"B\u00C9N\u00C9VOLE\nOU\nORGANISATEUR ?"}
