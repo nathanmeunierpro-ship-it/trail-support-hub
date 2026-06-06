@@ -335,18 +335,10 @@ function Home() {
             compte en 30 secondes et démarre l'aventure.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/inscription"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-wider hover:opacity-90 transition-opacity shadow-xl"
-              style={{ background: "var(--color-primary)", color: "var(--color-text-light)", minHeight: 44 }}
-            >
+            <Link to="/inscription" className="btn-primary gap-2">
               Créer un compte <ArrowRight size={16} />
             </Link>
-            <Link
-              to="/qui-sommes-nous"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-              style={{ border: "2px solid var(--color-text-light)", color: "var(--color-text-light)", minHeight: 44 }}
-            >
+            <Link to="/qui-sommes-nous" className="btn-outline-light">
               En savoir plus
             </Link>
           </div>
