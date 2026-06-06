@@ -94,7 +94,7 @@ function Home() {
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "Pacifico, cursive", textTransform: "none", color: "var(--color-text-light)" }}>
+            <span style={{ fontFamily: "'More Sugar', cursive", textTransform: "none", color: "var(--color-text-light)" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
@@ -292,7 +292,7 @@ function Home() {
                       <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                         <h3
                           className="text-white leading-tight mb-4 line-clamp-3"
-                          style={{ fontFamily: "Pacifico, cursive", fontSize: "1.85rem" }}
+                          style={{ fontFamily: "'More Sugar', cursive", fontSize: "1.85rem" }}
                         >
                           {ev.nom}
                         </h3>
