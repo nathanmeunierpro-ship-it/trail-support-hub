@@ -297,10 +297,16 @@ function Home() {
                           {ev.nom}
                         </h3>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="inline-flex items-center gap-1 rounded-full bg-white/95 text-primary px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                          <span
+                            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                            style={{ background: "rgba(255,255,255,0.15)", color: "#FFFFFF", border: "1px solid #FFFFFF" }}
+                          >
                             <MapPin size={11} /> {ev.ville}
                           </span>
-                          <span className="inline-block rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                          <span
+                            className="inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                            style={{ background: "#73CC30", color: "#1A1A1A" }}
+                          >
                             {ev.type_sport}
                           </span>
                         </div>
