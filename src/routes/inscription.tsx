@@ -156,7 +156,8 @@ function SignupPage() {
           <img
             src={ravitoLogoGreen.url}
             alt="Ravito"
-            className="h-24 w-auto object-contain"
+            style={{ height: 80, width: "auto" }}
+            className="object-contain"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
