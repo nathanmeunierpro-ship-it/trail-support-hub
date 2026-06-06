@@ -88,7 +88,7 @@ const OFFERS: Offer[] = [
       "Analytics avancés",
       "Support dédié",
     ],
-    ctaLabel: "Nous contacter",
+    ctaLabel: "SUR DEVIS →",
     ctaKind: "modal",
     modalOffer: "Premium — à partir de 49,99€",
     borderClass: "border-2 border-[var(--color-primary)]",
