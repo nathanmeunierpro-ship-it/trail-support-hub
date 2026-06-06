@@ -90,7 +90,7 @@ function LoginPage() {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-between h-full p-10">
           <Link to="/">
-            <img src={ravitoLogoWhite.url} alt="Ravito" className="h-12 w-auto object-contain"
+            <img src={ravitoLogoWhite.url} alt="Ravito" className="h-16 w-auto object-contain"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
@@ -123,7 +123,7 @@ function LoginPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         {/* Mobile logo */}
         <Link to="/" className="lg:hidden mb-10">
-          <img src={ravitoLogoGreen.url} alt="Ravito" className="h-14 w-auto object-contain mx-auto"
+          <img src={ravitoLogoGreen.url} alt="Ravito" className="h-16 w-auto object-contain mx-auto"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
