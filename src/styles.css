@@ -217,3 +217,12 @@
   background: var(--primary);
   color: var(--primary-foreground);
 }
+
+/* ── Floating badge animation ── */
+@keyframes float-badge-anim {
+  0% { transform: translateY(-8px); }
+  100% { transform: translateY(8px); }
+}
+.float-badge {
+  animation: float-badge-anim 3s ease-in-out infinite alternate;
+}
