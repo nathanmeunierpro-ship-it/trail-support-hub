@@ -3,27 +3,27 @@ import ravitoLogoWhite from "@/assets/ravito-logo-white.png.asset.json";
 
 export function Footer() {
   return (
-    <footer className="section-dark" style={{ background: "var(--color-bg-dark)" }}>
+    <footer style={{ background: "#73CC30", color: "#1A1A1A" }}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-10 md:grid-cols-3">
         <div>
           <Link to="/" aria-label="Ravito — Accueil">
             <img
               src={ravitoLogoWhite.url}
               alt="Ravito"
-              className="h-16 w-auto object-contain mb-4"
+              className="h-16 w-auto mb-4"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
               }}
             />
-            <span className="font-display text-2xl font-black hidden" style={{ color: "var(--color-text-light)" }}>Ravito</span>
+            <span className="font-display text-2xl font-black hidden" style={{ color: "#1A1A1A" }}>Ravito</span>
           </Link>
-          <p className="text-sm opacity-70 max-w-xs leading-relaxed">
+          <p className="text-sm max-w-xs leading-relaxed" style={{ color: "#1A1A1A", opacity: 0.85 }}>
             Fait par des passionnés, pour des passionnés du trail en France.
           </p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-widest opacity-50 mb-5 font-semibold">Navigation</p>
+          <p className="text-xs uppercase tracking-widest mb-5 font-semibold" style={{ color: "#1A1A1A", opacity: 0.7 }}>Navigation</p>
           <ul className="space-y-3 text-sm">
             {[
               { to: "/annonces", label: "Tous les événements" },
@@ -35,10 +35,8 @@ export function Footer() {
               <li key={l.to}>
                 <Link
                   to={l.to}
-                  className="opacity-80 hover:opacity-100 transition-opacity"
-                  style={{ color: "var(--color-text-light)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-accent)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-text-light)"; }}
+                  className="hover:underline transition-opacity"
+                  style={{ color: "#1A1A1A" }}
                 >
                   {l.label}
                 </Link>
@@ -47,11 +45,11 @@ export function Footer() {
           </ul>
         </div>
         <div className="md:text-right">
-          <p className="text-xs uppercase tracking-widest opacity-50 font-semibold">France · 2026</p>
-          <p className="text-sm opacity-60 mt-3">Ravito — Tous droits réservés</p>
+          <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: "#1A1A1A", opacity: 0.7 }}>France · 2026</p>
+          <p className="text-sm mt-3" style={{ color: "#1A1A1A", opacity: 0.85 }}>Ravito — Tous droits réservés</p>
           <div className="flex flex-wrap gap-x-4 gap-y-2 mt-4 md:justify-end">
-            <Link to="/cgu" className="text-xs opacity-60 hover:opacity-100 transition-opacity">CGU</Link>
-            <Link to="/mentions-legales" className="text-xs opacity-60 hover:opacity-100 transition-opacity">Mentions légales</Link>
+            <Link to="/cgu" className="text-xs hover:underline" style={{ color: "#1A1A1A", opacity: 0.85 }}>CGU</Link>
+            <Link to="/mentions-legales" className="text-xs hover:underline" style={{ color: "#1A1A1A", opacity: 0.85 }}>Mentions légales</Link>
           </div>
         </div>
       </div>

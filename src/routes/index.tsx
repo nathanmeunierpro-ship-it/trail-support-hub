@@ -5,6 +5,8 @@ import { ArrowRight, MapPin, Calendar, Heart, Users, Sparkles } from "lucide-rea
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { Ticker } from "@/components/Ticker";
+import volunteerTeamAsset from "@/assets/volunteer-team.jpeg.asset.json";
+import raceStartAsset from "@/assets/race-start.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,10 +33,8 @@ interface Ev {
 
 const HERO_IMG =
   "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=80";
-const IMG_COMMUNITY =
-  "https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=1400&q=85";
-const IMG_TRAIL =
-  "https://images.unsplash.com/photo-1502904550040-7534597429ae?w=1400&q=85";
+const IMG_COMMUNITY = volunteerTeamAsset.url;
+const IMG_TRAIL = raceStartAsset.url;
 const IMG_VOLUNTEERS =
   "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=1400&q=85";
 const IMG_WIDE =
@@ -68,7 +68,7 @@ function Home() {
   }, []);
 
   return (
-    <PageShell>
+    <PageShell padTop={false}>
       {/* ── HERO — playful maximalist (Slosh-style) ── */}
       <CleanHero />
 
@@ -291,16 +291,22 @@ function Home() {
                       </div>
                       <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                         <h3
-                          className="text-white leading-tight mb-4 line-clamp-3"
-                          style={{ fontFamily: "'More Sugar', cursive", fontSize: "1.85rem" }}
+                          className="leading-tight mb-4 line-clamp-3"
+                          style={{ fontFamily: "'More Sugar', cursive", fontSize: "1.85rem", color: "#FFFFFF", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
                         >
                           {ev.nom}
                         </h3>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="inline-flex items-center gap-1 rounded-full bg-white/95 text-primary px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                          <span
+                            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                            style={{ background: "rgba(255,255,255,0.15)", color: "#FFFFFF", border: "1px solid #FFFFFF" }}
+                          >
                             <MapPin size={11} /> {ev.ville}
                           </span>
-                          <span className="inline-block rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                          <span
+                            className="inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                            style={{ background: "#73CC30", color: "#1A1A1A" }}
+                          >
                             {ev.type_sport}
                           </span>
                         </div>
@@ -363,7 +369,8 @@ function CleanHero() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start",
-        paddingTop: "100px",
+        marginTop: 0,
+        paddingTop: 0,
         paddingBottom: "0",
         marginBottom: "0",
       }}
@@ -429,10 +436,10 @@ function CleanHero() {
 
         {/* Buttons */}
         <div className="finishers-hero-btns">
-          <Link to="/annonces" className="btn-primary">
+          <Link to="/inscription" className="btn-primary">
             Je suis bénévole
           </Link>
-          <Link to="/publier" className="btn-outline-light">
+          <Link to="/inscription" className="btn-outline-light">
             Je publie un événement
           </Link>
         </div>
