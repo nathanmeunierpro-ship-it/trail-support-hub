@@ -112,15 +112,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Smooth transition from dark mission to light bénévoles section */}
-      <div
-        aria-hidden
-        style={{
-          height: "40px",
-          background: "linear-gradient(to bottom, var(--color-bg-dark), #f0f7e6)",
-        }}
-      />
-
       {/* ── ALT 1 : image gauche / texte droite ── */}
       <section className="py-20 px-6 section-light">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
@@ -306,27 +297,10 @@ function Home() {
                           {ev.nom}
                         </h3>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span
-                            className="inline-flex items-center gap-1 px-3 py-1 text-xs uppercase tracking-wider backdrop-blur-sm"
-                            style={{
-                              background: "rgba(255,255,255,0.15)",
-                              color: "#FFFFFF",
-                              border: "1px solid rgba(255,255,255,0.3)",
-                              borderRadius: "100px",
-                              fontWeight: 600,
-                            }}
-                          >
+                          <span className="inline-flex items-center gap-1 rounded-full bg-white/95 text-primary px-3 py-1 text-xs font-bold uppercase tracking-wider">
                             <MapPin size={11} /> {ev.ville}
                           </span>
-                          <span
-                            className="inline-block px-3 py-1 text-xs uppercase tracking-wider"
-                            style={{
-                              background: "#73CC30",
-                              color: "#1A1A1A",
-                              borderRadius: "100px",
-                              fontWeight: 700,
-                            }}
-                          >
+                          <span className="inline-block rounded-full bg-primary text-primary-foreground px-3 py-1 text-xs font-bold uppercase tracking-wider">
                             {ev.type_sport}
                           </span>
                         </div>
