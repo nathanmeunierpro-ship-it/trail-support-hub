@@ -398,3 +398,264 @@ function Home() {
     </PageShell>
   );
 }
+
+/* ──────────────────────────────────────────── */
+/*  SLOSH HERO                                  */
+/* ──────────────────────────────────────────── */
+
+type FloatingPos = {
+  className: string;
+  delay: number;
+  depth: number;
+};
+
+const PILL_POSITIONS: FloatingPos[] = [
+  { className: "top-[18%] left-[6%]", delay: 0, depth: 10 },
+  { className: "top-[20%] right-[6%]", delay: 0.3, depth: 12 },
+  { className: "top-1/2 -translate-y-1/2 left-[3%]", delay: 0.6, depth: 8 },
+  { className: "top-1/2 -translate-y-1/2 right-[3%]", delay: 0.9, depth: 8 },
+  { className: "bottom-[22%] left-[8%]", delay: 1.2, depth: 14 },
+  { className: "bottom-[20%] right-[8%]", delay: 1.5, depth: 11 },
+];
+
+const STAR_POSITIONS = [
+  { className: "top-[25%] left-[20%]", size: 22, duration: "8s" },
+  { className: "top-[35%] right-[18%]", size: 18, duration: "10s" },
+  { className: "bottom-[30%] left-[22%]", size: 24, duration: "7s" },
+  { className: "bottom-[28%] right-[24%]", size: 16, duration: "9s" },
+];
+
+function SloshHero() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const cx = (e.clientX - rect.left) / rect.width - 0.5;
+      const cy = (e.clientY - rect.top) / rect.height - 0.5;
+      el.querySelectorAll<HTMLElement>("[data-depth]").forEach((node) => {
+        const depth = Number(node.dataset.depth ?? "8");
+        node.style.setProperty("--px", `${(-cx * depth).toFixed(2)}px`);
+        node.style.setProperty("--py", `${(-cy * depth).toFixed(2)}px`);
+      });
+    };
+    el.addEventListener("mousemove", onMove);
+    return () => el.removeEventListener("mousemove", onMove);
+  }, []);
+
+  const pillContents = [
+    <>🏃 Running · Trail · Vélo</>,
+    <>300+ événements en France</>,
+    <>Organisateurs ↗</>,
+    <>Bénévoles ↗</>,
+    null, // star slot 4 (bottom-left star replaces this pill)
+    <>⚡ Inscription 2 min</>,
+  ];
+
+  return (
+    <section ref={heroRef} className="hero-slosh">
+      {/* Top giant text */}
+      <div className="hero-bebas hero-bebas--top">RAVITO</div>
+      {/* Bottom giant text */}
+      <div className="hero-bebas hero-bebas--bottom">BÉNÉVOLES</div>
+
+      {/* Decorative stars */}
+      {STAR_POSITIONS.map((s, i) => (
+        <span
+          key={i}
+          data-depth={6 + i * 2}
+          className={`absolute ${s.className} pointer-events-none`}
+          style={{
+            color: "#1A1A1A",
+            opacity: 0.35,
+            fontSize: s.size,
+            transform: "translate(var(--px,0), var(--py,0))",
+          }}
+        >
+          <span className="inline-block hero-spin" style={{ animationDuration: s.duration }}>✦</span>
+        </span>
+      ))}
+
+      {/* Floating pills */}
+      {PILL_POSITIONS.map((p, i) => {
+        if (i === 4) {
+          // bottom-left starburst
+          return (
+            <div
+              key="star"
+              data-depth={p.depth}
+              className={`absolute ${p.className}`}
+              style={{ transform: "translate(var(--px,0), var(--py,0))" }}
+            >
+              <div className="hero-wobble" style={{ animationDelay: `${p.delay}s` }}>
+                <div className="hero-star">
+                  100%<br />GRATUIT
+                </div>
+              </div>
+            </div>
+          );
+        }
+        const content = pillContents[i];
+        return (
+          <div
+            key={i}
+            data-depth={p.depth}
+            className={`absolute ${p.className}`}
+            style={{ transform: "translate(var(--px,0), var(--py,0))" }}
+          >
+            <div className="hero-wobble hero-pill" style={{ animationDelay: `${p.delay}s` }}>
+              {content}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Center: bib + CTAs */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pt-32 pb-32">
+        <div className="hero-bib">
+          <SportBib />
+        </div>
+
+        <div className="mt-10 flex flex-wrap gap-4 justify-center z-20 relative">
+          <Link
+            to="/annonces"
+            style={{
+              background: "#1A1A1A",
+              color: "#FFFFFF",
+              padding: "16px 36px",
+              borderRadius: "100px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "13px",
+            }}
+          >
+            Voir les événements
+          </Link>
+          <Link
+            to="/publier"
+            style={{
+              background: "#FFFFFF",
+              color: "#1A1A1A",
+              padding: "16px 36px",
+              borderRadius: "100px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "13px",
+            }}
+          >
+            Publier mon événement
+          </Link>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        style={{ bottom: 20, color: "#1A1A1A", opacity: 0.5 }}
+      >
+        <span
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: 10,
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            fontWeight: 600,
+          }}
+        >
+          Défiler
+        </span>
+        <span
+          className="hero-scrollbar"
+          style={{ width: 1, height: 28, background: "#1A1A1A", display: "block" }}
+        />
+      </div>
+    </section>
+  );
+}
+
+function SportBib() {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "min(260px, 70vw)",
+        aspectRatio: "1 / 1.15",
+        background: "#FFFFFF",
+        borderRadius: 20,
+        boxShadow: "0 30px 60px -15px rgba(0,0,0,0.35), 0 10px 25px rgba(0,0,0,0.18)",
+        overflow: "hidden",
+      }}
+    >
+      {/* Pins */}
+      {[
+        { top: 10, left: 10 },
+        { top: 10, right: 10 },
+        { bottom: 10, left: 10 },
+        { bottom: 10, right: 10 },
+      ].map((pos, i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            width: 14,
+            height: 14,
+            borderRadius: "50%",
+            background: "#73CC30",
+            boxShadow: "inset 0 -2px 3px rgba(0,0,0,0.2)",
+            ...pos,
+          }}
+        />
+      ))}
+      {/* Top band */}
+      <div
+        style={{
+          background: "#73CC30",
+          color: "#FFFFFF",
+          fontFamily: "Bebas Neue, sans-serif",
+          fontSize: 22,
+          letterSpacing: "3px",
+          textAlign: "center",
+          padding: "10px 0",
+          marginTop: 28,
+        }}
+      >
+        BÉNÉVOLE
+      </div>
+      {/* Number */}
+      <div
+        style={{
+          fontFamily: "Bebas Neue, sans-serif",
+          fontSize: "clamp(70px, 18vw, 110px)",
+          color: "#1A1A1A",
+          textAlign: "center",
+          lineHeight: 1,
+          marginTop: 18,
+          fontWeight: 900,
+        }}
+      >
+        01
+      </div>
+      {/* Bottom text */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 22,
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          fontFamily: "Bebas Neue, sans-serif",
+          color: "#73CC30",
+          fontSize: 16,
+          letterSpacing: "4px",
+        }}
+      >
+        RAVITO.FR
+      </div>
+    </div>
+  );
+}
+
