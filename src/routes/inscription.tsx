@@ -243,7 +243,8 @@ function SignupPage() {
               <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 16 }}>{emoji}</div>
               <h3
                 style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontFamily: "'Quicksand', sans-serif",
+                  fontWeight: 900,
                   fontSize: 28,
                   color: "#1A1A1A",
                   letterSpacing: "-0.5px",
