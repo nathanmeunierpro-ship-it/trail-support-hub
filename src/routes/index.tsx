@@ -403,259 +403,221 @@ function Home() {
 /*  SLOSH HERO                                  */
 /* ──────────────────────────────────────────── */
 
-type FloatingPos = {
-  className: string;
-  delay: number;
-  depth: number;
-};
-
-const PILL_POSITIONS: FloatingPos[] = [
-  { className: "top-[18%] left-[6%]", delay: 0, depth: 10 },
-  { className: "top-[20%] right-[6%]", delay: 0.3, depth: 12 },
-  { className: "top-1/2 -translate-y-1/2 left-[3%]", delay: 0.6, depth: 8 },
-  { className: "top-1/2 -translate-y-1/2 right-[3%]", delay: 0.9, depth: 8 },
-  { className: "bottom-[22%] left-[8%]", delay: 1.2, depth: 14 },
-  { className: "bottom-[20%] right-[8%]", delay: 1.5, depth: 11 },
-];
-
-const STAR_POSITIONS = [
-  { className: "top-[25%] left-[20%]", size: 22, duration: "8s" },
-  { className: "top-[35%] right-[18%]", size: 18, duration: "10s" },
-  { className: "bottom-[30%] left-[22%]", size: 24, duration: "7s" },
-  { className: "bottom-[28%] right-[24%]", size: 16, duration: "9s" },
-];
-
-function SloshHero() {
-  const heroRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-    const onMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const cx = (e.clientX - rect.left) / rect.width - 0.5;
-      const cy = (e.clientY - rect.top) / rect.height - 0.5;
-      el.querySelectorAll<HTMLElement>("[data-depth]").forEach((node) => {
-        const depth = Number(node.dataset.depth ?? "8");
-        node.style.setProperty("--px", `${(-cx * depth).toFixed(2)}px`);
-        node.style.setProperty("--py", `${(-cy * depth).toFixed(2)}px`);
-      });
-    };
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
-  }, []);
-
-  const pillContents = [
-    <>🏃 Running · Trail · Vélo</>,
-    <>300+ événements en France</>,
-    <>Organisateurs ↗</>,
-    <>Bénévoles ↗</>,
-    null, // star slot 4 (bottom-left star replaces this pill)
-    <>⚡ Inscription 2 min</>,
-  ];
-
+function CleanHero() {
   return (
-    <section ref={heroRef} className="hero-slosh">
-      {/* Top giant text */}
-      <div className="hero-bebas hero-bebas--top">RAVITO</div>
-      {/* Bottom giant text */}
-      <div className="hero-bebas hero-bebas--bottom">BÉNÉVOLES</div>
+    <>
+      <section
+        style={{
+          background: "#73CC30",
+          minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 32,
+          padding: "120px 24px 80px",
+          textAlign: "center",
+        }}
+      >
+        {/* Decorative stars */}
+        {[
+          { top: "12%", left: "6%", size: 18 },
+          { top: "18%", right: "8%", size: 22 },
+          { bottom: "14%", right: "10%", size: 14 },
+        ].map((s, i) => (
+          <span
+            key={i}
+            className="hero-spin hidden md:inline-block"
+            style={{
+              position: "absolute",
+              top: s.top,
+              left: s.left,
+              right: s.right,
+              bottom: s.bottom,
+              color: "#1A1A1A",
+              opacity: 0.2,
+              fontSize: s.size,
+              animationDuration: `${8 + i}s`,
+            }}
+          >
+            ✦
+          </span>
+        ))}
 
-      {/* Decorative stars */}
-      {STAR_POSITIONS.map((s, i) => (
-        <span
-          key={i}
-          data-depth={6 + i * 2}
-          className={`absolute ${s.className} pointer-events-none`}
+        {/* Floating pill — top left */}
+        <div
+          className="hero-wobble hidden md:block"
           style={{
-            color: "#1A1A1A",
-            opacity: 0.35,
-            fontSize: s.size,
-            transform: "translate(var(--px,0), var(--py,0))",
+            position: "absolute",
+            top: "22%",
+            left: "4%",
+            background: "#1A1A1A",
+            color: "#FFFFFF",
+            padding: "8px 16px",
+            borderRadius: 100,
+            fontSize: 12,
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 600,
+            whiteSpace: "nowrap",
+            animationDelay: "0s",
           }}
         >
-          <span className="inline-block hero-spin" style={{ animationDuration: s.duration }}>✦</span>
-        </span>
-      ))}
-
-      {/* Floating pills */}
-      {PILL_POSITIONS.map((p, i) => {
-        if (i === 4) {
-          // bottom-left starburst
-          return (
-            <div
-              key="star"
-              data-depth={p.depth}
-              className={`absolute ${p.className}`}
-              style={{ transform: "translate(var(--px,0), var(--py,0))" }}
-            >
-              <div className="hero-wobble" style={{ animationDelay: `${p.delay}s` }}>
-                <div className="hero-star">
-                  100%<br />GRATUIT
-                </div>
-              </div>
-            </div>
-          );
-        }
-        const content = pillContents[i];
-        return (
-          <div
-            key={i}
-            data-depth={p.depth}
-            className={`absolute ${p.className}`}
-            style={{ transform: "translate(var(--px,0), var(--py,0))" }}
-          >
-            <div className="hero-wobble hero-pill" style={{ animationDelay: `${p.delay}s` }}>
-              {content}
-            </div>
-          </div>
-        );
-      })}
-
-      {/* Center: bib + CTAs */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pt-32 pb-32">
-        <div className="hero-bib">
-          <SportBib />
+          🏃 Running · Trail · Vélo · Triathlon
         </div>
 
-        <div className="mt-10 flex flex-wrap gap-4 justify-center z-20 relative">
+        {/* Floating pill — top right */}
+        <div
+          className="hero-wobble hidden md:block"
+          style={{
+            position: "absolute",
+            top: "20%",
+            right: "4%",
+            background: "#1A1A1A",
+            color: "#FFFFFF",
+            padding: "8px 16px",
+            borderRadius: 100,
+            fontSize: 12,
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 600,
+            whiteSpace: "nowrap",
+            animationDelay: "0.4s",
+          }}
+        >
+          300+ événements en France
+        </div>
+
+        {/* Starburst — bottom left */}
+        <div
+          className="hero-wobble hidden md:flex"
+          style={{
+            position: "absolute",
+            bottom: "28%",
+            left: "3%",
+            width: 88,
+            height: 88,
+            background: "#FFFFFF",
+            color: "#1A1A1A",
+            fontSize: 10,
+            fontWeight: 700,
+            textAlign: "center",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: 1.2,
+            clipPath:
+              "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)",
+            animationDelay: "0.8s",
+            animationDuration: "4s",
+          }}
+        >
+          GRATUIT
+          <br />
+          pour les 20
+          <br />
+          premiers
+        </div>
+
+        {/* RAVITO title */}
+        <h1
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: "clamp(100px, 18vw, 220px)",
+            color: "#FFFFFF",
+            letterSpacing: "-3px",
+            lineHeight: 0.85,
+            margin: 0,
+            fontWeight: 400,
+          }}
+        >
+          RAVITO
+        </h1>
+
+        {/* Tagline */}
+        <p
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "clamp(16px, 2.5vw, 22px)",
+            color: "#1A1A1A",
+            maxWidth: 480,
+            lineHeight: 1.5,
+            fontWeight: 400,
+            margin: 0,
+          }}
+        >
+          Le sport rassemble. Les bénévoles le font vivre.
+        </p>
+
+        {/* CTAs */}
+        <div className="clean-hero-ctas">
           <Link
-            to="/annonces"
+            to="/inscription"
+            className="clean-hero-btn"
             style={{
               background: "#1A1A1A",
               color: "#FFFFFF",
-              padding: "16px 36px",
-              borderRadius: "100px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              fontSize: "13px",
             }}
           >
-            Voir les événements
+            Je suis bénévole
           </Link>
           <Link
             to="/publier"
+            className="clean-hero-btn"
             style={{
               background: "#FFFFFF",
               color: "#1A1A1A",
-              padding: "16px 36px",
-              borderRadius: "100px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              fontSize: "13px",
             }}
           >
-            Publier mon événement
+            Je suis organisateur
           </Link>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ bottom: 20, color: "#1A1A1A", opacity: 0.5 }}
-      >
-        <span
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontSize: 10,
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            fontWeight: 600,
-          }}
-        >
-          Défiler
-        </span>
-        <span
-          className="hero-scrollbar"
-          style={{ width: 1, height: 28, background: "#1A1A1A", display: "block" }}
-        />
-      </div>
-    </section>
-  );
-}
-
-function SportBib() {
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: "min(260px, 70vw)",
-        aspectRatio: "1 / 1.15",
-        background: "#FFFFFF",
-        borderRadius: 20,
-        boxShadow: "0 30px 60px -15px rgba(0,0,0,0.35), 0 10px 25px rgba(0,0,0,0.18)",
-        overflow: "hidden",
-      }}
-    >
-      {/* Pins */}
-      {[
-        { top: 10, left: 10 },
-        { top: 10, right: 10 },
-        { bottom: 10, left: 10 },
-        { bottom: 10, right: 10 },
-      ].map((pos, i) => (
-        <span
-          key={i}
+        {/* Scroll indicator */}
+        <div
           style={{
             position: "absolute",
-            width: 14,
-            height: 14,
-            borderRadius: "50%",
-            background: "#73CC30",
-            boxShadow: "inset 0 -2px 3px rgba(0,0,0,0.2)",
-            ...pos,
+            bottom: 24,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+            opacity: 0.45,
+            color: "#1A1A1A",
           }}
-        />
-      ))}
-      {/* Top band */}
-      <div
-        style={{
-          background: "#73CC30",
-          color: "#FFFFFF",
-          fontFamily: "Bebas Neue, sans-serif",
-          fontSize: 22,
-          letterSpacing: "3px",
-          textAlign: "center",
-          padding: "10px 0",
-          marginTop: 28,
-        }}
-      >
-        BÉNÉVOLE
-      </div>
-      {/* Number */}
-      <div
-        style={{
-          fontFamily: "Bebas Neue, sans-serif",
-          fontSize: "clamp(70px, 18vw, 110px)",
-          color: "#1A1A1A",
-          textAlign: "center",
-          lineHeight: 1,
-          marginTop: 18,
-          fontWeight: 900,
-        }}
-      >
-        01
-      </div>
-      {/* Bottom text */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 22,
-          left: 0,
-          right: 0,
-          textAlign: "center",
-          fontFamily: "Bebas Neue, sans-serif",
-          color: "#73CC30",
-          fontSize: 16,
-          letterSpacing: "4px",
-        }}
-      >
-        RAVITO.FR
-      </div>
-    </div>
+        >
+          <span
+            style={{
+              width: 1,
+              height: 36,
+              background: "#1A1A1A",
+              display: "block",
+              animation: "scrollOpacityPulse 1.5s ease-in-out infinite",
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: 10,
+              textTransform: "uppercase",
+              letterSpacing: 2,
+              fontWeight: 600,
+            }}
+          >
+            Défiler
+          </span>
+        </div>
+      </section>
+
+      {/* Hero image — overlaps slightly */}
+      <img
+        src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=1200&q=80"
+        alt="Bénévoles sur un événement sportif"
+        className="clean-hero-img"
+      />
+    </>
   );
 }
+
 
