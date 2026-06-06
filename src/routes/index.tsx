@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Calendar, Heart, Users, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -69,122 +69,9 @@ function Home() {
 
   return (
     <PageShell>
-      {/* ── HERO — composition éditoriale ── */}
-      <section className="relative pt-24 md:pt-28 pb-24 px-6 bg-background overflow-hidden">
-        <div className="mx-auto max-w-7xl grid gap-14 lg:gap-12 lg:grid-cols-12 items-center">
-          {/* Texte */}
-          <div className="lg:col-span-6 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-8"
-            >
-              <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-[0.2em]">
-                La plateforme bénévoles sport #1 en France
-              </span>
-            </motion.div>
+      {/* ── HERO — playful maximalist (Slosh-style) ── */}
+      <SloshHero />
 
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.05 }}
-              className="font-display font-black leading-tight tracking-tight"
-              style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}
-            >
-              <span style={{ color: "var(--color-text)" }}>Trouve des bénévoles</span>
-              <br />
-              <span style={{ color: "var(--color-primary)" }}>pour ton événement sportif</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="mt-8 max-w-lg text-base leading-relaxed"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
-              Trails, running, vélo, triathlon… Connecte organisateurs et bénévoles partout en France. Gratuit pour les 20 premiers.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="mt-10 flex flex-wrap items-center gap-4"
-            >
-              <Link
-                to="/annonces"
-                className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-7 py-4 text-sm font-bold uppercase tracking-wider shadow-lg hover:scale-[1.03] transition-transform"
-              >
-                Voir les annonces <ArrowRight size={16} />
-              </Link>
-              <Link
-                to="/publier"
-                className="inline-flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider hover:gap-3 transition-all border-b-2 border-primary/30 hover:border-primary pb-1"
-              >
-                Publier mon événement
-              </Link>
-            </motion.div>
-
-          </div>
-
-          {/* Visuel — image 3D + badges flottants */}
-          <div className="lg:col-span-6 relative flex justify-center items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative"
-              style={{ perspective: "1000px" }}
-            >
-              <div
-                className="relative overflow-hidden"
-                style={{
-                  transform: "perspective(1000px) rotateY(-8deg) rotateX(3deg)",
-                  borderRadius: "20px",
-                  boxShadow: "0 25px 60px rgba(0,0,0,0.35)",
-                  width: "100%",
-                  maxWidth: "420px",
-                  height: "380px",
-                }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
-                  alt="Bénévoles à un événement sportif"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-
-              {/* Floating badges */}
-              <span
-                className="absolute -top-3 -left-6 md:-left-10 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
-                style={{ color: "var(--color-text)", animationDelay: "0s" }}
-              >
-                Trail 🏔
-              </span>
-              <span
-                className="absolute top-12 -right-6 md:-right-10 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
-                style={{ color: "var(--color-text)", animationDelay: "0.5s" }}
-              >
-                Running 🏃
-              </span>
-              <span
-                className="absolute bottom-16 -left-8 md:-left-12 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
-                style={{ color: "var(--color-text)", animationDelay: "1s" }}
-              >
-                Vélo 🚴
-              </span>
-              <span
-                className="absolute -bottom-2 right-4 md:right-0 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
-                style={{ color: "var(--color-text)", animationDelay: "1.5s" }}
-              >
-                Triathlon 🏊
-              </span>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
 
 
@@ -511,3 +398,264 @@ function Home() {
     </PageShell>
   );
 }
+
+/* ──────────────────────────────────────────── */
+/*  SLOSH HERO                                  */
+/* ──────────────────────────────────────────── */
+
+type FloatingPos = {
+  className: string;
+  delay: number;
+  depth: number;
+};
+
+const PILL_POSITIONS: FloatingPos[] = [
+  { className: "top-[18%] left-[6%]", delay: 0, depth: 10 },
+  { className: "top-[20%] right-[6%]", delay: 0.3, depth: 12 },
+  { className: "top-1/2 -translate-y-1/2 left-[3%]", delay: 0.6, depth: 8 },
+  { className: "top-1/2 -translate-y-1/2 right-[3%]", delay: 0.9, depth: 8 },
+  { className: "bottom-[22%] left-[8%]", delay: 1.2, depth: 14 },
+  { className: "bottom-[20%] right-[8%]", delay: 1.5, depth: 11 },
+];
+
+const STAR_POSITIONS = [
+  { className: "top-[25%] left-[20%]", size: 22, duration: "8s" },
+  { className: "top-[35%] right-[18%]", size: 18, duration: "10s" },
+  { className: "bottom-[30%] left-[22%]", size: 24, duration: "7s" },
+  { className: "bottom-[28%] right-[24%]", size: 16, duration: "9s" },
+];
+
+function SloshHero() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const cx = (e.clientX - rect.left) / rect.width - 0.5;
+      const cy = (e.clientY - rect.top) / rect.height - 0.5;
+      el.querySelectorAll<HTMLElement>("[data-depth]").forEach((node) => {
+        const depth = Number(node.dataset.depth ?? "8");
+        node.style.setProperty("--px", `${(-cx * depth).toFixed(2)}px`);
+        node.style.setProperty("--py", `${(-cy * depth).toFixed(2)}px`);
+      });
+    };
+    el.addEventListener("mousemove", onMove);
+    return () => el.removeEventListener("mousemove", onMove);
+  }, []);
+
+  const pillContents = [
+    <>🏃 Running · Trail · Vélo</>,
+    <>300+ événements en France</>,
+    <>Organisateurs ↗</>,
+    <>Bénévoles ↗</>,
+    null, // star slot 4 (bottom-left star replaces this pill)
+    <>⚡ Inscription 2 min</>,
+  ];
+
+  return (
+    <section ref={heroRef} className="hero-slosh">
+      {/* Top giant text */}
+      <div className="hero-bebas hero-bebas--top">RAVITO</div>
+      {/* Bottom giant text */}
+      <div className="hero-bebas hero-bebas--bottom">BÉNÉVOLES</div>
+
+      {/* Decorative stars */}
+      {STAR_POSITIONS.map((s, i) => (
+        <span
+          key={i}
+          data-depth={6 + i * 2}
+          className={`absolute ${s.className} pointer-events-none`}
+          style={{
+            color: "#1A1A1A",
+            opacity: 0.35,
+            fontSize: s.size,
+            transform: "translate(var(--px,0), var(--py,0))",
+          }}
+        >
+          <span className="inline-block hero-spin" style={{ animationDuration: s.duration }}>✦</span>
+        </span>
+      ))}
+
+      {/* Floating pills */}
+      {PILL_POSITIONS.map((p, i) => {
+        if (i === 4) {
+          // bottom-left starburst
+          return (
+            <div
+              key="star"
+              data-depth={p.depth}
+              className={`absolute ${p.className}`}
+              style={{ transform: "translate(var(--px,0), var(--py,0))" }}
+            >
+              <div className="hero-wobble" style={{ animationDelay: `${p.delay}s` }}>
+                <div className="hero-star">
+                  100%<br />GRATUIT
+                </div>
+              </div>
+            </div>
+          );
+        }
+        const content = pillContents[i];
+        return (
+          <div
+            key={i}
+            data-depth={p.depth}
+            className={`absolute ${p.className}`}
+            style={{ transform: "translate(var(--px,0), var(--py,0))" }}
+          >
+            <div className="hero-wobble hero-pill" style={{ animationDelay: `${p.delay}s` }}>
+              {content}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Center: bib + CTAs */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pt-32 pb-32">
+        <div className="hero-bib">
+          <SportBib />
+        </div>
+
+        <div className="mt-10 flex flex-wrap gap-4 justify-center z-20 relative">
+          <Link
+            to="/annonces"
+            style={{
+              background: "#1A1A1A",
+              color: "#FFFFFF",
+              padding: "16px 36px",
+              borderRadius: "100px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "13px",
+            }}
+          >
+            Voir les événements
+          </Link>
+          <Link
+            to="/publier"
+            style={{
+              background: "#FFFFFF",
+              color: "#1A1A1A",
+              padding: "16px 36px",
+              borderRadius: "100px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: "13px",
+            }}
+          >
+            Publier mon événement
+          </Link>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        style={{ bottom: 20, color: "#1A1A1A", opacity: 0.5 }}
+      >
+        <span
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: 10,
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            fontWeight: 600,
+          }}
+        >
+          Défiler
+        </span>
+        <span
+          className="hero-scrollbar"
+          style={{ width: 1, height: 28, background: "#1A1A1A", display: "block" }}
+        />
+      </div>
+    </section>
+  );
+}
+
+function SportBib() {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "min(260px, 70vw)",
+        aspectRatio: "1 / 1.15",
+        background: "#FFFFFF",
+        borderRadius: 20,
+        boxShadow: "0 30px 60px -15px rgba(0,0,0,0.35), 0 10px 25px rgba(0,0,0,0.18)",
+        overflow: "hidden",
+      }}
+    >
+      {/* Pins */}
+      {[
+        { top: 10, left: 10 },
+        { top: 10, right: 10 },
+        { bottom: 10, left: 10 },
+        { bottom: 10, right: 10 },
+      ].map((pos, i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            width: 14,
+            height: 14,
+            borderRadius: "50%",
+            background: "#73CC30",
+            boxShadow: "inset 0 -2px 3px rgba(0,0,0,0.2)",
+            ...pos,
+          }}
+        />
+      ))}
+      {/* Top band */}
+      <div
+        style={{
+          background: "#73CC30",
+          color: "#FFFFFF",
+          fontFamily: "Bebas Neue, sans-serif",
+          fontSize: 22,
+          letterSpacing: "3px",
+          textAlign: "center",
+          padding: "10px 0",
+          marginTop: 28,
+        }}
+      >
+        BÉNÉVOLE
+      </div>
+      {/* Number */}
+      <div
+        style={{
+          fontFamily: "Bebas Neue, sans-serif",
+          fontSize: "clamp(70px, 18vw, 110px)",
+          color: "#1A1A1A",
+          textAlign: "center",
+          lineHeight: 1,
+          marginTop: 18,
+          fontWeight: 900,
+        }}
+      >
+        01
+      </div>
+      {/* Bottom text */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 22,
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          fontFamily: "Bebas Neue, sans-serif",
+          color: "#73CC30",
+          fontSize: 16,
+          letterSpacing: "4px",
+        }}
+      >
+        RAVITO.FR
+      </div>
+    </div>
+  );
+}
+
