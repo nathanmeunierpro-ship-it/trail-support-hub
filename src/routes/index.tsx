@@ -68,7 +68,7 @@ function Home() {
   }, []);
 
   return (
-    <PageShell>
+    <PageShell padTop={false}>
       {/* ── HERO — playful maximalist (Slosh-style) ── */}
       <CleanHero />
 
