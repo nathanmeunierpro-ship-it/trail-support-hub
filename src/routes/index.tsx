@@ -5,6 +5,8 @@ import { ArrowRight, MapPin, Calendar, Heart, Users, Sparkles } from "lucide-rea
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { Ticker } from "@/components/Ticker";
+import volunteerTeamAsset from "@/assets/volunteer-team.jpeg.asset.json";
+import raceStartAsset from "@/assets/race-start.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
