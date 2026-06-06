@@ -168,7 +168,7 @@ function Home() {
       </section>
 
       {/* ── ALT 2 : texte gauche / image droite ── */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 section-light">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
           <motion.div
             {...fadeUp}
@@ -226,7 +226,7 @@ function Home() {
 
 
       {/* ── EVENTS GRID ── */}
-      <section className="py-24 px-6 bg-[var(--color-bg)]">
+      <section className="py-24 px-6 section-light">
         <div className="mx-auto max-w-7xl">
           <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <div>
