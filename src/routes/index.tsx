@@ -363,7 +363,8 @@ function CleanHero() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start",
-        paddingTop: "100px",
+        marginTop: 0,
+        paddingTop: 0,
         paddingBottom: "0",
         marginBottom: "0",
       }}
