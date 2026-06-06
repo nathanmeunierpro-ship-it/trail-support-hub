@@ -414,6 +414,8 @@ function CleanHero() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start",
+        paddingTop: "100px",
+        paddingBottom: "32px",
       }}
     >
       {/* Background image */}
@@ -434,7 +436,7 @@ function CleanHero() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to bottom, rgba(26,26,26,0.65) 0%, rgba(26,26,26,0.45) 50%, rgba(26,26,26,0.7) 100%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.8) 100%)",
           zIndex: 1,
         }}
       />
@@ -445,7 +447,7 @@ function CleanHero() {
         <h1
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(72px, 12vw, 140px)",
+            fontSize: "clamp(52px, 11vw, 140px)",
             color: "#FFFFFF",
             lineHeight: 0.9,
             letterSpacing: "-2px",
@@ -453,6 +455,7 @@ function CleanHero() {
             margin: 0,
             whiteSpace: "pre-line",
             textShadow: "0 2px 20px rgba(0,0,0,0.3)",
+            wordBreak: "break-word",
           }}
         >
           {"B\u00C9N\u00C9VOLE\nOU\nORGANISATEUR ?"}
@@ -475,15 +478,7 @@ function CleanHero() {
         </p>
 
         {/* Buttons */}
-        <div
-          style={{
-            marginTop: 36,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 12,
-            justifyContent: "flex-start",
-          }}
-        >
+        <div className="finishers-hero-btns">
           <Link
             to="/annonces"
             style={{
