@@ -129,38 +129,58 @@ function Home() {
 
           </div>
 
-          {/* Visuel — grande image + carte flottante */}
-          <div className="lg:col-span-6 relative">
+          {/* Visuel — image 3D + badges flottants */}
+          <div className="lg:col-span-6 relative flex justify-center items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/5] sm:aspect-[5/6] rounded-[2rem] overflow-hidden shadow-2xl"
+              className="relative"
+              style={{ perspective: "1000px" }}
             >
-              <motion.img
-                initial={{ scale: 1.1 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.6, ease: "easeOut" }}
-                src={HERO_IMG}
-                alt="Coureurs en pleine course nature"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  transform: "perspective(1000px) rotateY(-8deg) rotateX(3deg)",
+                  borderRadius: "20px",
+                  boxShadow: "0 25px 60px rgba(0,0,0,0.35)",
+                  width: "100%",
+                  maxWidth: "420px",
+                  height: "380px",
+                }}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+                  alt="Bénévoles à un événement sportif"
+                  className="h-full w-full object-cover"
+                />
+              </div>
 
-            </motion.div>
-
-            {/* Vignette secondaire en haut à droite */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden md:block absolute -top-6 -right-4 lg:-right-8 w-36 h-44 rounded-2xl overflow-hidden shadow-xl border-4 border-background"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80"
-                alt="Coureur de trail en montagne"
-                className="h-full w-full object-cover"
-              />
+              {/* Floating badges */}
+              <span
+                className="absolute -top-3 -left-6 md:-left-10 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
+                style={{ color: "var(--color-text)", animationDelay: "0s" }}
+              >
+                Trail 🏔
+              </span>
+              <span
+                className="absolute top-12 -right-6 md:-right-10 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
+                style={{ color: "var(--color-text)", animationDelay: "0.5s" }}
+              >
+                Running 🏃
+              </span>
+              <span
+                className="absolute bottom-16 -left-8 md:-left-12 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
+                style={{ color: "var(--color-text)", animationDelay: "1s" }}
+              >
+                Vélo 🚴
+              </span>
+              <span
+                className="absolute -bottom-2 right-4 md:right-0 bg-white rounded-full px-3 py-1.5 text-xs font-bold shadow-md float-badge"
+                style={{ color: "var(--color-text)", animationDelay: "1.5s" }}
+              >
+                Triathlon 🏊
+              </span>
             </motion.div>
           </div>
         </div>
