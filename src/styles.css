@@ -354,7 +354,7 @@
 
 /* ── Finishers-style hero ── */
 .finishers-hero-content {
-  padding: 140px 32px 60px;
+  padding: 32px 32px 32px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -363,6 +363,26 @@
 }
 @media (min-width: 768px) {
   .finishers-hero-content {
-    padding: 140px 64px 80px;
+    padding: 48px 64px 48px;
+  }
+}
+
+.finishers-hero-btns {
+  margin-top: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+@media (max-width: 640px) {
+  .finishers-hero-btns {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
+  .finishers-hero-btns > a {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
   }
 }
