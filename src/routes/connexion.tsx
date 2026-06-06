@@ -123,7 +123,7 @@ function LoginPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         {/* Mobile logo */}
         <Link to="/" className="lg:hidden mb-10">
-          <img src={ravitoLogoGreen.url} alt="Ravito" className="h-24 w-auto object-contain mx-auto"
+          <img src={ravitoLogoGreen.url} alt="Ravito" style={{ height: 56, width: "auto" }} className="object-contain mx-auto"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
