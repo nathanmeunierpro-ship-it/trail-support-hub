@@ -317,7 +317,7 @@ function SignupPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FFFFFF" }}>
+    <div style={{ minHeight: "100vh", background: "#f0f7e6" }}>
       <style>{`
         .ravito-inp:focus { border-color: #73CC30 !important; }
       `}</style>
