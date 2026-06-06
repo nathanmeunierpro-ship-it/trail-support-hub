@@ -423,7 +423,8 @@ function CleanHero() {
         {/* Title */}
         <h1
           style={{
-            fontFamily: "'Bebas Neue', sans-serif",
+            fontFamily: "'Quicksand', sans-serif",
+            fontWeight: 900,
             fontSize: "clamp(52px, 11vw, 140px)",
             color: "#FFFFFF",
             lineHeight: 0.9,
