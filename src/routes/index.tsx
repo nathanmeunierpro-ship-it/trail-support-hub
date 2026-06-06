@@ -372,7 +372,8 @@ function CleanHero() {
         justifyContent: "center",
         alignItems: "flex-start",
         paddingTop: "100px",
-        paddingBottom: "32px",
+        paddingBottom: "0",
+        marginBottom: "0",
       }}
     >
       {/* Background image */}
