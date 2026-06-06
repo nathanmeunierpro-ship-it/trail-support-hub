@@ -450,6 +450,7 @@ function CleanHero() {
               letterSpacing: 1,
               fontFamily: "'DM Sans', sans-serif",
               display: "inline-block",
+              border: "none",
               transition: "transform 0.2s ease, opacity 0.2s ease",
               textDecoration: "none",
             }}
