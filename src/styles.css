@@ -95,9 +95,9 @@
   --shadow-btn: 0 4px 14px rgba(115, 204, 48, 0.35);
 
   /* Typography tokens */
-  --font-body: "Quicksand", system-ui, sans-serif;
+  --font-body: "Quicksand", sans-serif;
   --font-script: "More Sugar", cursive;
-  --font-display: "Bebas Neue", sans-serif;
+  --font-display: "Quicksand", sans-serif;
 }
 
 .font-script { font-family: var(--font-script); }
