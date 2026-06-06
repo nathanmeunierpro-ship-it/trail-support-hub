@@ -46,6 +46,7 @@ export type Database = {
       }
       benevoles: {
         Row: {
+          avatar_url: string | null
           bio: string | null
           created_at: string
           departement: string | null
@@ -54,11 +55,13 @@ export type Database = {
           id: string
           niveau_trail: string | null
           nom: string | null
+          phone: string | null
           prenom: string | null
           region: string | null
           sports_pratiques: string[] | null
         }
         Insert: {
+          avatar_url?: string | null
           bio?: string | null
           created_at?: string
           departement?: string | null
@@ -67,11 +70,13 @@ export type Database = {
           id: string
           niveau_trail?: string | null
           nom?: string | null
+          phone?: string | null
           prenom?: string | null
           region?: string | null
           sports_pratiques?: string[] | null
         }
         Update: {
+          avatar_url?: string | null
           bio?: string | null
           created_at?: string
           departement?: string | null
@@ -80,6 +85,7 @@ export type Database = {
           id?: string
           niveau_trail?: string | null
           nom?: string | null
+          phone?: string | null
           prenom?: string | null
           region?: string | null
           sports_pratiques?: string[] | null
