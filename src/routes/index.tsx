@@ -399,7 +399,7 @@ function CleanHero() {
       />
 
       {/* Content */}
-      <div className="finishers-hero-content">
+      <div className="finishers-hero-content" style={{ paddingTop: 120 }}>
         {/* Title */}
         <h1
           style={{
