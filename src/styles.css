@@ -4,9 +4,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'More Sugar';
+  src: url('/fonts/MoreSugar-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Syne", "Inter", sans-serif;
+  --font-sans: "Quicksand", system-ui, sans-serif;
+  --font-display: "Bebas Neue", "Syne", "Inter", sans-serif;
+  --font-script: "More Sugar", cursive;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
