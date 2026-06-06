@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Users, ClipboardList, ArrowLeft, ArrowRight, Loader2, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DEPARTEMENTS_FR } from "@/lib/regions";
+import ravitoLogoGreen from "@/assets/ravito-logo-green.png.asset.json";
 
 export const Route = createFileRoute("/inscription")({
   head: () => ({

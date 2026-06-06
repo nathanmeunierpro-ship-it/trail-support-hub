@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, LayoutDashboard, LogOut, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth-context";
+import ravitoLogoWhite from "@/assets/ravito-logo-white.png.asset.json";
 
 type NavLink = {
   to: string;

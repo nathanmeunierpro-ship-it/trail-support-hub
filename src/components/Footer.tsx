@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import ravitoLogoWhite from "@/assets/ravito-logo-white.png.asset.json";
 
 export function Footer() {
   return (

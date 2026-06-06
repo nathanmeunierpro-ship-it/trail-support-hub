@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
+import ravitoLogoWhite from "@/assets/ravito-logo-white.png.asset.json";
+import ravitoLogoGreen from "@/assets/ravito-logo-green.png.asset.json";
 
 export const Route = createFileRoute("/connexion")({
   head: () => ({
