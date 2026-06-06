@@ -60,7 +60,7 @@ export function Navbar() {
             scrolled ? "shadow-[0_10px_30px_-10px_rgba(115,204,48,0.55)]" : "shadow-[0_4px_16px_-8px_rgba(115,204,48,0.35)]"
           }`}
         >
-        <div className="flex items-center justify-between h-24 pl-3 pr-2">
+        <div className="flex items-center justify-between h-14 pl-3 pr-2">
           {/* Logo */}
           <Link to="/" aria-label="Ravito — Accueil" className="flex items-center pl-2">
             <img
