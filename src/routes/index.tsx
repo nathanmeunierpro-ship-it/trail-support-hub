@@ -36,7 +36,7 @@ const IMG_COMMUNITY =
 const IMG_TRAIL =
   "https://images.unsplash.com/photo-1502904550040-7534597429ae?w=1400&q=85";
 const IMG_VOLUNTEERS =
-  "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1400&q=85";
+  "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=1400&q=85";
 const IMG_WIDE =
   "https://images.unsplash.com/photo-1486218119243-13883505764c?w=2000&q=85";
 const CARD_IMGS = [
@@ -224,49 +224,6 @@ function Home() {
         </div>
       </section>
 
-      {/* ── ENGAGEMENTS / VALEURS ── */}
-      <section className="py-28 px-6 section-light">
-        <div className="mx-auto max-w-7xl">
-          <motion.div {...fadeUp} className="text-center mb-20">
-            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-              — Nos engagements
-            </span>
-            <h2
-              className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-tight"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
-            >
-              Une communauté,
-              <br />
-              une vision commune.
-            </h2>
-          </motion.div>
-          <div className="grid gap-10 md:grid-cols-3">
-            {[
-              { Icon: Heart, title: "bénévoles passionnés", body: "Des sportifs engagés prêts à aider partout en France." },
-              { Icon: MapPin, title: "partout en France", body: "Trails, vélo, triathlon, running dans toutes les régions." },
-              { Icon: Sparkles, title: "mise en relation directe", body: "Organisateurs et bénévoles en contact en quelques clics." },
-            ].map((e, i) => (
-              <motion.div
-                key={e.title}
-                {...fadeUp}
-                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative bg-card border border-border rounded-3xl p-10 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-[var(--color-primary)] mb-6 group-hover:bg-[var(--color-primary)] group-hover:text-white group-hover:scale-110 transition-all">
-                  <e.Icon size={28} strokeWidth={1.8} />
-                </div>
-                <h3
-                  className="mb-4"
-                  style={{ fontFamily: "Pacifico, cursive", color: "var(--color-text)", fontSize: "1.85rem" }}
-                >
-                  {e.title}
-                </h3>
-                <p className="text-[var(--color-text-secondary)] leading-relaxed max-w-xs mx-auto">{e.body}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── EVENTS GRID ── */}
       <section className="py-24 px-6 bg-[var(--color-bg)]">
@@ -415,7 +372,8 @@ function CleanHero() {
         justifyContent: "center",
         alignItems: "flex-start",
         paddingTop: "100px",
-        paddingBottom: "32px",
+        paddingBottom: "0",
+        marginBottom: "0",
       }}
     >
       {/* Background image */}
@@ -492,6 +450,7 @@ function CleanHero() {
               letterSpacing: 1,
               fontFamily: "'DM Sans', sans-serif",
               display: "inline-block",
+              border: "none",
               transition: "transform 0.2s ease, opacity 0.2s ease",
               textDecoration: "none",
             }}
@@ -507,8 +466,8 @@ function CleanHero() {
           <Link
             to="/publier"
             style={{
-              background: "transparent",
-              color: "#FFFFFF",
+              background: "#73CC30",
+              color: "#1A1A1A",
               padding: "15px 28px",
               borderRadius: 100,
               fontWeight: 700,
@@ -517,19 +476,15 @@ function CleanHero() {
               letterSpacing: 1,
               fontFamily: "'DM Sans', sans-serif",
               display: "inline-block",
-              border: "2px solid rgba(255,255,255,0.7)",
-              transition: "transform 0.2s ease, background 0.2s ease",
+              border: "none",
+              transition: "transform 0.2s ease, opacity 0.2s ease",
               textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(-2px)";
-              el.style.background = "rgba(255,255,255,0.15)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(0)";
-              el.style.background = "transparent";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
           >
             Je publie un événement
@@ -543,7 +498,8 @@ function CleanHero() {
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 12,
             color: "#FFFFFF",
-            opacity: 0.55,
+            opacity: 1,
+            textShadow: "0 1px 8px rgba(0,0,0,0.5)",
           }}
         >
           Gratuit pour les 20 premiers organisateurs

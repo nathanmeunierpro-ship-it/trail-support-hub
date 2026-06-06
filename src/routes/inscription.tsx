@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Users, ClipboardList, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { Check, Users, ClipboardList, ArrowLeft, ArrowRight, Loader2, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DEPARTEMENTS_FR } from "@/lib/regions";
 
@@ -31,24 +31,39 @@ const slideVariants = {
   exit: { opacity: 0, x: -30 },
 };
 
+const DISPO_OPTIONS = ["weekends", "semaine", "ponctuel", "vacances"];
+
 function SignupPage() {
   const navigate = useNavigate();
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [dept, setDept] = useState("");
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
-  const [niveau, setNiveau] = useState("débutant");
   const [dispos, setDispos] = useState<string[]>([]);
   const [orgName, setOrgName] = useState("");
   const [orgType, setOrgType] = useState("association");
   const [siteWeb, setSiteWeb] = useState("");
 
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const toggleDispo = (d: string) =>
     setDispos((arr) => (arr.includes(d) ? arr.filter((x) => x !== d) : [...arr, d]));
+
+  const onAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (!f.type.startsWith("image/")) { toast.error("Merci de choisir une image."); return; }
+    if (f.size > 5 * 1024 * 1024) { toast.error("Image trop lourde (max 5 Mo)."); return; }
+    setAvatarFile(f);
+    setAvatarPreview(URL.createObjectURL(f));
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +92,6 @@ function SignupPage() {
     const uid = data.user?.id;
     if (!uid) { setLoading(false); toast.error("Erreur lors de la création du compte."); return; }
 
-    // Ensure active session before RLS-protected inserts
     let { data: sess } = await supabase.auth.getSession();
     if (!sess.session) {
       const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
@@ -91,9 +105,31 @@ function SignupPage() {
     }
     const authedId = sess.session?.user.id ?? uid;
 
+    // Upload avatar (bénévole only — but available for both)
+    let avatarPath: string | null = null;
+    if (avatarFile) {
+      const ext = avatarFile.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${authedId}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("avatars")
+        .upload(path, avatarFile, { upsert: true, contentType: avatarFile.type });
+      if (upErr) {
+        console.error("[signup] avatar upload error:", upErr);
+        toast.error("Photo non envoyée : " + upErr.message);
+      } else {
+        avatarPath = path;
+      }
+    }
+
     if (role === "benevole") {
       const { error: e2 } = await supabase.from("benevoles").insert({
-        id: authedId, prenom, nom, departement: dept, niveau_trail: niveau, disponibilites: dispos,
+        id: authedId,
+        prenom,
+        nom,
+        departement: dept,
+        disponibilites: dispos,
+        phone,
+        avatar_url: avatarPath,
       });
       if (e2) { console.error("[signup] benevoles insert error:", e2); setLoading(false); toast.error(e2.message); return; }
     } else {
@@ -181,7 +217,6 @@ function SignupPage() {
         <div className="w-full max-w-md">
           <AnimatePresence mode="wait">
             {!role ? (
-              /* ── Step 1: Role selector ── */
               <motion.div key="role"
                 variants={slideVariants} initial="enter" animate="center" exit="exit"
                 transition={{ duration: 0.3 }}>
@@ -219,7 +254,6 @@ function SignupPage() {
                 </p>
               </motion.div>
             ) : (
-              /* ── Step 2: Form ── */
               <motion.div key="form"
                 variants={slideVariants} initial="enter" animate="center" exit="exit"
                 transition={{ duration: 0.3 }}>
@@ -241,18 +275,57 @@ function SignupPage() {
                 </div>
 
                 <form onSubmit={onSubmit} className="space-y-4">
-                  {/* Role-specific fields */}
+                  {/* Avatar upload (bénévole) */}
+                  {role === "benevole" && (
+                    <div className="flex flex-col items-center mb-2">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="relative rounded-full overflow-hidden flex items-center justify-center transition-all hover:opacity-90"
+                        style={{
+                          width: 90,
+                          height: 90,
+                          background: "#f5f5f5",
+                          border: "none",
+                          cursor: "pointer",
+                        }}
+                        aria-label="Ajouter une photo de profil"
+                      >
+                        {avatarPreview ? (
+                          <img
+                            src={avatarPreview}
+                            alt="Aperçu photo de profil"
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                        ) : (
+                          <Camera size={28} color="#999" />
+                        )}
+                      </button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={onAvatarChange}
+                        className="hidden"
+                      />
+                      <span className="mt-2" style={{ fontSize: 12, color: "#888" }}>
+                        {avatarPreview ? "Changer la photo" : "Ajouter une photo"}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Role-specific identity fields */}
                   {role === "benevole" ? (
                     <motion.div
-                      className="grid grid-cols-2 gap-4"
+                      className="space-y-4"
                       initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
                       <div>
                         <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Prénom</label>
-                        <input required placeholder="Emma" value={prenom} onChange={(e) => setPrenom(e.target.value)} className="inp" />
+                        <input required placeholder="Emma" value={prenom} onChange={(e) => setPrenom(e.target.value)} className="inp" style={{ width: "100%" }} />
                       </div>
                       <div>
                         <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Nom</label>
-                        <input required placeholder="Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="inp" />
+                        <input required placeholder="Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="inp" style={{ width: "100%" }} />
                       </div>
                     </motion.div>
                   ) : (
@@ -282,16 +355,41 @@ function SignupPage() {
                       <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Email</label>
                       <input required type="email" placeholder="ton@email.fr" value={email} onChange={(e) => setEmail(e.target.value)} className="inp" />
                     </div>
+                    {role === "benevole" && (
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Téléphone</label>
+                        <input
+                          required
+                          type="tel"
+                          placeholder="06 12 34 56 78"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="inp"
+                        />
+                        <p className="mt-1.5" style={{ fontSize: 12, color: "#888" }}>
+                          Utilisé uniquement pour la coordination avec les organisateurs via WhatsApp
+                        </p>
+                      </div>
+                    )}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Mot de passe (6+ caractères)</label>
                       <input required type="password" minLength={6} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="inp" />
                     </div>
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Département</label>
-                      <select required value={dept} onChange={(e) => setDept(e.target.value)} className="inp">
-                        <option value="">— Choisir —</option>
-                        {DEPARTEMENTS_FR.map((d) => <option key={d.code} value={d.code}>{d.code} — {d.nom}</option>)}
-                      </select>
+                      <input
+                        required
+                        list="departements-list"
+                        placeholder="Ex: 69 - Rhône"
+                        value={dept}
+                        onChange={(e) => setDept(e.target.value)}
+                        className="inp"
+                      />
+                      <datalist id="departements-list">
+                        {DEPARTEMENTS_FR.map((d) => (
+                          <option key={d.code} value={`${d.code} - ${d.nom}`} />
+                        ))}
+                      </datalist>
                     </div>
                   </motion.div>
 
@@ -299,17 +397,9 @@ function SignupPage() {
                   {role === "benevole" && (
                     <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Niveau trail</label>
-                        <select value={niveau} onChange={(e) => setNiveau(e.target.value)} className="inp">
-                          <option value="débutant">Débutant</option>
-                          <option value="intermédiaire">Intermédiaire</option>
-                          <option value="passionné">Passionné</option>
-                        </select>
-                      </div>
-                      <div>
                         <p className="text-xs font-bold uppercase tracking-widest mb-3 text-muted-foreground">Disponibilités</p>
                         <div className="flex gap-3 flex-wrap">
-                          {["weekends", "semaine", "ponctuel"].map((d) => (
+                          {DISPO_OPTIONS.map((d) => (
                             <button key={d} type="button" onClick={() => toggleDispo(d)}
                               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all ${
                                 dispos.includes(d)
