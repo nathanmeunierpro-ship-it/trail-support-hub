@@ -309,10 +309,11 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  font-family: "Bebas Neue", sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 .hero-bebas {
-  font-family: "Bebas Neue", sans-serif;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 900;
   font-size: clamp(100px, 15vw, 180px);
   color: #FFFFFF;
   letter-spacing: -2px;
