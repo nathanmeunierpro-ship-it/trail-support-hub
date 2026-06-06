@@ -299,55 +299,80 @@ function SignupPage() {
       {/* ── Left panel ── */}
       <div
         className="hidden lg:flex lg:w-[45%] relative flex-col overflow-hidden"
-        style={{ background: "var(--auth-panel-gradient)" }}
+        style={{ background: "#1A1A1A", height: "100%" }}
       >
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }}
-        />
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 500 700" preserveAspectRatio="xMidYMax slice">
-          {STAR_POS.map(([cx, cy, r], i) => (
-            <motion.circle key={i} cx={cx} cy={cy} r={r} fill="white"
-              animate={{ opacity: [0.3, 0.9, 0.3] }}
-              transition={{ duration: 2.5 + i * 0.25, repeat: Infinity, delay: i * 0.15 }} />
-          ))}
-          <path d="M-20,700 L80,280 L160,400 L250,180 L340,340 L420,220 L520,380 L520,700 Z" fill="white" opacity="0.06"/>
-          <path d="M-20,700 L60,400 L140,480 L230,320 L310,440 L400,380 L480,450 L520,700 Z" fill="white" opacity="0.09"/>
-          <path d="M-20,700 L30,560 L110,590 L200,540 L290,570 L370,545 L460,570 L520,700 Z" fill="white" opacity="0.05"/>
-        </svg>
-
-        <div className="relative z-10 flex flex-col justify-between h-full p-10">
-          <Link to="/">
-            <img src="/logo.png" alt="Ravito" className="h-10 object-contain brightness-0 invert"
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-10 text-center">
+          <Link to="/" className="mb-12">
+            <img
+              src="/logo.png"
+              alt="Ravito"
+              className="h-12 object-contain brightness-0 invert"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
-              }} />
-            <span className="font-display text-3xl font-black text-primary-foreground hidden">Ravito</span>
+              }}
+            />
+            <span className="font-display text-3xl font-black text-white hidden">Ravito</span>
           </Link>
 
-          <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="font-display text-4xl font-black text-primary-foreground leading-tight mb-4"
-            >
-              Rejoins la<br />
-              <span style={{ color: "var(--color-accent)" }}>communauté.</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0 }} animate={{ opacity: 0.6 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-primary-foreground text-sm leading-relaxed max-w-xs"
-            >
-              Bénévoles et organisateurs, ensemble pour faire vivre le sport français.
-            </motion.p>
-          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: 56,
+              color: "#FFFFFF",
+              lineHeight: 1.1,
+              letterSpacing: "-0.5px",
+              margin: 0,
+            }}
+          >
+            REJOINS<br />LA CREW.
+          </motion.h2>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-            className="p-5 rounded-2xl" style={{ background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)" }}>
-            <p className="text-primary-foreground/70 text-xs uppercase tracking-widest font-semibold mb-1">Inscription en</p>
-            <p className="text-primary-foreground text-2xl font-black font-display">2 minutes</p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 16,
+              color: "#888888",
+              marginTop: 16,
+              maxWidth: 320,
+              lineHeight: 1.5,
+            }}
+          >
+            Bénévoles et organisateurs, ensemble pour faire vivre le sport français.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="flex flex-col items-start gap-3 mt-auto mb-0 pt-12"
+            style={{ maxWidth: 320 }}
+          >
+            {[
+              "Inscription gratuite en 2 minutes",
+              "Gratuit pour les 20 premiers organisateurs",
+              "Déjà des événements partout en France",
+            ].map((line) => (
+              <div key={line} className="flex items-center gap-2">
+                <span style={{ color: "#73CC30", fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>✓</span>
+                <span
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: 14,
+                    fontFamily: "'DM Sans', sans-serif",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {line}
+                </span>
+              </div>
+            ))}
           </motion.div>
         </div>
       </div>
