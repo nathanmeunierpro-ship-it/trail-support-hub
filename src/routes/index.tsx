@@ -168,7 +168,7 @@ function Home() {
       </section>
 
       {/* ── ALT 2 : texte gauche / image droite ── */}
-      <section className="py-20 px-6 bg-background">
+      <section className="py-20 px-6 section-light">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
           <motion.div
             {...fadeUp}
