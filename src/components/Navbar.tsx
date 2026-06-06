@@ -163,18 +163,10 @@ export function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Link
-                  to="/connexion"
-                  className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ background: "var(--color-bg-dark)", color: "var(--color-text-light)" }}
-                >
+                <Link to="/connexion" className="btn-secondary">
                   Se connecter
                 </Link>
-                <Link
-                  to="/inscription"
-                  className="px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-                  style={{ background: "var(--color-surface)", color: "var(--color-primary)" }}
-                >
+                <Link to="/inscription" className="btn-primary">
                   S'inscrire
                 </Link>
               </div>
@@ -274,8 +266,7 @@ export function Navbar() {
                     <Link
                       to="/connexion"
                       onClick={() => setOpen(false)}
-                      className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "var(--color-bg-dark)", color: "var(--color-text-light)" }}
+                      className="btn-secondary w-full"
                     >
                       Se connecter
                     </Link>
@@ -284,8 +275,7 @@ export function Navbar() {
                     <Link
                       to="/inscription"
                       onClick={() => setOpen(false)}
-                      className="block px-4 py-3 rounded-2xl text-sm font-bold uppercase tracking-wider text-center"
-                      style={{ background: "var(--color-surface)", color: "var(--color-primary)" }}
+                      className="btn-primary w-full"
                     >
                       S'inscrire
                     </Link>

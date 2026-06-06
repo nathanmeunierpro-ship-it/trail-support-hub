@@ -180,42 +180,99 @@
   transition: box-shadow 0.25s, transform 0.25s;
 }
 
-/* ── CTA button (yellow) ── */
-.btn-cta {
-  background: var(--secondary);
-  color: var(--secondary-foreground);
+/* ── Buttons (3 styles unified across the site) ── */
+
+/* PRIMARY — main conversion action */
+.btn-cta,
+.btn-primary {
+  background: #73CC30;
+  color: #1A1A1A;
   font-weight: 700;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border-radius: 12px;
-  padding: 0.875rem 2rem;
-  box-shadow: var(--shadow-btn);
+  border-radius: 100px;
+  padding: 14px 28px;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  text-decoration: none;
 }
-.btn-cta:hover { opacity: 0.9; }
-.btn-cta:active { transform: scale(0.97); }
-.btn-cta:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-cta:hover,
+.btn-primary:hover { transform: translateY(-2px); opacity: 0.95; }
+.btn-cta:active,
+.btn-primary:active { transform: scale(0.98); }
+.btn-cta:disabled,
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-/* ── Outline button (blue) ── */
+/* SECONDARY — important but not primary */
+.btn-secondary {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 100px;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  text-decoration: none;
+}
+.btn-secondary:hover { transform: translateY(-2px); opacity: 0.92; }
+.btn-secondary:active { transform: scale(0.98); }
+
+/* OUTLINE — neutral / alternative action */
 .btn-outline {
   background: transparent;
-  color: var(--primary);
-  border: 2px solid var(--primary);
+  color: #1A1A1A;
+  border: 2px solid currentColor;
   font-weight: 700;
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border-radius: 12px;
-  padding: 0.75rem 2rem;
+  border-radius: 100px;
+  padding: 12px 26px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
 }
 .btn-outline:hover {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: rgba(26, 26, 26, 0.08);
+  transform: translateY(-2px);
+}
+
+/* OUTLINE on dark backgrounds — white border + text */
+.btn-outline-light {
+  background: transparent;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 100px;
+  padding: 12px 26px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+.btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 /* ── Floating badge animation ── */

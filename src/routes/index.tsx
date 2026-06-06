@@ -335,18 +335,10 @@ function Home() {
             compte en 30 secondes et démarre l'aventure.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/inscription"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-wider hover:opacity-90 transition-opacity shadow-xl"
-              style={{ background: "var(--color-primary)", color: "var(--color-text-light)", minHeight: 44 }}
-            >
+            <Link to="/inscription" className="btn-primary gap-2">
               Créer un compte <ArrowRight size={16} />
             </Link>
-            <Link
-              to="/qui-sommes-nous"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-              style={{ border: "2px solid var(--color-text-light)", color: "var(--color-text-light)", minHeight: 44 }}
-            >
+            <Link to="/qui-sommes-nous" className="btn-outline-light">
               En savoir plus
             </Link>
           </div>
@@ -437,56 +429,10 @@ function CleanHero() {
 
         {/* Buttons */}
         <div className="finishers-hero-btns">
-          <Link
-            to="/annonces"
-            style={{
-              background: "#FFFFFF",
-              color: "#1A1A1A",
-              padding: "15px 28px",
-              borderRadius: 100,
-              fontWeight: 700,
-              fontSize: 14,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-              fontFamily: "'DM Sans', sans-serif",
-              display: "inline-block",
-              border: "none",
-              transition: "transform 0.2s ease, opacity 0.2s ease",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            }}
-          >
+          <Link to="/annonces" className="btn-primary">
             Je suis bénévole
           </Link>
-          <Link
-            to="/publier"
-            style={{
-              background: "#73CC30",
-              color: "#1A1A1A",
-              padding: "15px 28px",
-              borderRadius: 100,
-              fontWeight: 700,
-              fontSize: 14,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-              fontFamily: "'DM Sans', sans-serif",
-              display: "inline-block",
-              border: "none",
-              transition: "transform 0.2s ease, opacity 0.2s ease",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            }}
-          >
+          <Link to="/publier" className="btn-outline-light">
             Je publie un événement
           </Link>
         </div>
