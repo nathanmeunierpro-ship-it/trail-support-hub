@@ -498,7 +498,8 @@ function CleanHero() {
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 12,
             color: "#FFFFFF",
-            opacity: 0.55,
+            opacity: 1,
+            textShadow: "0 1px 8px rgba(0,0,0,0.5)",
           }}
         >
           Gratuit pour les 20 premiers organisateurs
