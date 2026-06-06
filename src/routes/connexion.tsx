@@ -90,7 +90,7 @@ function LoginPage() {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-between h-full p-10">
           <Link to="/">
-            <img src={ravitoLogoWhite.url} alt="Ravito" className="h-24 w-auto object-contain"
+            <img src={ravitoLogoWhite.url} alt="Ravito" style={{ height: 56, width: "auto" }} className="object-contain"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
