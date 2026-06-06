@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="section-dark mt-20" style={{ background: "var(--color-bg-dark)" }}>
+    <footer className="section-dark" style={{ background: "var(--color-bg-dark)" }}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-10 md:grid-cols-3">
         <div>
           <Link to="/" aria-label="Ravito — Accueil">
