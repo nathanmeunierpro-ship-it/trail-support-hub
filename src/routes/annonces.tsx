@@ -367,7 +367,13 @@ function AnnoncesPage() {
                     <div className="p-6 flex flex-col flex-1">
                       <div className="flex items-center justify-between mb-3">
                         <span
-                          className={`inline-flex w-fit text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full ${TYPE_COLORS[ev.type_sport] ?? "bg-muted text-foreground"}`}
+                          className="inline-flex w-fit text-[11px] uppercase tracking-widest px-3 py-1"
+                          style={{
+                            background: "#73CC30",
+                            color: "#1A1A1A",
+                            borderRadius: "100px",
+                            fontWeight: 700,
+                          }}
                         >
                           {ev.type_sport}
                         </span>
