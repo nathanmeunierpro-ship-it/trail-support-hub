@@ -70,7 +70,7 @@ function Home() {
   return (
     <PageShell>
       {/* ── HERO — playful maximalist (Slosh-style) ── */}
-      <SloshHero />
+      <CleanHero />
 
 
 
