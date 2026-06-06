@@ -462,3 +462,20 @@
     text-align: center;
   }
 }
+
+/* ── Mobile responsive constraints ── */
+@media (max-width: 768px) {
+  section {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+  .grid.md\:grid-cols-2,
+  .grid.lg\:grid-cols-2,
+  .grid.lg\:grid-cols-3,
+  .grid.md\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+  /* Split layouts: image first on mobile */
+  .md\:order-1 { order: 2 !important; }
+  .md\:order-2 { order: 1 !important; }
+}
