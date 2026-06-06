@@ -294,312 +294,266 @@ function SignupPage() {
     );
   }
 
+  const inpStyle: React.CSSProperties = {
+    width: "100%",
+    border: "1.5px solid #e5e5e5",
+    borderRadius: 12,
+    padding: "14px 16px",
+    fontSize: 15,
+    background: "#FFFFFF",
+    fontFamily: "'DM Sans', sans-serif",
+    color: "#1A1A1A",
+    outline: "none",
+  };
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: 11,
+    letterSpacing: "1px",
+    textTransform: "uppercase",
+    color: "#888",
+    marginBottom: 6,
+    fontWeight: 600,
+    fontFamily: "'DM Sans', sans-serif",
+  };
+
   return (
-    <div className="min-h-screen flex bg-background overflow-hidden">
-      {/* ── Left panel ── */}
-      <div
-        className="hidden lg:flex lg:w-[45%] relative flex-col overflow-hidden"
-        style={{ background: "#1A1A1A", height: "100%" }}
-      >
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-10 text-center">
-          <Link to="/" className="mb-12">
-            <img
-              src="/logo.png"
-              alt="Ravito"
-              className="h-12 object-contain brightness-0 invert"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-                (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
-              }}
-            />
-            <span className="font-display text-3xl font-black text-white hidden">Ravito</span>
-          </Link>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 56,
-              color: "#FFFFFF",
-              lineHeight: 1.1,
-              letterSpacing: "-0.5px",
-              margin: 0,
-            }}
-          >
-            REJOINS<br />LA CREW.
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: 16,
-              color: "#888888",
-              marginTop: 16,
-              maxWidth: 320,
-              lineHeight: 1.5,
-            }}
-          >
-            Bénévoles et organisateurs, ensemble pour faire vivre le sport français.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="flex flex-col items-start gap-3 mt-auto mb-0 pt-12"
-            style={{ maxWidth: 320 }}
-          >
-            {[
-              "Inscription gratuite en 2 minutes",
-              "Gratuit pour les 20 premiers organisateurs",
-              "Déjà des événements partout en France",
-            ].map((line) => (
-              <div key={line} className="flex items-center gap-2">
-                <span style={{ color: "#73CC30", fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>✓</span>
-                <span
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 14,
-                    fontFamily: "'DM Sans', sans-serif",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {line}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ── Right panel ── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        <Link to="/" className="lg:hidden mb-8">
-          <img src="/logo.png" alt="Ravito" className="h-14 object-contain mx-auto"
+    <div style={{ minHeight: "100vh", background: "#FFFFFF" }}>
+      <style>{`
+        .ravito-inp:focus { border-color: #73CC30 !important; }
+      `}</style>
+      <div style={{ maxWidth: 480, margin: "0 auto", padding: "40px 24px" }}>
+        <Link to="/" style={{ display: "block", textAlign: "center", marginBottom: 32 }}>
+          <img
+            src="/logo.png"
+            alt="Ravito"
+            style={{ width: 100, height: "auto", margin: "0 auto", display: "block" }}
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
-            }} />
-          <span className="font-display text-3xl font-black text-primary hidden">Ravito</span>
+            }}
+          />
+          <span className="font-display text-3xl font-black text-primary" style={{ display: "none" }}>Ravito</span>
         </Link>
 
-        <div className="w-full max-w-md">
-          <AnimatePresence mode="wait">
-            {!role ? (
-              <motion.div key="role"
-                variants={slideVariants} initial="enter" animate="center" exit="exit"
-                transition={{ duration: 0.3 }}>
-                <h1 className="font-display text-4xl font-black mb-2">Rejoins la communauté Ravito</h1>
-                <p className="text-muted-foreground text-sm mb-10">Choisis ton profil pour commencer.</p>
-
-                <div className="grid gap-4">
-                  {([
-                    { val: "benevole" as Role, icon: <Users size={28} />, title: "Bénévole", desc: "Je veux aider à l'organisation d'événements sportifs près de chez moi." },
-                    { val: "organisateur" as Role, icon: <ClipboardList size={28} />, title: "Organisateur", desc: "Je cherche des bénévoles pour mon événement sportif." },
-                  ] as const).map(({ val, icon, title, desc }) => (
-                    <motion.button
-                      key={val}
-                      whileHover={{ y: -3 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setRole(val)}
-                      className="text-left p-6 rounded-2xl border-2 transition-all duration-200 group"
-                      style={{ background: "var(--card)", borderColor: "var(--border)", boxShadow: "var(--shadow-card)" }}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                        {icon}
-                      </div>
-                      <h3 className="font-display text-xl font-black text-foreground mb-1">{title}</h3>
-                      <p className="text-muted-foreground text-sm">{desc}</p>
-                      <div className="mt-4 flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
-                        Choisir <ArrowRight size={14} />
-                      </div>
-                    </motion.button>
-                  ))}
-                </div>
-
-                <p className="mt-8 text-center text-sm text-muted-foreground">
-                  Déjà inscrit ?{" "}
-                  <Link to="/connexion" className="text-primary font-semibold hover:underline">Se connecter</Link>
-                </p>
-              </motion.div>
-            ) : (
-              <motion.div key="form"
-                variants={slideVariants} initial="enter" animate="center" exit="exit"
-                transition={{ duration: 0.3 }}>
-                <button onClick={() => setRole(null)}
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-6">
-                  <ArrowLeft size={16} /> Changer de rôle
-                </button>
-
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground">
-                    {role === "benevole" ? <Users size={20} /> : <ClipboardList size={20} />}
-                  </div>
-                  <div>
-                    <h1 className="font-display text-2xl font-black">
-                      {role === "benevole" ? "Bénévole" : "Organisateur"}
-                    </h1>
-                    <p className="text-xs text-muted-foreground">Créer mon compte</p>
-                  </div>
-                </div>
-
-                <form onSubmit={onSubmit} className="space-y-4">
-                  {/* Avatar upload (bénévole) */}
-                  {role === "benevole" && (
-                    <div className="flex flex-col items-center mb-2">
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="relative rounded-full overflow-hidden flex items-center justify-center transition-all hover:opacity-90"
-                        style={{
-                          width: 90,
-                          height: 90,
-                          background: "#f5f5f5",
-                          border: "none",
-                          cursor: "pointer",
-                        }}
-                        aria-label="Ajouter une photo de profil"
-                      >
-                        {avatarPreview ? (
-                          <img
-                            src={avatarPreview}
-                            alt="Aperçu photo de profil"
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                          />
-                        ) : (
-                          <Camera size={28} color="#999" />
-                        )}
-                      </button>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={onAvatarChange}
-                        className="hidden"
-                      />
-                      <span className="mt-2" style={{ fontSize: 12, color: "#888" }}>
-                        {avatarPreview ? "Changer la photo" : "Ajouter une photo"}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Role-specific identity fields */}
-                  {role === "benevole" ? (
-                    <motion.div
-                      className="space-y-4"
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Prénom</label>
-                        <input required placeholder="Emma" value={prenom} onChange={(e) => setPrenom(e.target.value)} className="inp" style={{ width: "100%" }} />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Nom</label>
-                        <input required placeholder="Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="inp" style={{ width: "100%" }} />
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Nom de l'organisation</label>
-                        <input required placeholder="Association Trail Alpin" value={orgName} onChange={(e) => setOrgName(e.target.value)} className="inp" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Type</label>
-                        <select value={orgType} onChange={(e) => setOrgType(e.target.value)} className="inp">
-                          <option value="association">Association</option>
-                          <option value="entreprise">Entreprise</option>
-                          <option value="collectivite">Collectivité</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Site web (optionnel)</label>
-                        <input placeholder="https://..." value={siteWeb} onChange={(e) => setSiteWeb(e.target.value)} className="inp" />
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* Shared fields */}
-                  <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Email</label>
-                      <input required type="email" placeholder="ton@email.fr" value={email} onChange={(e) => setEmail(e.target.value)} className="inp" />
-                    </div>
-                    {role === "benevole" && (
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Téléphone</label>
-                        <input
-                          required
-                          type="tel"
-                          placeholder="06 12 34 56 78"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          className="inp"
-                        />
-                        <p className="mt-1.5" style={{ fontSize: 12, color: "#888" }}>
-                          Utilisé uniquement pour la coordination avec les organisateurs via WhatsApp
-                        </p>
-                      </div>
-                    )}
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Mot de passe (6+ caractères)</label>
-                      <input required type="password" minLength={6} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="inp" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Département</label>
-                      <input
-                        required
-                        list="departements-list"
-                        placeholder="Ex: 69 - Rhône"
-                        value={dept}
-                        onChange={(e) => setDept(e.target.value)}
-                        className="inp"
-                      />
-                      <datalist id="departements-list">
-                        {DEPARTEMENTS_FR.map((d) => (
-                          <option key={d.code} value={`${d.code} - ${d.nom}`} />
-                        ))}
-                      </datalist>
-                    </div>
-                  </motion.div>
-
-                  {/* Bénévole extras */}
-                  {role === "benevole" && (
-                    <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest mb-3 text-muted-foreground">Disponibilités</p>
-                        <div className="flex gap-3 flex-wrap">
-                          {DISPO_OPTIONS.map((d) => (
-                            <button key={d} type="button" onClick={() => toggleDispo(d)}
-                              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all ${
-                                dispos.includes(d)
-                                  ? "border-primary bg-primary text-primary-foreground"
-                                  : "border-border bg-card text-muted-foreground hover:border-primary/50"
-                              }`}>
-                              {dispos.includes(d) && <Check size={14} />}
-                              {d}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}>
-                    <motion.button type="submit" disabled={loading} whileTap={{ scale: 0.97 }}
-                      className="btn-cta w-full flex items-center justify-center gap-2 mt-4">
-                      {loading ? <Loader2 size={18} className="animate-spin" /> : <>Créer mon compte <ArrowRight size={16} /></>}
-                    </motion.button>
-                  </motion.div>
-                </form>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              background: "#f0f7e6",
+              borderRadius: 100,
+              padding: "6px 16px",
+              fontSize: 14,
+              fontWeight: 600,
+              color: "#1A1A1A",
+              marginBottom: 8,
+              fontFamily: "'DM Sans', sans-serif",
+            }}
+          >
+            {role === "benevole" ? <Users size={14} /> : <ClipboardList size={14} />}
+            {role === "benevole" ? "Bénévole" : "Organisateur"}
+          </div>
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: "#1A1A1A", margin: 0, marginBottom: 4 }}>
+            Crée ton compte
+          </h1>
+          <p style={{ fontSize: 14, color: "#888", margin: 0, marginBottom: 32 }}>
+            Quelques infos pour commencer
+          </p>
         </div>
+
+        <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          {/* Avatar */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 4 }}>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: "50%",
+                background: "#f5f5f5",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+              aria-label="Ajouter une photo de profil"
+            >
+              {avatarPreview ? (
+                <img src={avatarPreview} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : (
+                <Camera size={26} color="#999" />
+              )}
+            </button>
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={onAvatarChange} className="hidden" />
+            <span style={{ marginTop: 8, fontSize: 12, color: "#888" }}>
+              {avatarPreview ? "Changer la photo" : "Ajouter une photo"}
+            </span>
+          </div>
+
+          {role === "benevole" ? (
+            <>
+              <div>
+                <label style={labelStyle}>Prénom</label>
+                <input required placeholder="Emma" value={prenom} onChange={(e) => setPrenom(e.target.value)} className="ravito-inp" style={inpStyle} />
+              </div>
+              <div>
+                <label style={labelStyle}>Nom</label>
+                <input required placeholder="Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="ravito-inp" style={inpStyle} />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <label style={labelStyle}>Nom de l'organisation</label>
+                <input required placeholder="Association Trail Alpin" value={orgName} onChange={(e) => setOrgName(e.target.value)} className="ravito-inp" style={inpStyle} />
+              </div>
+              <div>
+                <label style={labelStyle}>Type</label>
+                <select value={orgType} onChange={(e) => setOrgType(e.target.value)} className="ravito-inp" style={inpStyle}>
+                  <option value="association">Association</option>
+                  <option value="entreprise">Entreprise</option>
+                  <option value="collectivite">Collectivité</option>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Site web (optionnel)</label>
+                <input placeholder="https://..." value={siteWeb} onChange={(e) => setSiteWeb(e.target.value)} className="ravito-inp" style={inpStyle} />
+              </div>
+            </>
+          )}
+
+          <div>
+            <label style={labelStyle}>Email</label>
+            <input required type="email" placeholder="ton@email.fr" value={email} onChange={(e) => setEmail(e.target.value)} className="ravito-inp" style={inpStyle} />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Téléphone</label>
+            <input
+              required
+              type="tel"
+              placeholder="06 12 34 56 78"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="ravito-inp"
+              style={inpStyle}
+            />
+            <p style={{ marginTop: 6, fontSize: 12, color: "#888" }}>
+              Pour la coordination WhatsApp avec les organisateurs
+            </p>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Mot de passe</label>
+            <input required type="password" minLength={6} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="ravito-inp" style={inpStyle} />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Département</label>
+            <input
+              required
+              list="departements-list"
+              placeholder="Ex: 69 - Rhône"
+              value={dept}
+              onChange={(e) => setDept(e.target.value)}
+              className="ravito-inp"
+              style={inpStyle}
+            />
+            <datalist id="departements-list">
+              {DEPARTEMENTS_FR.map((d) => (
+                <option key={d.code} value={`${d.code} - ${d.nom}`} />
+              ))}
+            </datalist>
+          </div>
+
+          {role === "benevole" && (
+            <div>
+              <label style={labelStyle}>Disponibilités</label>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {DISPO_OPTIONS.map((d) => {
+                  const active = dispos.includes(d);
+                  return (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => toggleDispo(d)}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        padding: "8px 14px",
+                        borderRadius: 100,
+                        border: `1.5px solid ${active ? "#73CC30" : "#e5e5e5"}`,
+                        background: active ? "#73CC30" : "#FFFFFF",
+                        color: active ? "#1A1A1A" : "#666",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        fontFamily: "'DM Sans', sans-serif",
+                      }}
+                    >
+                      {active && <Check size={12} />}
+                      {d}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              marginTop: 24,
+              width: "100%",
+              padding: "16px",
+              borderRadius: 12,
+              background: "#73CC30",
+              color: "#1A1A1A",
+              fontWeight: 700,
+              fontSize: 15,
+              border: "none",
+              cursor: loading ? "not-allowed" : "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              fontFamily: "'DM Sans', sans-serif",
+              textTransform: "uppercase",
+              letterSpacing: 0.5,
+            }}
+          >
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <>Créer mon compte →</>}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setRole(null)}
+            style={{
+              marginTop: 16,
+              background: "none",
+              border: "none",
+              color: "#888",
+              fontSize: 13,
+              cursor: "pointer",
+              textAlign: "center",
+            }}
+          >
+            ← Changer de rôle
+          </button>
+
+          <p style={{ marginTop: 8, textAlign: "center", fontSize: 13, color: "#888" }}>
+            Déjà un compte ?{" "}
+            <Link to="/connexion" style={{ color: "#73CC30", fontWeight: 600 }}>
+              Se connecter →
+            </Link>
+          </p>
+        </form>
       </div>
     </div>
   );
