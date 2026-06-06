@@ -465,8 +465,8 @@ function CleanHero() {
           <Link
             to="/publier"
             style={{
-              background: "transparent",
-              color: "#FFFFFF",
+              background: "#73CC30",
+              color: "#1A1A1A",
               padding: "15px 28px",
               borderRadius: 100,
               fontWeight: 700,
@@ -475,19 +475,15 @@ function CleanHero() {
               letterSpacing: 1,
               fontFamily: "'DM Sans', sans-serif",
               display: "inline-block",
-              border: "2px solid rgba(255,255,255,0.7)",
-              transition: "transform 0.2s ease, background 0.2s ease",
+              border: "none",
+              transition: "transform 0.2s ease, opacity 0.2s ease",
               textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(-2px)";
-              el.style.background = "rgba(255,255,255,0.15)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.transform = "translateY(0)";
-              el.style.background = "transparent";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
           >
             Je publie un événement
