@@ -10,7 +10,7 @@ export function Footer() {
             <img
               src={ravitoLogoWhite.url}
               alt="Ravito"
-              style={{ height: 56, width: "auto" }}
+              style={{ height: 72, width: "auto" }}
               className="object-contain mb-4"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";

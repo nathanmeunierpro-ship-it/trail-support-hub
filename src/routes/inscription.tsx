@@ -156,7 +156,7 @@ function SignupPage() {
           <img
             src={ravitoLogoGreen.url}
             alt="Ravito"
-            style={{ height: 80, width: "auto" }}
+            style={{ height: 72, width: "auto" }}
             className="object-contain"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
@@ -328,7 +328,7 @@ function SignupPage() {
           <img
             src={ravitoLogoGreen.url}
             alt="Ravito"
-            style={{ height: 96, width: "auto", margin: "0 auto", display: "block" }}
+            style={{ height: 72, width: "auto", margin: "0 auto", display: "block" }}
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";

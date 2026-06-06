@@ -436,10 +436,10 @@ function CleanHero() {
 
         {/* Buttons */}
         <div className="finishers-hero-btns">
-          <Link to="/annonces" className="btn-primary">
+          <Link to="/inscription" className="btn-primary">
             Je suis bénévole
           </Link>
-          <Link to="/publier" className="btn-outline-light">
+          <Link to="/inscription" className="btn-outline-light">
             Je publie un événement
           </Link>
         </div>
