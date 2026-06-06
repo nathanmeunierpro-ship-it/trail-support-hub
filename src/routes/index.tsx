@@ -224,49 +224,6 @@ function Home() {
         </div>
       </section>
 
-      {/* ── ENGAGEMENTS / VALEURS ── */}
-      <section className="py-28 px-6 section-light">
-        <div className="mx-auto max-w-7xl">
-          <motion.div {...fadeUp} className="text-center mb-20">
-            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-              — Nos engagements
-            </span>
-            <h2
-              className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-tight"
-              style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
-            >
-              Une communauté,
-              <br />
-              une vision commune.
-            </h2>
-          </motion.div>
-          <div className="grid gap-10 md:grid-cols-3">
-            {[
-              { Icon: Heart, title: "bénévoles passionnés", body: "Des sportifs engagés prêts à aider partout en France." },
-              { Icon: MapPin, title: "partout en France", body: "Trails, vélo, triathlon, running dans toutes les régions." },
-              { Icon: Sparkles, title: "mise en relation directe", body: "Organisateurs et bénévoles en contact en quelques clics." },
-            ].map((e, i) => (
-              <motion.div
-                key={e.title}
-                {...fadeUp}
-                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative bg-card border border-border rounded-3xl p-10 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-[var(--color-primary)] mb-6 group-hover:bg-[var(--color-primary)] group-hover:text-white group-hover:scale-110 transition-all">
-                  <e.Icon size={28} strokeWidth={1.8} />
-                </div>
-                <h3
-                  className="mb-4"
-                  style={{ fontFamily: "Pacifico, cursive", color: "var(--color-text)", fontSize: "1.85rem" }}
-                >
-                  {e.title}
-                </h3>
-                <p className="text-[var(--color-text-secondary)] leading-relaxed max-w-xs mx-auto">{e.body}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── EVENTS GRID ── */}
       <section className="py-24 px-6 bg-[var(--color-bg)]">
