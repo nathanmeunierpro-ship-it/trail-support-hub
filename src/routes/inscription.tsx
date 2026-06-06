@@ -156,7 +156,7 @@ function SignupPage() {
           <img
             src={ravitoLogoGreen.url}
             alt="Ravito"
-            className="h-16 w-auto"
+            className="h-28 w-auto"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
@@ -327,7 +327,7 @@ function SignupPage() {
           <img
             src={ravitoLogoGreen.url}
             alt="Ravito"
-            className="h-16 w-auto mx-auto block"
+            className="h-28 w-auto mx-auto block"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = "none";
               (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
