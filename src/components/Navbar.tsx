@@ -66,8 +66,7 @@ export function Navbar() {
             <img
               src={ravitoLogoWhite.url}
               alt="Ravito"
-              style={{ height: 72, width: "auto" }}
-              className="object-contain"
+              className="h-16 w-auto"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
