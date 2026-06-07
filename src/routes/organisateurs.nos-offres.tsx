@@ -79,7 +79,7 @@ const OFFERS: Offer[] = [
   {
     name: "Premium",
     badge: "VISIBILITÉ MAXIMALE",
-    price: "Me Contacter",
+    price: "",
     features: [
       "Tout l'Essentiel inclus",
       "Mise en avant homepage et carousel",
@@ -88,7 +88,7 @@ const OFFERS: Offer[] = [
       "Analytics avancés",
       "Support dédié",
     ],
-    ctaLabel: "Nous contacter",
+    ctaLabel: "Sur devis",
     ctaKind: "modal",
     modalOffer: "Premium — à partir de 49,99€",
     borderClass: "border-2 border-[var(--color-primary)]",
