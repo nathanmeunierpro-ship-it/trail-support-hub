@@ -94,7 +94,7 @@ function Home() {
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "'More Sugar', cursive", textTransform: "none", color: "var(--color-text-light)" }}>
+            <span style={{ fontFamily: "'Bebas Neue', sans-serif", textTransform: "none", color: "var(--color-text-light)" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
@@ -312,7 +312,7 @@ function Home() {
                       <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                         <h3
                           className="leading-tight mb-4 line-clamp-3"
-                          style={{ fontFamily: "'More Sugar', cursive", fontSize: "1.85rem", color: "#FFFFFF", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+                          style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.85rem", color: "#FFFFFF", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
                         >
                           {ev.nom}
                         </h3>
@@ -423,7 +423,7 @@ function CleanHero() {
         {/* Title */}
         <h1
           style={{
-            fontFamily: "'Quicksand', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontWeight: 900,
             fontSize: "clamp(52px, 11vw, 140px)",
             color: "#FFFFFF",

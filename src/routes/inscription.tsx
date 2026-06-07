@@ -167,7 +167,7 @@ function SignupPage() {
 
         <h1
           style={{
-            fontFamily: "'Quicksand', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontWeight: 900,
             fontSize: 52,
             color: "#1A1A1A",
@@ -243,7 +243,7 @@ function SignupPage() {
               <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 16 }}>{emoji}</div>
               <h3
                 style={{
-                  fontFamily: "'Quicksand', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontWeight: 900,
                   fontSize: 28,
                   color: "#1A1A1A",
