@@ -169,14 +169,16 @@ function Page() {
                   {o.badge}
                 </span>
                 <h2 className="font-display text-2xl font-black mb-1">{o.name}</h2>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="font-display text-4xl font-black">{o.price}</span>
-                  {o.priceSuffix && (
-                    <span className={`text-sm ${o.highlighted ? "text-white/80" : "text-muted-foreground"}`}>
-                      {o.priceSuffix}
-                    </span>
-                  )}
-                </div>
+                {o.price && (
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="font-display text-4xl font-black">{o.price}</span>
+                    {o.priceSuffix && (
+                      <span className={`text-sm ${o.highlighted ? "text-white/80" : "text-muted-foreground"}`}>
+                        {o.priceSuffix}
+                      </span>
+                    )}
+                  </div>
+                )}
                 <ul className="space-y-3 mb-8 flex-1">
                   {o.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm leading-relaxed">
