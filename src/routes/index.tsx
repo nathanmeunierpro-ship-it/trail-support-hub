@@ -423,21 +423,21 @@ function CleanHero() {
         {/* Title */}
         <h1
           style={{
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            fontSize: "clamp(52px, 11vw, 140px)",
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontWeight: 400,
+            fontSize: "clamp(48px, 7vw, 90px)",
             color: "#FFFFFF",
-            lineHeight: 0.9,
-            letterSpacing: "-2px",
+            lineHeight: 0.95,
+            letterSpacing: "0.5px",
             fontStyle: "normal",
             margin: 0,
-            whiteSpace: "pre-line",
             textShadow: "0 2px 20px rgba(0,0,0,0.3)",
             wordBreak: "break-word",
           }}
         >
-          {"B\u00C9N\u00C9VOLE\nOU\nORGANISATEUR ?"}
+          {"B\u00C9N\u00C9VOLE OU\nORGANISATEUR ?"}
         </h1>
+
 
         {/* Subtitle */}
         <p
