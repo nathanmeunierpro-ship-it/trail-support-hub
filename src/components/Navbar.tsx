@@ -76,7 +76,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <ul className="hidden lg:flex items-center gap-1" ref={dropdownRef}>
+          <ul className="hidden lg:flex items-center gap-4" ref={dropdownRef}>
             {NAV_LINKS.map((l) => {
               const isActive = currentPath === l.to || currentPath.startsWith(l.to + "/");
               if (l.children) {
@@ -90,7 +90,7 @@ export function Navbar() {
                   >
                     <button
                       onClick={() => setOpenDropdown(isOpen ? null : l.to)}
-                      className={`flex items-center gap-1 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider transition-colors ${
+                      className={`flex items-center gap-1 px-3 py-2 rounded-full text-[12px] xl:text-[13px] font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${
                         isActive
                           ? "text-primary bg-primary-foreground"
                           : "text-primary-foreground/85 hover:text-primary-foreground"
@@ -114,7 +114,7 @@ export function Navbar() {
                                 key={c.href}
                                 to={c.href}
                                 onClick={() => setOpenDropdown(null)}
-                                className="block px-4 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+                                className="block px-4 py-2.5 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-primary)] hover:text-white whitespace-nowrap transition-colors"
                               >
                                 {c.label}
                               </Link>
@@ -130,7 +130,7 @@ export function Navbar() {
                 <li key={l.to}>
                   <Link
                     to={l.to}
-                    className={`px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider transition-colors ${
+                    className={`px-3 py-2 rounded-full text-[12px] xl:text-[13px] font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${
                       isActive
                         ? "text-primary bg-primary-foreground"
                         : "text-primary-foreground/85 hover:text-primary-foreground"
@@ -149,14 +149,14 @@ export function Navbar() {
               <>
                 <Link
                   to={dashboardLink}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider text-primary-foreground/85 hover:text-primary-foreground transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-[12px] xl:text-[13px] font-bold uppercase tracking-wider whitespace-nowrap text-primary-foreground/85 hover:text-primary-foreground transition-colors"
                 >
                   <LayoutDashboard size={14} />
                   Mon espace
                 </Link>
                 <button
                   onClick={signOut}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wider bg-primary-foreground text-primary hover:opacity-90 transition-opacity"
+                  className="flex items-center gap-1.5 px-[16px] py-[10px] rounded-full text-[12px] xl:text-[13px] font-bold uppercase tracking-wider whitespace-nowrap bg-primary-foreground text-primary hover:opacity-90 transition-opacity"
                 >
                   <LogOut size={14} />
                   Déconnexion
@@ -164,10 +164,16 @@ export function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Link to="/connexion" className="btn-secondary">
+                <Link
+                  to="/connexion"
+                  className="inline-flex items-center justify-center rounded-full px-[16px] py-[10px] text-[12px] xl:text-[13px] font-bold uppercase tracking-wider whitespace-nowrap text-primary-foreground/85 hover:text-primary-foreground transition-colors"
+                >
                   Se connecter
                 </Link>
-                <Link to="/inscription" className="btn-primary">
+                <Link
+                  to="/inscription"
+                  className="inline-flex items-center justify-center rounded-full px-[16px] py-[10px] text-[12px] xl:text-[13px] font-bold uppercase tracking-wider whitespace-nowrap bg-primary-foreground text-primary hover:opacity-90 transition-opacity"
+                >
                   S'inscrire
                 </Link>
               </div>
