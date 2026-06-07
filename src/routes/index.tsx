@@ -442,7 +442,7 @@ function CleanHero() {
         {/* Subtitle */}
         <p
           style={{
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: "clamp(15px, 2vw, 18px)",
             color: "#FFFFFF",
             opacity: 0.9,
@@ -469,7 +469,7 @@ function CleanHero() {
         <p
           style={{
             marginTop: 16,
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 12,
             color: "#FFFFFF",
             opacity: 1,
