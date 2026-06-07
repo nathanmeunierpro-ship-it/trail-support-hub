@@ -32,7 +32,7 @@ const navLinks = [
   { to: "/publier", label: "Publier un événement" },
   { to: "/benevoles", label: "Bénévoles" },
   { to: "/organisateurs", label: "Organisateurs" },
-  { to: "/qui-sommes-nous", label: "À propos" },
+  { to: "/qui-sommes-nous", label: "Qui sommes-nous ?" },
 ];
 
 const legalLinks = [
