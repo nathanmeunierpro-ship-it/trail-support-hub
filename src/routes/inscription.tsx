@@ -143,6 +143,13 @@ function SignupPage() {
 
     setLoading(false);
     toast.success("Compte créé !");
+    try {
+      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
+      const html = htmlBlock(`Nouvelle inscription Ravito — ${role}`, {
+        "Rôle": role, "Email": email, "Prénom": prenom, "Nom": nom,
+      });
+      void sendEmail({ data: { subject: `[Ravito] Nouvelle inscription — ${prenom} ${nom}`, html, replyTo: email } });
+    } catch (e) { console.error("[signup] email failed", e); }
     navigate({ to: role === "organisateur" ? "/mon-espace" : "/mes-candidatures" });
   };
 

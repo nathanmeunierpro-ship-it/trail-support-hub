@@ -247,35 +247,38 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
     return Object.keys(e).length === 0;
   };
 
-  const submit = (ev: React.FormEvent) => {
+  const submit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate() || !offer) return;
     setSending(true);
-    const body = [
-      `Offre sélectionnée : ${offer}`,
-      ``,
-      `Organisation : ${form.organisation}`,
-      `Responsable : ${form.responsable}`,
-      `Email : ${form.email}`,
-      `Téléphone : ${form.telephone || "—"}`,
-      ``,
-      `Événement : ${form.evenement}`,
-      `Sport : ${form.sport}`,
-      `Date : ${form.date}`,
-      `Ville : ${form.ville}`,
-      `Bénévoles recherchés : ${form.benevoles}`,
-      ``,
-      `Message :`,
-      form.message || "—",
-    ].join("\n");
-    const url = `mailto:contact@ravito.fr?subject=${encodeURIComponent(
-      `Demande de devis — ${offer}`,
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
-    setTimeout(() => {
+    try {
+      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
+      const html = htmlBlock(`Nouvelle demande de devis Ravito — ${offer}`, {
+        "Offre": offer,
+        "Organisation": form.organisation,
+        "Responsable": form.responsable,
+        "Email": form.email,
+        "Téléphone": form.telephone,
+        "Événement": form.evenement,
+        "Sport": form.sport,
+        "Date": form.date,
+        "Ville": form.ville,
+        "Bénévoles recherchés": form.benevoles,
+        "Message": form.message,
+      });
+      await sendEmail({
+        data: {
+          subject: `Nouvelle demande de devis Ravito — ${form.responsable || form.organisation}`,
+          html,
+          replyTo: form.email,
+        },
+      });
+    } catch (e) {
+      console.error("[devis] send failed", e);
+    } finally {
       setSending(false);
       setSent(true);
-    }, 400);
+    }
   };
 
   const handleClose = () => {

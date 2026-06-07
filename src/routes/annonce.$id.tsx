@@ -91,6 +91,23 @@ function AnnonceDetail() {
     if (error) { toast.error("Erreur : " + error.message); return; }
     setSuccess(true);
     toast.success("Candidature envoyée !");
+    // Notification email (fire-and-forget)
+    try {
+      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
+      const eventName = (event as any)?.titre || (event as any)?.nom || "Événement";
+      const html = htmlBlock(`Nouvelle candidature — ${eventName}`, {
+        "Événement": eventName,
+        "Bénévole": `${prenom} ${nom}`.trim(),
+        "Email": email,
+        "Téléphone": telephone,
+        "Mission souhaitée": mission,
+        "Disponibilité": dispoHoraire,
+        "Transport": transport,
+        "Niveau": niveau,
+        "Message": messagePerso,
+      });
+      void sendEmail({ data: { subject: `[Ravito] Nouvelle candidature — ${eventName}`, html, replyTo: email } });
+    } catch (e) { console.error("[candidature] email failed", e); }
     setTimeout(() => navigate({ to: "/mes-candidatures" }), 2000);
   };
 
