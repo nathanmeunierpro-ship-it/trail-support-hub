@@ -6,9 +6,7 @@ import { Footer } from "./Footer";
 
 export function PageShell({ children, padTop = true }: { children: ReactNode; padTop?: boolean }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [canGoBack, setCanGoBack] = useState(
-    typeof window !== "undefined" ? window.history.length > 1 : false
-  );
+  const [canGoBack, setCanGoBack] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

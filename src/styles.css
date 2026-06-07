@@ -4,18 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-  font-family: 'More Sugar';
-  src: url('/fonts/MoreSugar-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme inline {
-  --font-sans: "Quicksand", sans-serif;
-  --font-display: "Quicksand", sans-serif;
-  --font-script: "More Sugar", cursive;
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Bebas Neue', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -95,12 +86,9 @@
   --shadow-btn: 0 4px 14px rgba(115, 204, 48, 0.35);
 
   /* Typography tokens */
-  --font-body: "Quicksand", sans-serif;
-  --font-script: "More Sugar", cursive;
-  --font-display: "Quicksand", sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Bebas Neue', sans-serif;
 }
-
-.font-script { font-family: var(--font-script); }
 
 
 /* ── Base styles ── */
@@ -112,13 +100,18 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
   }
-  body, p, span, label, button, input, textarea, select, a, li, nav {
+  body, p, span, label, button, input, textarea, select, a, li, nav, h4, h5, h6 {
     font-family: var(--font-body);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3 {
     font-family: var(--font-display);
-    font-weight: 900;
-    letter-spacing: -0.02em;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--color-text-dark);
+  }
+  h4, h5, h6 {
+    font-weight: 800;
+    letter-spacing: -0.01em;
     color: var(--color-text-dark);
   }
 }
@@ -309,10 +302,10 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 .hero-bebas {
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 900;
   font-size: clamp(100px, 15vw, 180px);
   color: #FFFFFF;
@@ -357,7 +350,7 @@
   color: #FFFFFF;
   border-radius: 999px;
   padding: 10px 18px;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
@@ -376,7 +369,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 900;
   font-size: 18px;
   line-height: 1.05;
@@ -400,7 +393,7 @@
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: "Quicksand", sans-serif;
+  font-family: 'Inter', sans-serif;
   display: inline-block;
   transition: transform 0.2s ease;
   text-align: center;
