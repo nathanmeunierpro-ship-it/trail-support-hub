@@ -130,7 +130,7 @@ function Home() {
           </motion.div>
           <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
             <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-              — Pour les bénévoles
+              Pour les bénévoles
             </span>
             <h3
               className="font-display font-black uppercase text-[var(--color-text)] mt-4 mb-6 leading-tight"
