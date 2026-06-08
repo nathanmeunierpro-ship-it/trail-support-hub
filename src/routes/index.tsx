@@ -370,8 +370,8 @@ function Home() {
         <motion.div {...fadeUp} className="relative mx-auto max-w-3xl text-center">
           <Users size={48} className="mx-auto mb-8 opacity-80" strokeWidth={1.5} style={{ color: "var(--color-accent)" }} />
           <h2
-            className="font-display font-black uppercase leading-[1.05] mb-6"
-            style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
+            className="font-display uppercase leading-[1.05] mb-6"
+            style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)", fontWeight: 400 }}
           >
             Rejoins la <span className="accent-word">communauté</span>
           </h2>
