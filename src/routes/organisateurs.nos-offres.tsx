@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, X } from "lucide-react";
+import { ArrowRight, Check, X, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/PageShell";
 
