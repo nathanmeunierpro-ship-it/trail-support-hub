@@ -84,7 +84,7 @@ function Home() {
             {...fadeUp}
             className="inline-block text-xs uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6 font-semibold"
           >
-            — Notre mission —
+            Notre mission
           </motion.span>
           <motion.h2
             {...fadeUp}
@@ -94,7 +94,7 @@ function Home() {
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "'Bebas Neue', sans-serif", textTransform: "none", color: "var(--color-text-light)" }}>
+            <span style={{ fontFamily: "'Bebas Neue', sans-serif", textTransform: "none", color: "#73CC30" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
@@ -130,7 +130,7 @@ function Home() {
           </motion.div>
           <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
             <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-              — Pour les bénévoles
+              Pour les bénévoles
             </span>
             <h3
               className="font-display font-black uppercase text-[var(--color-text)] mt-4 mb-6 leading-tight"
@@ -176,7 +176,7 @@ function Home() {
             className="md:order-1 order-2"
           >
             <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-              — Pour les organisateurs
+              Pour les organisateurs
             </span>
             <h3
               className="font-display font-black uppercase text-[var(--color-text)] mt-4 mb-6 leading-tight"
@@ -187,9 +187,9 @@ function Home() {
               qu'il te faut.
             </h3>
             <p className="text-foreground/70 text-lg leading-relaxed mb-8">
-              Publie ton événement et reçois en quelques heures les candidatures de bénévoles motivés, près de chez toi. Gratuit pour les 20 premiers organisateurs.
+              Publie ton événement et reçois en quelques heures les candidatures de bénévoles motivés, près de chez toi.
             </p>
-            <ul className="space-y-3 mb-10">
+            <ul className="space-y-3 mb-6">
               {[
                 "Gratuit pour les 20 premiers organisateurs",
                 "Candidatures qualifiées dès la première heure",
@@ -201,12 +201,31 @@ function Home() {
                 </li>
               ))}
             </ul>
+            <div
+              style={{
+                display: "inline-block",
+                background: "#73CC30",
+                color: "#1A1A1A",
+                fontWeight: 800,
+                fontSize: 16,
+                padding: "12px 20px",
+                borderRadius: 999,
+                marginTop: 24,
+                marginBottom: 24,
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+              }}
+            >
+              Gratuit pour les 20 premiers
+            </div>
+            <div>
             <Link
               to="/publier"
               className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-7 py-3 text-sm font-bold uppercase tracking-wider hover:opacity-90 transition"
             >
               Publier un événement <ArrowRight size={16} />
             </Link>
+            </div>
           </motion.div>
           <motion.div {...fadeUp} className="relative md:order-2 order-1">
             <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl">

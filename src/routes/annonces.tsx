@@ -46,7 +46,8 @@ const TYPE_COLORS: Record<string, string> = {
 type ApplyStatus = "idle" | "loading" | "success";
 
 function AnnoncesPage() {
-  const { user, role } = useAuth();
+  const { user, role, loading: authLoading } = useAuth();
+  console.log("[annonces] auth role =", role, "loading =", authLoading);
   const navigate = useNavigate();
   const [events, setEvents] = useState<EventCard[]>([]);
   const [postules, setPostules] = useState<Set<string>>(new Set());
@@ -136,7 +137,11 @@ function AnnoncesPage() {
       navigate({ to: "/connexion" });
       return;
     }
-    if (role !== "benevole") {
+    if (authLoading) {
+      toast.info("Chargement de ton profil…");
+      return;
+    }
+    if (role === "organisateur") {
       toast.error("Seuls les bénévoles peuvent postuler.");
       return;
     }
@@ -401,7 +406,7 @@ function AnnoncesPage() {
                         </span>
                         {ev.nb_benevoles && (
                           <span className="flex items-center gap-2">
-                            <span>👥</span>
+                            <Users size={13} style={{ color: "#73CC30" }} className="flex-shrink-0" />
                             {ev.nb_benevoles} bénévoles recherchés
                           </span>
                         )}

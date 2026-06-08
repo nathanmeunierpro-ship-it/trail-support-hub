@@ -86,6 +86,20 @@ function QuiSommesNous() {
           padding: "80px 60px",
         }}
       >
+        <div className="mx-auto" style={{ maxWidth: 1100 }}>
+          <img
+            src="https://images.unsplash.com/photo-1539794830467-1f1755804d13?w=1200&q=85"
+            alt="Équipe sportive solidaire"
+            style={{
+              width: "100%",
+              height: 400,
+              objectFit: "cover",
+              borderRadius: 16,
+              margin: "0 0 40px 0",
+              display: "block",
+            }}
+          />
+        </div>
         <div className="mx-auto" style={{ maxWidth: 680 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
