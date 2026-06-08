@@ -143,6 +143,13 @@ function SignupPage() {
 
     setLoading(false);
     toast.success("Compte créé !");
+    try {
+      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
+      const html = htmlBlock(`Nouvelle inscription Ravito — ${role}`, {
+        "Rôle": role, "Email": email, "Prénom": prenom, "Nom": nom,
+      });
+      void sendEmail({ data: { subject: `[Ravito] Nouvelle inscription — ${prenom} ${nom}`, html, replyTo: email } });
+    } catch (e) { console.error("[signup] email failed", e); }
     navigate({ to: role === "organisateur" ? "/mon-espace" : "/mes-candidatures" });
   };
 
@@ -167,7 +174,8 @@ function SignupPage() {
 
         <h1
           style={{
-            fontFamily: "'Bebas Neue', sans-serif",
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 900,
             fontSize: 52,
             color: "#1A1A1A",
             textAlign: "center",
@@ -180,7 +188,7 @@ function SignupPage() {
         </h1>
         <p
           style={{
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 16,
             color: "#6B6B6B",
             textAlign: "center",
@@ -242,7 +250,8 @@ function SignupPage() {
               <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 16 }}>{emoji}</div>
               <h3
                 style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 900,
                   fontSize: 28,
                   color: "#1A1A1A",
                   letterSpacing: "-0.5px",
@@ -254,7 +263,7 @@ function SignupPage() {
               </h3>
               <p
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: 13,
                   color: "#6B6B6B",
                   lineHeight: 1.5,
@@ -270,7 +279,7 @@ function SignupPage() {
                   color: btnColor,
                   borderRadius: 100,
                   padding: "10px 20px",
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: 13,
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -302,7 +311,7 @@ function SignupPage() {
     padding: "14px 16px",
     fontSize: 15,
     background: "#FFFFFF",
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'Inter', sans-serif",
     color: "#1A1A1A",
     outline: "none",
   };
@@ -314,7 +323,7 @@ function SignupPage() {
     color: "#888",
     marginBottom: 6,
     fontWeight: 600,
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'Inter', sans-serif",
   };
 
   return (
@@ -349,7 +358,7 @@ function SignupPage() {
               fontWeight: 600,
               color: "#1A1A1A",
               marginBottom: 8,
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             {role === "benevole" ? <Users size={14} /> : <ClipboardList size={14} />}
@@ -496,7 +505,7 @@ function SignupPage() {
                         fontSize: 13,
                         fontWeight: 600,
                         cursor: "pointer",
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "'Inter', sans-serif",
                       }}
                     >
                       {active && <Check size={12} />}
@@ -526,7 +535,7 @@ function SignupPage() {
               alignItems: "center",
               justifyContent: "center",
               gap: 8,
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               textTransform: "uppercase",
               letterSpacing: 0.5,
             }}

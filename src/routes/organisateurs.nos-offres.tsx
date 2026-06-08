@@ -79,7 +79,7 @@ const OFFERS: Offer[] = [
   {
     name: "Premium",
     badge: "VISIBILITÉ MAXIMALE",
-    price: "Me Contacter",
+    price: "",
     features: [
       "Tout l'Essentiel inclus",
       "Mise en avant homepage et carousel",
@@ -88,7 +88,7 @@ const OFFERS: Offer[] = [
       "Analytics avancés",
       "Support dédié",
     ],
-    ctaLabel: "Nous contacter",
+    ctaLabel: "Sur devis",
     ctaKind: "modal",
     modalOffer: "Premium — à partir de 49,99€",
     borderClass: "border-2 border-[var(--color-primary)]",
@@ -169,14 +169,16 @@ function Page() {
                   {o.badge}
                 </span>
                 <h2 className="font-display text-2xl font-black mb-1">{o.name}</h2>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="font-display text-4xl font-black">{o.price}</span>
-                  {o.priceSuffix && (
-                    <span className={`text-sm ${o.highlighted ? "text-white/80" : "text-muted-foreground"}`}>
-                      {o.priceSuffix}
-                    </span>
-                  )}
-                </div>
+                {o.price && (
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="font-display text-4xl font-black">{o.price}</span>
+                    {o.priceSuffix && (
+                      <span className={`text-sm ${o.highlighted ? "text-white/80" : "text-muted-foreground"}`}>
+                        {o.priceSuffix}
+                      </span>
+                    )}
+                  </div>
+                )}
                 <ul className="space-y-3 mb-8 flex-1">
                   {o.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm leading-relaxed">
@@ -245,35 +247,38 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
     return Object.keys(e).length === 0;
   };
 
-  const submit = (ev: React.FormEvent) => {
+  const submit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate() || !offer) return;
     setSending(true);
-    const body = [
-      `Offre sélectionnée : ${offer}`,
-      ``,
-      `Organisation : ${form.organisation}`,
-      `Responsable : ${form.responsable}`,
-      `Email : ${form.email}`,
-      `Téléphone : ${form.telephone || "—"}`,
-      ``,
-      `Événement : ${form.evenement}`,
-      `Sport : ${form.sport}`,
-      `Date : ${form.date}`,
-      `Ville : ${form.ville}`,
-      `Bénévoles recherchés : ${form.benevoles}`,
-      ``,
-      `Message :`,
-      form.message || "—",
-    ].join("\n");
-    const url = `mailto:contact@ravito.fr?subject=${encodeURIComponent(
-      `Demande de devis — ${offer}`,
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
-    setTimeout(() => {
+    try {
+      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
+      const html = htmlBlock(`Nouvelle demande de devis Ravito — ${offer}`, {
+        "Offre": offer,
+        "Organisation": form.organisation,
+        "Responsable": form.responsable,
+        "Email": form.email,
+        "Téléphone": form.telephone,
+        "Événement": form.evenement,
+        "Sport": form.sport,
+        "Date": form.date,
+        "Ville": form.ville,
+        "Bénévoles recherchés": form.benevoles,
+        "Message": form.message,
+      });
+      await sendEmail({
+        data: {
+          subject: `Nouvelle demande de devis Ravito — ${form.responsable || form.organisation}`,
+          html,
+          replyTo: form.email,
+        },
+      });
+    } catch (e) {
+      console.error("[devis] send failed", e);
+    } finally {
       setSending(false);
       setSent(true);
-    }, 400);
+    }
   };
 
   const handleClose = () => {

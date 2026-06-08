@@ -106,6 +106,14 @@ function PublierPage() {
     if (error) { toast.error(error.message); return; }
     setSuccess(true);
     toast.success("Annonce publiée !");
+    try {
+      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
+      const html = htmlBlock(`Nouvel événement publié — ${nom}`, {
+        "Événement": nom, "Sport": type, "Date": date, "Ville": ville, "Région": region,
+        "Bénévoles": String(nbBen), "Email contact": emailContact, "Description": description,
+      });
+      void sendEmail({ data: { subject: `[Ravito] Événement publié — ${nom}`, html, replyTo: emailContact } });
+    } catch (e) { console.error("[publier] email failed", e); }
     setTimeout(() => navigate({ to: "/mon-espace" }), 2000);
   };
 

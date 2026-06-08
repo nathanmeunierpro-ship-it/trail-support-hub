@@ -32,7 +32,7 @@ const navLinks = [
   { to: "/publier", label: "Publier un événement" },
   { to: "/benevoles", label: "Bénévoles" },
   { to: "/organisateurs", label: "Organisateurs" },
-  { to: "/qui-sommes-nous", label: "À propos" },
+  { to: "/qui-sommes-nous", label: "Qui sommes-nous ?" },
 ];
 
 const legalLinks = [
@@ -60,8 +60,8 @@ export function Footer() {
             <img
               src={ravitoLogoWhite.url}
               alt="Ravito"
-              className="h-44 w-auto"
-              style={{ marginBottom: 16, display: "block" }}
+              className="h-40 w-auto"
+              style={{ marginBottom: 12, display: "block" }}
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
                 (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = "block";
