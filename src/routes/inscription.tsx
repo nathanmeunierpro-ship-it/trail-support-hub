@@ -177,7 +177,7 @@ function SignupPage() {
             fontFamily: "'Inter', sans-serif",
             fontWeight: 900,
             fontSize: 52,
-            color: "#1A1A1A",
+            color: "#73CC30",
             textAlign: "center",
             letterSpacing: "-1px",
             lineHeight: 1,
