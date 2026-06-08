@@ -213,7 +213,7 @@ function SignupPage() {
           {([
             {
               val: "benevole" as Role,
-              emoji: "🙋",
+              Icon: Users,
               title: "BÉNÉVOLE",
               desc: "Je veux aider sur un événement près de chez moi",
               btnBg: "#73CC30",
@@ -221,13 +221,13 @@ function SignupPage() {
             },
             {
               val: "organisateur" as Role,
-              emoji: "📋",
+              Icon: ClipboardList,
               title: "ORGANISATEUR",
               desc: "Je cherche des bénévoles pour mon événement sportif",
               btnBg: "#1A1A1A",
               btnColor: "#FFFFFF",
             },
-          ] as const).map(({ val, emoji, title, desc, btnBg, btnColor }) => (
+          ] as const).map(({ val, Icon, title, desc, btnBg, btnColor }) => (
             <motion.button
               key={val}
               type="button"
@@ -247,7 +247,9 @@ function SignupPage() {
                 textAlign: "left",
               }}
             >
-              <div style={{ fontSize: 40, lineHeight: 1, marginBottom: 16 }}>{emoji}</div>
+              <div style={{ marginBottom: 16, color: "#73CC30" }}>
+                <Icon size={24} />
+              </div>
               <h3
                 style={{
                   fontFamily: "'Inter', sans-serif",
