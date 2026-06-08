@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Calendar, Users, ChevronDown, Check, Loader2, Filter, Search, Heart } from "lucide-react";
+import { useEffect as _useEffectDbg } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { REGIONS_FR, TYPES_SPORT } from "@/lib/regions";
