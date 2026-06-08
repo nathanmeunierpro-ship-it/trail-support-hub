@@ -236,29 +236,21 @@ function Home() {
               />
             </div>
             <div
-              className="absolute -top-6 -left-6 bg-primary text-primary-foreground shadow-xl hidden md:block"
+              className="absolute -top-4 -left-4 hidden md:inline-flex items-center gap-2"
               style={{
-                padding: "20px 28px",
-                borderRadius: 16,
-                minWidth: 240,
+                background: "#F2FAE8",
+                border: "1.5px solid #73CC30",
+                color: "#73CC30",
+                borderRadius: 999,
+                padding: "6px 14px",
+                fontSize: 12,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                pointerEvents: "none",
               }}
             >
-              <div
-                className="font-display leading-tight"
-                style={{ fontSize: 22, fontWeight: 800 }}
-              >
-                GRATUIT
-              </div>
-              <div
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                }}
-              >
-                pour les 20 premiers
-              </div>
+              Gratuit pour les 20 premiers
             </div>
           </motion.div>
         </div>
