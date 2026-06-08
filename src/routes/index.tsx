@@ -84,7 +84,7 @@ function Home() {
             {...fadeUp}
             className="inline-block text-xs uppercase tracking-[0.3em] text-[var(--color-accent)] mb-6 font-semibold"
           >
-            — Notre mission —
+            Notre mission
           </motion.span>
           <motion.h2
             {...fadeUp}
@@ -94,7 +94,7 @@ function Home() {
           >
             Le sport rassemble.
             <br />
-            <span style={{ fontFamily: "'Bebas Neue', sans-serif", textTransform: "none", color: "var(--color-text-light)" }}>
+            <span style={{ fontFamily: "'Bebas Neue', sans-serif", textTransform: "none", color: "#73CC30" }}>
               les bénévoles le font vivre.
             </span>
           </motion.h2>
