@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Trails, running, vélo, triathlon — trouve des bénévoles motivés ou postule sur un événement près de chez toi. Gratuit pour les 20 premiers organisateurs.",
+          "Trails, running, vélo, triathlon, trouve des bénévoles motivés ou postule sur un événement près de chez toi. Gratuit pour les 20 premiers organisateurs.",
       },
     ],
   }),
@@ -143,7 +143,7 @@ function Home() {
             <p className="text-foreground/70 text-lg leading-relaxed mb-8">
               Plonge dans les coulisses des plus belles courses de France.
               Rencontre des passionnés, partage des moments uniques, et fais
-              partie de l'aventure — sans payer ton dossard.
+              partie de l'aventure, sans payer ton dossard.
             </p>
             <ul className="space-y-3 mb-10">
               {[
@@ -238,20 +238,20 @@ function Home() {
             <div
               className="absolute -top-6 -left-6 bg-primary text-primary-foreground shadow-xl hidden md:block"
               style={{
-                padding: "16px 24px",
+                padding: "20px 28px",
                 borderRadius: 16,
-                minWidth: 200,
+                minWidth: 240,
               }}
             >
               <div
                 className="font-display leading-tight"
-                style={{ fontSize: 20, fontWeight: 800 }}
+                style={{ fontSize: 22, fontWeight: 800 }}
               >
                 GRATUIT
               </div>
               <div
                 style={{
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: 600,
                   letterSpacing: "1px",
                   textTransform: "uppercase",
@@ -270,7 +270,7 @@ function Home() {
           <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <div>
               <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-                — À l'affiche
+                À l'affiche
               </span>
               <h2
                 className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-none"

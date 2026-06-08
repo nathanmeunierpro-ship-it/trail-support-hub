@@ -327,7 +327,7 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
 
               {sent ? (
                 <div className="text-center py-10">
-                  <div className="text-4xl mb-4">✅</div>
+                  <CheckCircle size={32} color="#73CC30" strokeWidth={1.5} className="mb-4" />
                   <p className="font-display text-lg font-black mb-2">Demande envoyée !</p>
                   <p className="text-sm text-muted-foreground mb-6">
                     Nous vous répondrons sous 48h avec un lien de paiement.
