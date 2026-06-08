@@ -164,11 +164,13 @@ function AnnoncesPage() {
     });
 
     if (error) {
-      toast.error(
+      const msg =
         error.code === "23505"
           ? "Tu as déjà postulé à cet événement."
-          : error.message
-      );
+          : /Could not find|column/i.test(error.message)
+            ? "Erreur de configuration, contactez le support"
+            : "Une erreur est survenue. Réessaie."; 
+      toast.error(msg);
       setApplyStatus((s) => ({ ...s, [eventId]: "idle" }));
       return;
     }

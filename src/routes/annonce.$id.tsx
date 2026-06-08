@@ -81,14 +81,19 @@ function AnnonceDetail() {
       telephone: telephone || null,
       mission_souhaitee: mission || null,
       disponibilite: true,
-      disponibilite_horaire: dispoHoraire,
       transport,
       niveau,
       message_perso: messagePerso || null,
       experience: null,
     });
     setSubmitting(false);
-    if (error) { toast.error("Erreur : " + error.message); return; }
+    if (error) {
+      const msg = /Could not find|column/i.test(error.message)
+        ? "Erreur de configuration, contactez le support"
+        : error.message;
+      toast.error(msg);
+      return;
+    }
     setSuccess(true);
     toast.success("Candidature envoyée !");
     // Notification email (fire-and-forget)
