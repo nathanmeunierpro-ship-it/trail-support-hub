@@ -51,7 +51,7 @@ function LoginPage() {
       style={{ background: "#F2FAE8" }}
     >
       <Link to="/" className="mb-8">
-        <img src={ravitoLogoGreen.url} alt="Ravito" className="h-24 w-auto mx-auto" />
+        <img src={ravitoLogoGreen.url} alt="Ravito" className="h-40 w-auto mx-auto" />
       </Link>
 
       <motion.div
@@ -65,7 +65,7 @@ function LoginPage() {
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
             fontSize: "clamp(36px, 6vw, 56px)",
-            color: "#1a1a1a",
+            color: "#73CC30",
             letterSpacing: "0.01em",
           }}
         >
