@@ -22,7 +22,7 @@ const NAV_LINKS: NavLink[] = [
       { href: "/organisateurs/nos-offres", label: "Nos offres" },
     ],
   },
-  { to: "/qui-sommes-nous", label: "À propos" },
+  { to: "/qui-sommes-nous", label: "QUI SOMMES-NOUS ?" },
 ];
 
 export function Navbar() {

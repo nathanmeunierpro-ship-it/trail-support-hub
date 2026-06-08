@@ -9,6 +9,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Activity } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "sonner";
@@ -19,7 +20,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="max-w-md text-center">
-        <div className="text-7xl mb-4">🏃</div>
+        <div className="mb-4"><Activity size={32} color="#73CC30" strokeWidth={1.5} /></div>
         <h1 className="font-display text-5xl font-black text-primary mb-3">404</h1>
         <h2 className="text-2xl font-bold text-foreground mb-2">Cette page n'existe pas</h2>
         <p className="text-muted-foreground mb-8">Tu t'es perdu sur le parcours ?</p>

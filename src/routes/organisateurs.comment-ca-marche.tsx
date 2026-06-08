@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileText, Mail, CheckCircle } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 
 export const Route = createFileRoute("/organisateurs/comment-ca-marche")({
@@ -25,17 +25,17 @@ export const Route = createFileRoute("/organisateurs/comment-ca-marche")({
 
 const STEPS = [
   {
-    emoji: "📝",
+    icon: <FileText size={32} color="#73CC30" strokeWidth={1.5} />,
     title: "Crée ton annonce",
     desc: "Décris ton événement, le nombre de bénévoles dont tu as besoin et les rôles disponibles. C'est rapide et simple.",
   },
   {
-    emoji: "📬",
+    icon: <Mail size={32} color="#73CC30" strokeWidth={1.5} />,
     title: "Reçois des candidatures",
     desc: "Les bénévoles inscrits sur Ravito postulent directement. Tu reçois leurs profils et disponibilités dans ton espace.",
   },
   {
-    emoji: "✅",
+    icon: <CheckCircle size={32} color="#73CC30" strokeWidth={1.5} />,
     title: "Valide tes bénévoles",
     desc: "Accepte ou refuse les candidatures en un clic. Tes bénévoles sont notifiés automatiquement.",
   },
@@ -78,7 +78,7 @@ function Page() {
                 <div className="absolute -top-4 -left-4 w-11 h-11 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-display font-black text-lg shadow-lg">
                   {i + 1}
                 </div>
-                <div className="text-4xl mb-4">{s.emoji}</div>
+                <div className="mb-4">{s.icon}</div>
                 <h2 className="font-display text-xl font-black mb-2">{s.title}</h2>
                 <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
               </motion.div>

@@ -31,7 +31,7 @@ const STEPS = [
   {
     icon: <Clock size={22} />,
     title: "Suis tes candidatures",
-    desc: "En attente, accepté ou refusé — tout est centralisé dans ton espace personnel.",
+    desc: "En attente, accepté ou refusé, tout est centralisé dans ton espace personnel.",
   },
   {
     icon: <Users size={22} />,

@@ -134,7 +134,7 @@ function QuiSommesNous() {
               <p style={{ marginBottom: 20 }}>
                 Notre mission est claire : créer la plus grande communauté de
                 bénévoles sport en France, et permettre aux organisateurs de
-                trouver du renfort en quelques clics — gratuitement, sans
+                trouver du renfort en quelques clics, gratuitement, sans
                 friction.
               </p>
               <p style={{ marginBottom: 0 }}>
