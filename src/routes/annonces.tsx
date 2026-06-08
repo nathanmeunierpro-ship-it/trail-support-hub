@@ -46,7 +46,8 @@ const TYPE_COLORS: Record<string, string> = {
 type ApplyStatus = "idle" | "loading" | "success";
 
 function AnnoncesPage() {
-  const { user, role } = useAuth();
+  const { user, role, loading: authLoading } = useAuth();
+  console.log("[annonces] auth role =", role, "loading =", authLoading);
   const navigate = useNavigate();
   const [events, setEvents] = useState<EventCard[]>([]);
   const [postules, setPostules] = useState<Set<string>>(new Set());
