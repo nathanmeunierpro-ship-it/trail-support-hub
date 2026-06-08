@@ -406,7 +406,7 @@ function AnnoncesPage() {
                         </span>
                         {ev.nb_benevoles && (
                           <span className="flex items-center gap-2">
-                            <span>👥</span>
+                            <Users size={13} style={{ color: "#73CC30" }} className="flex-shrink-0" />
                             {ev.nb_benevoles} bénévoles recherchés
                           </span>
                         )}
