@@ -137,7 +137,11 @@ function AnnoncesPage() {
       navigate({ to: "/connexion" });
       return;
     }
-    if (role !== "benevole") {
+    if (authLoading) {
+      toast.info("Chargement de ton profil…");
+      return;
+    }
+    if (role === "organisateur") {
       toast.error("Seuls les bénévoles peuvent postuler.");
       return;
     }
