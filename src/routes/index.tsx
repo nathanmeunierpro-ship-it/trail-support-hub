@@ -176,7 +176,7 @@ function Home() {
             className="md:order-1 order-2"
           >
             <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-              — Pour les organisateurs
+              Pour les organisateurs
             </span>
             <h3
               className="font-display font-black uppercase text-[var(--color-text)] mt-4 mb-6 leading-tight"
