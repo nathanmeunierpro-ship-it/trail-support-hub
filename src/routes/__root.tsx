@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import { Activity } from "lucide-react";
 
 import appCss from "../styles.css?url";
+import ogImageAsset from "../assets/og-image.png.asset.json";
 import { Toaster } from "sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth-context";
