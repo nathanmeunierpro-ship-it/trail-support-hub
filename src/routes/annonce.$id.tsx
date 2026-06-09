@@ -40,6 +40,7 @@ function AnnonceDetail() {
   const [transport, setTransport] = useState("");
   const [niveau, setNiveau] = useState("");
   const [messagePerso, setMessagePerso] = useState("");
+  const [consentContact, setConsentContact] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [existingCandidatureId, setExistingCandidatureId] = useState<string | null>(null);
   const [checkingApplication, setCheckingApplication] = useState(false);
@@ -108,6 +109,7 @@ function AnnonceDetail() {
     if (!dispoHoraire) { toast.error("Indique ta disponibilité horaire"); return; }
     if (!transport) { toast.error("Indique ton moyen de transport"); return; }
     if (!niveau) { toast.error("Indique ton niveau sportif"); return; }
+    if (!consentContact) { toast.error("Tu dois accepter le partage de tes coordonnées avec l'organisateur"); return; }
     setSubmitting(true);
     const { error } = await (supabase.from("candidatures") as any).insert({
       event_id: id, benevole_id: user.id, prenom, nom, email,
@@ -382,8 +384,15 @@ function AnnonceDetail() {
                         placeholder="Présente-toi en quelques mots à l'organisateur…" />
                     </div>
 
-                    <motion.button type="submit" disabled={submitting} whileTap={{ scale: 0.97 }}
-                      className="btn-cta w-full flex items-center justify-center gap-2">
+                    {/* Consentement partage coordonnées */}
+                    <label className="flex items-start gap-2 text-xs text-muted-foreground cursor-pointer select-none">
+                      <input type="checkbox" checked={consentContact} onChange={(e) => setConsentContact(e.target.checked)}
+                        className="mt-0.5 h-4 w-4 accent-primary" />
+                      <span>J'accepte que mon <strong>nom, email et téléphone</strong> soient partagés avec l'organisateur de l'événement afin qu'il puisse me contacter.</span>
+                    </label>
+
+                    <motion.button type="submit" disabled={submitting || !consentContact} whileTap={{ scale: 0.97 }}
+                      className="btn-cta w-full flex items-center justify-center gap-2 disabled:opacity-50">
                       {submitting ? <Loader2 size={17} className="animate-spin" /> : <>Envoyer ma candidature</>}
                     </motion.button>
                   </form>

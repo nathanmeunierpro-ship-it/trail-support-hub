@@ -252,26 +252,22 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
     if (!validate() || !offer) return;
     setSending(true);
     try {
-      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
-      const html = htmlBlock(`Nouvelle demande de devis Ravito — ${offer}`, {
-        "Offre": offer,
-        "Organisation": form.organisation,
-        "Responsable": form.responsable,
-        "Email": form.email,
-        "Téléphone": form.telephone,
-        "Événement": form.evenement,
-        "Sport": form.sport,
-        "Date": form.date,
-        "Ville": form.ville,
-        "Bénévoles recherchés": form.benevoles,
-        "Message": form.message,
-      });
-      await sendEmail({
-        data: {
-          subject: `Nouvelle demande de devis Ravito — ${form.responsable || form.organisation}`,
-          html,
-          replyTo: form.email,
-        },
+      await fetch("/api/public/quote-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          offer,
+          organisation: form.organisation,
+          responsable: form.responsable,
+          email: form.email,
+          telephone: form.telephone,
+          evenement: form.evenement,
+          sport: form.sport,
+          date: form.date,
+          ville: form.ville,
+          benevoles: form.benevoles,
+          message: form.message,
+        }),
       });
     } catch (e) {
       console.error("[devis] send failed", e);
