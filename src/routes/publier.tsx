@@ -64,6 +64,24 @@ function PublierPage() {
   const toggleMission = (m: string) =>
     setMissions((arr) => (arr.includes(m) ? arr.filter((x) => x !== m) : [...arr, m]));
 
+  const addCustomMission = () => {
+    const m = customMission.trim();
+    if (!m) return;
+    if (!missions.includes(m)) setMissions((arr) => [...arr, m]);
+    setCustomMission("");
+  };
+
+  const removeMission = (m: string) => setMissions((arr) => arr.filter((x) => x !== m));
+
+  const onPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (!f.type.startsWith("image/")) { toast.error("Merci de choisir une image."); return; }
+    if (f.size > 8 * 1024 * 1024) { toast.error("Image trop lourde (max 8 Mo)."); return; }
+    setPhotoFile(f);
+    setPhotoPreview(URL.createObjectURL(f));
+  };
+
   const validateStep1 = () => {
     const e: Record<string, string> = {};
     if (!nom.trim() || nom.length < 3) e.nom = "Minimum 3 caractères";
