@@ -88,8 +88,8 @@ function QuiSommesNous() {
       >
         <div className="mx-auto" style={{ maxWidth: 1100 }}>
           <img
-            src="https://images.unsplash.com/photo-1539794830467-1f1755804d13?w=1200&q=85"
-            alt="Équipe sportive solidaire"
+            src="https://images.unsplash.com/photo-1502904550040-7534597429ae?w=1200&q=85"
+            alt="Course nature en milieu sauvage"
             style={{
               width: "100%",
               height: 400,
