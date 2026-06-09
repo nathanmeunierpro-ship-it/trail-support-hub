@@ -164,12 +164,13 @@ function AnnoncesPage() {
     });
 
     if (error) {
+      console.error("[candidature quick-apply] error:", error);
       const msg =
         error.code === "23505"
           ? "Tu as déjà postulé à cet événement."
-          : /Could not find|column/i.test(error.message)
-            ? "Erreur de configuration, contactez le support"
-            : "Une erreur est survenue. Réessaie."; 
+          : error.code === "42501" || /row-level|permission/i.test(error.message)
+            ? "Accès refusé : ton profil bénévole est incomplet. Reconnecte-toi."
+            : error.message || "Une erreur est survenue. Réessaie.";
       toast.error(msg);
       setApplyStatus((s) => ({ ...s, [eventId]: "idle" }));
       return;
