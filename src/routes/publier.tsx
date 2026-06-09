@@ -301,7 +301,7 @@ function PublierPage() {
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-3 text-muted-foreground">Missions proposées</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                       {MISSIONS.map((m) => (
                         <motion.button key={m} type="button" whileTap={{ scale: 0.95 }}
                           onClick={() => toggleMission(m)}
@@ -313,7 +313,57 @@ function PublierPage() {
                         </motion.button>
                       ))}
                     </div>
+                    {/* Custom mission input */}
+                    <div className="flex gap-2">
+                      <input
+                        value={customMission}
+                        onChange={(e) => setCustomMission(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomMission(); } }}
+                        placeholder="Ajouter une mission personnalisée…"
+                        className="inp flex-1"
+                      />
+                      <button type="button" onClick={addCustomMission}
+                        className="px-4 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-1">
+                        <Plus size={14} /> Ajouter
+                      </button>
+                    </div>
+                    {/* Chips for custom missions not in MISSIONS list */}
+                    {missions.filter((m) => !MISSIONS.includes(m)).length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {missions.filter((m) => !MISSIONS.includes(m)).map((m) => (
+                          <span key={m} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold border border-primary/30">
+                            {m}
+                            <button type="button" onClick={() => removeMission(m)} className="hover:text-destructive">
+                              <X size={12} />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
+
+                  {/* Event photo */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Photo de l'événement</label>
+                    <input ref={photoInputRef} type="file" accept="image/*" onChange={onPhotoChange} className="hidden" />
+                    {photoPreview ? (
+                      <div className="relative rounded-2xl overflow-hidden border-2 border-border">
+                        <img src={photoPreview} alt="Aperçu" className="w-full h-48 object-cover" />
+                        <button type="button"
+                          onClick={() => { setPhotoFile(null); setPhotoPreview(null); if (photoInputRef.current) photoInputRef.current.value = ""; }}
+                          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80">
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => photoInputRef.current?.click()}
+                        className="w-full h-32 rounded-2xl border-2 border-dashed border-border hover:border-primary transition-colors flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                        <Camera size={24} />
+                        <span className="text-sm font-semibold">Ajouter une photo (max 8 Mo)</span>
+                      </button>
+                    )}
+                  </div>
+
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Description</label>
