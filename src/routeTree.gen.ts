@@ -28,6 +28,7 @@ import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateu
 import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
 import { Route as ModifierAnnonceIdRouteImport } from './routes/modifier-annonce.$id'
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
+import { Route as ApiPublicQuoteRequestRouteImport } from './routes/api/public/quote-request'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -125,6 +126,11 @@ const AnnonceIdRoute = AnnonceIdRouteImport.update({
   path: '/annonce/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicQuoteRequestRoute = ApiPublicQuoteRequestRouteImport.update({
+  id: '/api/public/quote-request',
+  path: '/api/public/quote-request',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -146,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs/': typeof OrganisateursIndexRoute
+  '/api/public/quote-request': typeof ApiPublicQuoteRequestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs': typeof OrganisateursIndexRoute
+  '/api/public/quote-request': typeof ApiPublicQuoteRequestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs/': typeof OrganisateursIndexRoute
+  '/api/public/quote-request': typeof ApiPublicQuoteRequestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
     | '/organisateurs/'
+    | '/api/public/quote-request'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
     | '/organisateurs'
+    | '/api/public/quote-request'
   id:
     | '__root__'
     | '/'
@@ -252,6 +263,7 @@ export interface FileRouteTypes {
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
     | '/organisateurs/'
+    | '/api/public/quote-request'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -271,6 +283,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   AnnonceIdRoute: typeof AnnonceIdRoute
   ModifierAnnonceIdRoute: typeof ModifierAnnonceIdRoute
+  ApiPublicQuoteRequestRoute: typeof ApiPublicQuoteRequestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -408,6 +421,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnnonceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/quote-request': {
+      id: '/api/public/quote-request'
+      path: '/api/public/quote-request'
+      fullPath: '/api/public/quote-request'
+      preLoaderRoute: typeof ApiPublicQuoteRequestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -444,6 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   AnnonceIdRoute: AnnonceIdRoute,
   ModifierAnnonceIdRoute: ModifierAnnonceIdRoute,
+  ApiPublicQuoteRequestRoute: ApiPublicQuoteRequestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
