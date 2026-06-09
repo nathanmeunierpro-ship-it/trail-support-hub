@@ -25,7 +25,7 @@ export const Route = createFileRoute("/annonce/$id")({
 
 function AnnonceDetail() {
   const { id } = Route.useParams();
-  const { user, role } = useAuth();
+  const { user, role, refreshRole } = useAuth();
   const navigate = useNavigate();
   const [ev, setEv] = useState<Ev | null>(null);
   const [loading, setLoading] = useState(true);
