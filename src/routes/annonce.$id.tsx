@@ -25,7 +25,7 @@ export const Route = createFileRoute("/annonce/$id")({
 
 function AnnonceDetail() {
   const { id } = Route.useParams();
-  const { user, role } = useAuth();
+  const { user, role, refreshRole } = useAuth();
   const navigate = useNavigate();
   const [ev, setEv] = useState<Ev | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,13 @@ function AnnonceDetail() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) { toast.error("Connecte-toi pour postuler"); navigate({ to: "/connexion" }); return; }
-    if (role !== "benevole") { toast.error("Seuls les bénévoles peuvent postuler"); return; }
+    console.log("[postuler] current role =", role, "user_metadata.role =", (user.user_metadata as { role?: string } | null)?.role);
+    let currentRole = role;
+    if (currentRole !== "benevole") {
+      await refreshRole();
+      currentRole = (user.user_metadata as { role?: string } | null)?.role === "benevole" ? "benevole" : currentRole;
+    }
+    if (currentRole !== "benevole") { toast.error("Seuls les bénévoles peuvent postuler"); return; }
     if (!dispoHoraire) { toast.error("Indique ta disponibilité horaire"); return; }
     if (!transport) { toast.error("Indique ton moyen de transport"); return; }
     if (!niveau) { toast.error("Indique ton niveau sportif"); return; }

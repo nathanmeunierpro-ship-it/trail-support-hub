@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Users, ClipboardList, ArrowLeft, ArrowRight, Loader2, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth-context";
 import { DEPARTEMENTS_FR } from "@/lib/regions";
 import ravitoLogoGreen from "@/assets/ravito-logo-green.png.asset.json";
 
@@ -39,6 +40,7 @@ const DISPO_OPTIONS = ["weekends", "semaine", "ponctuel", "vacances"];
 
 function SignupPage() {
   const navigate = useNavigate();
+  const { refreshRole } = useAuth();
   const search = Route.useSearch();
   const [role, setRole] = useState<Role | null>(search.role ?? null);
   const [loading, setLoading] = useState(false);
@@ -147,6 +149,7 @@ function SignupPage() {
 
     setLoading(false);
     toast.success("Compte créé !");
+    try { await refreshRole(); } catch (e) { console.error("[signup] refreshRole failed", e); }
     try {
       const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
       const html = htmlBlock(`Nouvelle inscription Ravito — ${role}`, {
