@@ -17,6 +17,7 @@ interface EventCard {
   type_sport: string;
   nb_benevoles: number | null;
   missions: string[] | null;
+  photo_url: string | null;
 }
 
 export const Route = createFileRoute("/annonces")({
