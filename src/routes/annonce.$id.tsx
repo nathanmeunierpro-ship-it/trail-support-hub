@@ -88,9 +88,12 @@ function AnnonceDetail() {
     });
     setSubmitting(false);
     if (error) {
-      const msg = /Could not find|column/i.test(error.message)
-        ? "Erreur de configuration, contactez le support"
-        : error.message;
+      console.error("[candidature] insert error:", error);
+      const msg = error.code === "23505"
+        ? "Tu as déjà postulé à cet événement."
+        : error.code === "42501" || /row-level|permission/i.test(error.message)
+          ? "Accès refusé : ton profil bénévole est incomplet. Reconnecte-toi."
+          : error.message || "Une erreur est survenue.";
       toast.error(msg);
       return;
     }
