@@ -312,7 +312,7 @@ function Home() {
                       className="group block relative h-[420px] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
                     >
                       <img
-                        src={CARD_IMGS[i % CARD_IMGS.length]}
+                        src={ev.photo_url || CARD_IMGS[i % CARD_IMGS.length]}
                         alt={ev.nom}
                         className="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
