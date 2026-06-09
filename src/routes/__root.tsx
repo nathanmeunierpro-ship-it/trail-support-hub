@@ -87,8 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#73CC30" },
       { name: "twitter:title", content: "Ravito — Bénévoles pour événements sportifs en France" },
       { name: "twitter:description", content: "Ravito met en relation les bénévoles passionnés et les organisateurs de trails, courses, triathlons et cyclosportives partout en France." },
-      { property: "og:image", content: "https://ravito-benevoles.fr/__l5e/assets-v1/21f0deef-3f1c-45dc-8315-ea53e7c9803a/og-image.png" },
-      { name: "twitter:image", content: "https://ravito-benevoles.fr/__l5e/assets-v1/21f0deef-3f1c-45dc-8315-ea53e7c9803a/og-image.png" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/QskU7NuD1QMJFvtudcEZBTvsPfR2/social-images/social-1780997538956-IMG_1008.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/QskU7NuD1QMJFvtudcEZBTvsPfR2/social-images/social-1780997538956-IMG_1008.webp" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
