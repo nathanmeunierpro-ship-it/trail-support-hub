@@ -41,6 +41,33 @@ function AnnonceDetail() {
   const [niveau, setNiveau] = useState("");
   const [messagePerso, setMessagePerso] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [existingCandidatureId, setExistingCandidatureId] = useState<string | null>(null);
+  const [checkingApplication, setCheckingApplication] = useState(false);
+  const [confirmingUnsubscribe, setConfirmingUnsubscribe] = useState(false);
+  const [unsubscribing, setUnsubscribing] = useState(false);
+
+  // Check existing application
+  useEffect(() => {
+    if (!user || !id) { setExistingCandidatureId(null); return; }
+    setCheckingApplication(true);
+    supabase.from("candidatures").select("id").eq("event_id", id).eq("benevole_id", user.id).maybeSingle()
+      .then(({ data }) => {
+        setExistingCandidatureId((data as any)?.id ?? null);
+        setCheckingApplication(false);
+      });
+  }, [user, id, success]);
+
+  const handleUnsubscribe = async () => {
+    if (!existingCandidatureId) return;
+    setUnsubscribing(true);
+    const { error } = await supabase.from("candidatures").delete().eq("id", existingCandidatureId);
+    setUnsubscribing(false);
+    if (error) { toast.error(error.message || "Erreur lors du retrait"); return; }
+    toast.success("Candidature retirée");
+    setExistingCandidatureId(null);
+    setConfirmingUnsubscribe(false);
+    setSuccess(false);
+  };
 
   useEffect(() => {
     supabase.from("events_public").select("*").eq("id", id).maybeSingle()
