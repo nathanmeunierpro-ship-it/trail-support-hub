@@ -209,16 +209,35 @@ function Home() {
             </Link>
           </motion.div>
           <motion.div {...fadeUp} className="relative md:order-2 order-1">
-            <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl">
+            <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl relative">
               <img
                 src={IMG_TRAIL}
                 alt="Organisation d'une course nature"
                 className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
+              {/* Mobile overlay banner */}
+              <div
+                className="md:hidden absolute left-3 right-3 bottom-3 z-10"
+                style={{
+                  background: "#73CC30",
+                  color: "#1A1A1A",
+                  fontWeight: 800,
+                  fontSize: 12,
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  textAlign: "center",
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+                }}
+              >
+                Gratuit pour les 20 premiers organisateurs
+              </div>
             </div>
           </motion.div>
         </div>
-        <motion.div {...fadeUp} className="mt-12 mx-auto max-w-6xl">
+        {/* Desktop full-width banner */}
+        <motion.div {...fadeUp} className="mt-12 mx-auto max-w-6xl hidden md:block">
           <div
             style={{
               background: "#73CC30",
