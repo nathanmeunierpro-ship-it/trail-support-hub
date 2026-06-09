@@ -10,7 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 interface Ev {
   id: string; nom: string; ville: string; region: string; date: string;
   type_sport: string; nb_benevoles: number; missions: string[] | null;
-  description: string | null;
+  description: string | null; photo_url: string | null;
 }
 
 export const Route = createFileRoute("/annonce/$id")({
