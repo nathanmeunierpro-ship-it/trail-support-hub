@@ -118,12 +118,33 @@ function PublierPage() {
   const onSubmit = async () => {
     if (!session) return;
     setSubmitting(true);
+
+    // Upload photo first if provided
+    let photoUrl: string | null = null;
+    if (photoFile) {
+      const ext = photoFile.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${session.user.id}/event-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("event-images")
+        .upload(path, photoFile, { upsert: true, contentType: photoFile.type });
+      if (upErr) {
+        console.error("[publier] photo upload error:", upErr);
+        toast.error("Photo non envoyée : " + upErr.message);
+      } else {
+        const { data: signed } = await supabase.storage
+          .from("event-images")
+          .createSignedUrl(path, 60 * 60 * 24 * 365 * 10); // ~10 years
+        photoUrl = signed?.signedUrl ?? null;
+      }
+    }
+
     const { error } = await supabase.from("events").insert({
       user_id: session.user.id,
       nom, type_sport: type, date, ville, region,
       nb_benevoles: nbBen, missions, description,
       email_contact: emailContact,
-    });
+      photo_url: photoUrl,
+    } as any);
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
     setSuccess(true);
