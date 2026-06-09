@@ -209,8 +209,21 @@ function AnnonceDetail() {
 
                 {!user ? (
                   <div className="text-center py-6">
-                    <p className="text-muted-foreground text-sm mb-4">Connecte-toi pour postuler à cette annonce.</p>
-                    <Link to="/connexion" className="btn-cta inline-block">Se connecter</Link>
+                    <p className="text-muted-foreground text-sm mb-5">Connecte-toi pour postuler à cette annonce.</p>
+                    <Link
+                      to="/inscription"
+                      search={{ role: "benevole" }}
+                      className="btn-cta inline-flex items-center justify-center gap-2 w-full mb-4"
+                    >
+                      Créer un compte <ArrowRight size={16} />
+                    </Link>
+                    <p className="text-xs text-muted-foreground mb-3">Déjà inscrit ?</p>
+                    <Link
+                      to="/connexion"
+                      className="inline-flex items-center justify-center gap-2 w-full rounded-full border-2 border-border px-5 py-2.5 text-sm font-bold uppercase tracking-wider hover:bg-muted transition"
+                    >
+                      Se connecter
+                    </Link>
                   </div>
                 ) : role === "organisateur" ? (
                   <p className="text-muted-foreground text-sm">Seuls les comptes bénévoles peuvent postuler.</p>
