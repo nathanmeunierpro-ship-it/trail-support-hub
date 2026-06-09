@@ -437,43 +437,10 @@ function AnnoncesPage() {
                         <Link
                           to="/annonce/$id"
                           params={{ id: ev.id }}
-                          className="flex-1 py-2.5 rounded-xl text-center text-sm font-bold uppercase tracking-wider border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+                          className="flex-1 py-2.5 rounded-xl text-center text-sm font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:opacity-90 transition-all"
                         >
-                          Détails
+                          {alreadyApplied ? "Candidature envoyée" : "Voir l'annonce"}
                         </Link>
-
-                        {alreadyApplied || status === "success" ? (
-                          <div className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-bold" style={{ background: "color-mix(in srgb, var(--success) 15%, transparent)", color: "var(--success)" }}>
-                            <Check size={14} /> Postulé
-                          </div>
-                        ) : (
-                          <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => quickApply(ev.id)}
-                            disabled={status === "loading"}
-                            className="btn-cta py-2.5 px-4 flex items-center gap-1.5 disabled:opacity-60"
-                            style={{ borderRadius: "12px", padding: "0.625rem 1rem", fontSize: "0.875rem" }}
-                            title={
-                              !user
-                                ? "Connecte-toi pour postuler"
-                                : role === "organisateur"
-                                ? "Seuls les bénévoles peuvent postuler"
-                                : "Postuler à cet événement"
-                            }
-                          >
-                            <AnimatePresence mode="wait" initial={false}>
-                              {status === "loading" ? (
-                                <motion.span key="l" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                                  <Loader2 size={15} className="animate-spin" />
-                                </motion.span>
-                              ) : (
-                                <motion.span key="i" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                                  Je postule
-                                </motion.span>
-                              )}
-                            </AnimatePresence>
-                          </motion.button>
-                        )}
                       </div>
                     </div>
                   </motion.div>
