@@ -201,12 +201,12 @@ function Home() {
                 </li>
               ))}
             </ul>
+            <Link
               to="/publier"
               className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-7 py-3 text-sm font-bold uppercase tracking-wider hover:opacity-90 transition"
             >
               Publier un événement <ArrowRight size={16} />
             </Link>
-            </div>
           </motion.div>
           <motion.div {...fadeUp} className="relative md:order-2 order-1">
             <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl">
