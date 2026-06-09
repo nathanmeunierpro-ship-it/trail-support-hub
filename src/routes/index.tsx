@@ -201,25 +201,6 @@ function Home() {
                 </li>
               ))}
             </ul>
-            <div
-              style={{
-                display: "inline-block",
-                background: "#73CC30",
-                color: "#1A1A1A",
-                fontWeight: 800,
-                fontSize: 16,
-                padding: "12px 20px",
-                borderRadius: 999,
-                marginTop: 24,
-                marginBottom: 24,
-                letterSpacing: "1px",
-                textTransform: "uppercase",
-              }}
-            >
-              Gratuit pour les 20 premiers
-            </div>
-            <div>
-            <Link
               to="/publier"
               className="inline-flex items-center gap-2 rounded-full bg-secondary text-secondary-foreground px-7 py-3 text-sm font-bold uppercase tracking-wider hover:opacity-90 transition"
             >
@@ -235,25 +216,26 @@ function Home() {
                 className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div
-              className="absolute -top-4 -left-4 hidden md:inline-flex items-center gap-2"
-              style={{
-                background: "#F2FAE8",
-                border: "1.5px solid #73CC30",
-                color: "#73CC30",
-                borderRadius: 999,
-                padding: "6px 14px",
-                fontSize: 12,
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                pointerEvents: "none",
-              }}
-            >
-              Gratuit pour les 20 premiers
-            </div>
           </motion.div>
         </div>
+        <motion.div {...fadeUp} className="mt-12 mx-auto max-w-6xl">
+          <div
+            style={{
+              background: "#73CC30",
+              color: "#1A1A1A",
+              fontWeight: 800,
+              fontSize: 16,
+              padding: "16px 24px",
+              borderRadius: 16,
+              textAlign: "center",
+              letterSpacing: "1px",
+              textTransform: "uppercase",
+              width: "100%",
+            }}
+          >
+            Gratuit pour les 20 premiers organisateurs
+          </div>
+        </motion.div>
       </section>
 
       {/* ── EVENTS GRID ── */}
@@ -362,10 +344,10 @@ function Home() {
         <motion.div {...fadeUp} className="relative mx-auto max-w-3xl text-center">
           <Users size={48} className="mx-auto mb-8 opacity-80" strokeWidth={1.5} style={{ color: "var(--color-accent)" }} />
           <h2
-            className="font-display uppercase leading-[1.05] mb-6"
-            style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)", fontWeight: 400 }}
+            className="font-display font-black uppercase leading-[1.05] mb-6"
+            style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)" }}
           >
-            Rejoins la <span className="accent-word">communauté</span>
+            Rejoins la <span className="accent-word" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>communauté</span>
           </h2>
           <p className="text-lg md:text-xl opacity-90 mb-10 leading-relaxed max-w-xl mx-auto">
             Que tu sois bénévole ou organisateur, ta place est ici. Crée ton
