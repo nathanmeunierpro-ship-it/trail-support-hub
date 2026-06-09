@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { MapPin, Calendar, Users, Tag, ArrowLeft, Loader2, CheckCircle2, Phone } from "lucide-react";
+import { MapPin, Calendar, Users, Tag, ArrowLeft, ArrowRight, Loader2, CheckCircle2, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { useAuth } from "@/lib/auth-context";
