@@ -147,7 +147,7 @@ function AnnonceDetail() {
       {/* Hero image */}
       <div className="w-full h-64 md:h-80 overflow-hidden relative">
         <img
-          src="https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80"
+          src={ev.photo_url || "https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80"}
           alt={ev.nom}
           className="w-full h-full object-cover"
         />
