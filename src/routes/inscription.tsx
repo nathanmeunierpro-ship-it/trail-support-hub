@@ -39,7 +39,8 @@ const DISPO_OPTIONS = ["weekends", "semaine", "ponctuel", "vacances"];
 
 function SignupPage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState<Role | null>(null);
+  const search = Route.useSearch();
+  const [role, setRole] = useState<Role | null>(search.role ?? null);
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
