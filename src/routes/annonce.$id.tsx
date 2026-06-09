@@ -10,7 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 interface Ev {
   id: string; nom: string; ville: string; region: string; date: string;
   type_sport: string; nb_benevoles: number; missions: string[] | null;
-  description: string | null;
+  description: string | null; photo_url: string | null;
 }
 
 export const Route = createFileRoute("/annonce/$id")({
@@ -88,9 +88,12 @@ function AnnonceDetail() {
     });
     setSubmitting(false);
     if (error) {
-      const msg = /Could not find|column/i.test(error.message)
-        ? "Erreur de configuration, contactez le support"
-        : error.message;
+      console.error("[candidature] insert error:", error);
+      const msg = error.code === "23505"
+        ? "Tu as déjà postulé à cet événement."
+        : error.code === "42501" || /row-level|permission/i.test(error.message)
+          ? "Accès refusé : ton profil bénévole est incomplet. Reconnecte-toi."
+          : error.message || "Une erreur est survenue.";
       toast.error(msg);
       return;
     }
@@ -144,7 +147,7 @@ function AnnonceDetail() {
       {/* Hero image */}
       <div className="w-full h-64 md:h-80 overflow-hidden relative">
         <img
-          src="https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80"
+          src={ev.photo_url || "https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80"}
           alt={ev.nom}
           className="w-full h-full object-cover"
         />

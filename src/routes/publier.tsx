@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowLeft, ArrowRight, Loader2, FileText, MapPin, Users, CheckCircle2 } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight, Loader2, FileText, MapPin, Users, CheckCircle2, Camera, X, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { REGIONS_FR, TYPES_SPORT, MISSIONS } from "@/lib/regions";
@@ -46,8 +46,12 @@ function PublierPage() {
   const [region, setRegion] = useState("");
   const [nbBen, setNbBen] = useState(10);
   const [missions, setMissions] = useState<string[]>([]);
+  const [customMission, setCustomMission] = useState("");
   const [description, setDescription] = useState("");
   const [emailContact, setEmailContact] = useState("");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   // Validation
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -59,6 +63,24 @@ function PublierPage() {
 
   const toggleMission = (m: string) =>
     setMissions((arr) => (arr.includes(m) ? arr.filter((x) => x !== m) : [...arr, m]));
+
+  const addCustomMission = () => {
+    const m = customMission.trim();
+    if (!m) return;
+    if (!missions.includes(m)) setMissions((arr) => [...arr, m]);
+    setCustomMission("");
+  };
+
+  const removeMission = (m: string) => setMissions((arr) => arr.filter((x) => x !== m));
+
+  const onPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (!f.type.startsWith("image/")) { toast.error("Merci de choisir une image."); return; }
+    if (f.size > 8 * 1024 * 1024) { toast.error("Image trop lourde (max 8 Mo)."); return; }
+    setPhotoFile(f);
+    setPhotoPreview(URL.createObjectURL(f));
+  };
 
   const validateStep1 = () => {
     const e: Record<string, string> = {};
@@ -96,12 +118,33 @@ function PublierPage() {
   const onSubmit = async () => {
     if (!session) return;
     setSubmitting(true);
+
+    // Upload photo first if provided
+    let photoUrl: string | null = null;
+    if (photoFile) {
+      const ext = photoFile.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${session.user.id}/event-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("event-images")
+        .upload(path, photoFile, { upsert: true, contentType: photoFile.type });
+      if (upErr) {
+        console.error("[publier] photo upload error:", upErr);
+        toast.error("Photo non envoyée : " + upErr.message);
+      } else {
+        const { data: signed } = await supabase.storage
+          .from("event-images")
+          .createSignedUrl(path, 60 * 60 * 24 * 365 * 10); // ~10 years
+        photoUrl = signed?.signedUrl ?? null;
+      }
+    }
+
     const { error } = await supabase.from("events").insert({
       user_id: session.user.id,
       nom, type_sport: type, date, ville, region,
       nb_benevoles: nbBen, missions, description,
       email_contact: emailContact,
-    });
+      photo_url: photoUrl,
+    } as any);
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
     setSuccess(true);
@@ -258,7 +301,7 @@ function PublierPage() {
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-3 text-muted-foreground">Missions proposées</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
                       {MISSIONS.map((m) => (
                         <motion.button key={m} type="button" whileTap={{ scale: 0.95 }}
                           onClick={() => toggleMission(m)}
@@ -270,7 +313,57 @@ function PublierPage() {
                         </motion.button>
                       ))}
                     </div>
+                    {/* Custom mission input */}
+                    <div className="flex gap-2">
+                      <input
+                        value={customMission}
+                        onChange={(e) => setCustomMission(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomMission(); } }}
+                        placeholder="Ajouter une mission personnalisée…"
+                        className="inp flex-1"
+                      />
+                      <button type="button" onClick={addCustomMission}
+                        className="px-4 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-1">
+                        <Plus size={14} /> Ajouter
+                      </button>
+                    </div>
+                    {/* Chips for custom missions not in MISSIONS list */}
+                    {missions.filter((m) => !(MISSIONS as readonly string[]).includes(m)).length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {missions.filter((m) => !(MISSIONS as readonly string[]).includes(m)).map((m) => (
+                          <span key={m} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold border border-primary/30">
+                            {m}
+                            <button type="button" onClick={() => removeMission(m)} className="hover:text-destructive">
+                              <X size={12} />
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
+
+                  {/* Event photo */}
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Photo de l'événement</label>
+                    <input ref={photoInputRef} type="file" accept="image/*" onChange={onPhotoChange} className="hidden" />
+                    {photoPreview ? (
+                      <div className="relative rounded-2xl overflow-hidden border-2 border-border">
+                        <img src={photoPreview} alt="Aperçu" className="w-full h-48 object-cover" />
+                        <button type="button"
+                          onClick={() => { setPhotoFile(null); setPhotoPreview(null); if (photoInputRef.current) photoInputRef.current.value = ""; }}
+                          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80">
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => photoInputRef.current?.click()}
+                        className="w-full h-32 rounded-2xl border-2 border-dashed border-border hover:border-primary transition-colors flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                        <Camera size={24} />
+                        <span className="text-sm font-semibold">Ajouter une photo (max 8 Mo)</span>
+                      </button>
+                    )}
+                  </div>
+
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">Description</label>

@@ -101,10 +101,14 @@ export type Database = {
           event_id: string
           experience: string | null
           id: string
+          message_perso: string | null
           mission_souhaitee: string | null
+          niveau: string | null
           nom: string
           prenom: string
           statut: string
+          telephone: string | null
+          transport: string | null
         }
         Insert: {
           benevole_id: string
@@ -114,10 +118,14 @@ export type Database = {
           event_id: string
           experience?: string | null
           id?: string
+          message_perso?: string | null
           mission_souhaitee?: string | null
+          niveau?: string | null
           nom: string
           prenom: string
           statut?: string
+          telephone?: string | null
+          transport?: string | null
         }
         Update: {
           benevole_id?: string
@@ -127,10 +135,14 @@ export type Database = {
           event_id?: string
           experience?: string | null
           id?: string
+          message_perso?: string | null
           mission_souhaitee?: string | null
+          niveau?: string | null
           nom?: string
           prenom?: string
           statut?: string
+          telephone?: string | null
+          transport?: string | null
         }
         Relationships: [
           {
@@ -159,6 +171,7 @@ export type Database = {
           missions: string[] | null
           nb_benevoles: number
           nom: string
+          photo_url: string | null
           region: string
           statut: string
           type_sport: string
@@ -174,6 +187,7 @@ export type Database = {
           missions?: string[] | null
           nb_benevoles: number
           nom: string
+          photo_url?: string | null
           region: string
           statut?: string
           type_sport: string
@@ -189,6 +203,7 @@ export type Database = {
           missions?: string[] | null
           nb_benevoles?: number
           nom?: string
+          photo_url?: string | null
           region?: string
           statut?: string
           type_sport?: string
@@ -256,6 +271,7 @@ export type Database = {
           missions: string[] | null
           nb_benevoles: number | null
           nom: string | null
+          photo_url: string | null
           region: string | null
           statut: string | null
           type_sport: string | null
@@ -270,6 +286,7 @@ export type Database = {
           missions?: string[] | null
           nb_benevoles?: number | null
           nom?: string | null
+          photo_url?: string | null
           region?: string | null
           statut?: string | null
           type_sport?: string | null
@@ -284,6 +301,7 @@ export type Database = {
           missions?: string[] | null
           nb_benevoles?: number | null
           nom?: string | null
+          photo_url?: string | null
           region?: string | null
           statut?: string | null
           type_sport?: string | null

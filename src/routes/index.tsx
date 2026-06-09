@@ -29,6 +29,7 @@ interface Ev {
   region?: string;
   date: string;
   type_sport: string;
+  photo_url?: string | null;
 }
 
 const HERO_IMG =
@@ -61,7 +62,7 @@ function Home() {
   useEffect(() => {
     supabase
       .from("events_public")
-      .select("id, nom, ville, region, date, type_sport")
+      .select("id, nom, ville, region, date, type_sport, photo_url")
       .order("date", { ascending: true })
       .limit(6)
       .then(({ data }) => setEvents((data as Ev[]) ?? []));
@@ -123,9 +124,9 @@ function Home() {
                 className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-secondary text-secondary-foreground px-6 py-4 rounded-2xl shadow-xl hidden md:block">
-              <div className="text-3xl font-black font-display">+2 500</div>
-              <div className="text-xs uppercase tracking-widest font-semibold">bénévoles en France</div>
+            <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-6 bg-secondary text-secondary-foreground px-4 py-3 md:px-6 md:py-4 rounded-2xl shadow-xl z-20">
+              <div className="text-2xl md:text-3xl font-black font-display">+2 500</div>
+              <div className="text-[10px] md:text-xs uppercase tracking-widest font-semibold">bénévoles en France</div>
             </div>
           </motion.div>
           <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
@@ -209,16 +210,35 @@ function Home() {
             </Link>
           </motion.div>
           <motion.div {...fadeUp} className="relative md:order-2 order-1">
-            <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl">
+            <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl relative">
               <img
                 src={IMG_TRAIL}
                 alt="Organisation d'une course nature"
                 className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
+              {/* Mobile overlay banner */}
+              <div
+                className="md:hidden absolute left-3 right-3 bottom-3 z-10"
+                style={{
+                  background: "#73CC30",
+                  color: "#1A1A1A",
+                  fontWeight: 800,
+                  fontSize: 12,
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  textAlign: "center",
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+                }}
+              >
+                Gratuit pour les 20 premiers organisateurs
+              </div>
             </div>
           </motion.div>
         </div>
-        <motion.div {...fadeUp} className="mt-12 mx-auto max-w-6xl">
+        {/* Desktop full-width banner */}
+        <motion.div {...fadeUp} className="mt-12 mx-auto max-w-6xl hidden md:block">
           <div
             style={{
               background: "#73CC30",
@@ -292,7 +312,7 @@ function Home() {
                       className="group block relative h-[420px] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
                     >
                       <img
-                        src={CARD_IMGS[i % CARD_IMGS.length]}
+                        src={ev.photo_url || CARD_IMGS[i % CARD_IMGS.length]}
                         alt={ev.nom}
                         className="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
@@ -451,10 +471,10 @@ function CleanHero() {
 
         {/* Buttons */}
         <div className="finishers-hero-btns">
-          <Link to="/inscription" className="btn-primary">
+          <Link to="/inscription" search={{ role: "benevole" }} className="btn-primary">
             Je suis bénévole
           </Link>
-          <Link to="/inscription" className="btn-outline-light">
+          <Link to="/inscription" search={{ role: "organisateur" }} className="btn-outline-light">
             Je publie un événement
           </Link>
         </div>

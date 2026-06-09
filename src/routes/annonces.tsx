@@ -17,6 +17,7 @@ interface EventCard {
   type_sport: string;
   nb_benevoles: number | null;
   missions: string[] | null;
+  photo_url: string | null;
 }
 
 export const Route = createFileRoute("/annonces")({
@@ -65,8 +66,7 @@ function AnnoncesPage() {
   useEffect(() => {
     supabase
       .from("events_public")
-      .select("id, nom, ville, region, date, type_sport, nb_benevoles, missions")
-      .or("status.is.null,status.eq.active")
+      .select("id, nom, ville, region, date, type_sport, nb_benevoles, missions, photo_url")
       .order("date", { ascending: true })
       .then(({ data }) => {
         setEvents((data as EventCard[]) ?? []);
@@ -164,12 +164,13 @@ function AnnoncesPage() {
     });
 
     if (error) {
+      console.error("[candidature quick-apply] error:", error);
       const msg =
         error.code === "23505"
           ? "Tu as déjà postulé à cet événement."
-          : /Could not find|column/i.test(error.message)
-            ? "Erreur de configuration, contactez le support"
-            : "Une erreur est survenue. Réessaie."; 
+          : error.code === "42501" || /row-level|permission/i.test(error.message)
+            ? "Accès refusé : ton profil bénévole est incomplet. Reconnecte-toi."
+            : error.message || "Une erreur est survenue. Réessaie.";
       toast.error(msg);
       setApplyStatus((s) => ({ ...s, [eventId]: "idle" }));
       return;
@@ -368,8 +369,14 @@ function AnnoncesPage() {
                     className="bg-card rounded-2xl border border-border overflow-hidden flex flex-col group"
                     style={{ boxShadow: "var(--shadow-card)" }}
                   >
-                    {/* Top accent bar */}
-                    <div className="h-1.5 bg-secondary" />
+                    {/* Photo or top accent */}
+                    {ev.photo_url ? (
+                      <div className="h-40 overflow-hidden bg-muted">
+                        <img src={ev.photo_url} alt={ev.nom} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    ) : (
+                      <div className="h-1.5 bg-secondary" />
+                    )}
 
                     <div className="p-6 flex flex-col flex-1">
                       <div className="flex items-center justify-between mb-3">
