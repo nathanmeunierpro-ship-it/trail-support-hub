@@ -368,8 +368,14 @@ function AnnoncesPage() {
                     className="bg-card rounded-2xl border border-border overflow-hidden flex flex-col group"
                     style={{ boxShadow: "var(--shadow-card)" }}
                   >
-                    {/* Top accent bar */}
-                    <div className="h-1.5 bg-secondary" />
+                    {/* Photo or top accent */}
+                    {ev.photo_url ? (
+                      <div className="h-40 overflow-hidden bg-muted">
+                        <img src={ev.photo_url} alt={ev.nom} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    ) : (
+                      <div className="h-1.5 bg-secondary" />
+                    )}
 
                     <div className="p-6 flex flex-col flex-1">
                       <div className="flex items-center justify-between mb-3">
