@@ -62,7 +62,7 @@ function Home() {
   useEffect(() => {
     supabase
       .from("events_public")
-      .select("id, nom, ville, region, date, type_sport")
+      .select("id, nom, ville, region, date, type_sport, photo_url")
       .order("date", { ascending: true })
       .limit(6)
       .then(({ data }) => setEvents((data as Ev[]) ?? []));
