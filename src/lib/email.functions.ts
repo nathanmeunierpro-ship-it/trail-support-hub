@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const SendEmailSchema = z.object({
   subject: z.string().min(1).max(300),
@@ -12,6 +13,7 @@ const DEFAULT_TO = "nathanmeunierpro@gmail.com";
 const FROM = "Ravito <onboarding@resend.dev>";
 
 export const sendEmail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => SendEmailSchema.parse(data))
   .handler(async ({ data }) => {
     const lovableKey = process.env.LOVABLE_API_KEY;
