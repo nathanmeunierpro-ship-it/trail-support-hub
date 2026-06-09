@@ -328,9 +328,9 @@ function PublierPage() {
                       </button>
                     </div>
                     {/* Chips for custom missions not in MISSIONS list */}
-                    {missions.filter((m) => !MISSIONS.includes(m)).length > 0 && (
+                    {missions.filter((m) => !(MISSIONS as readonly string[]).includes(m)).length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
-                        {missions.filter((m) => !MISSIONS.includes(m)).map((m) => (
+                        {missions.filter((m) => !(MISSIONS as readonly string[]).includes(m)).map((m) => (
                           <span key={m} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold border border-primary/30">
                             {m}
                             <button type="button" onClick={() => removeMission(m)} className="hover:text-destructive">
