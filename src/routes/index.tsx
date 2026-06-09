@@ -123,9 +123,9 @@ function Home() {
                 className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-secondary text-secondary-foreground px-6 py-4 rounded-2xl shadow-xl hidden md:block">
-              <div className="text-3xl font-black font-display">+2 500</div>
-              <div className="text-xs uppercase tracking-widest font-semibold">bénévoles en France</div>
+            <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-6 bg-secondary text-secondary-foreground px-4 py-3 md:px-6 md:py-4 rounded-2xl shadow-xl z-20">
+              <div className="text-2xl md:text-3xl font-black font-display">+2 500</div>
+              <div className="text-[10px] md:text-xs uppercase tracking-widest font-semibold">bénévoles en France</div>
             </div>
           </motion.div>
           <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
