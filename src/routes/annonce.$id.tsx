@@ -41,6 +41,33 @@ function AnnonceDetail() {
   const [niveau, setNiveau] = useState("");
   const [messagePerso, setMessagePerso] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [existingCandidatureId, setExistingCandidatureId] = useState<string | null>(null);
+  const [checkingApplication, setCheckingApplication] = useState(false);
+  const [confirmingUnsubscribe, setConfirmingUnsubscribe] = useState(false);
+  const [unsubscribing, setUnsubscribing] = useState(false);
+
+  // Check existing application
+  useEffect(() => {
+    if (!user || !id) { setExistingCandidatureId(null); return; }
+    setCheckingApplication(true);
+    supabase.from("candidatures").select("id").eq("event_id", id).eq("benevole_id", user.id).maybeSingle()
+      .then(({ data }) => {
+        setExistingCandidatureId((data as any)?.id ?? null);
+        setCheckingApplication(false);
+      });
+  }, [user, id, success]);
+
+  const handleUnsubscribe = async () => {
+    if (!existingCandidatureId) return;
+    setUnsubscribing(true);
+    const { error } = await supabase.from("candidatures").delete().eq("id", existingCandidatureId);
+    setUnsubscribing(false);
+    if (error) { toast.error(error.message || "Erreur lors du retrait"); return; }
+    toast.success("Candidature retirée");
+    setExistingCandidatureId(null);
+    setConfirmingUnsubscribe(false);
+    setSuccess(false);
+  };
 
   useEffect(() => {
     supabase.from("events_public").select("*").eq("id", id).maybeSingle()
@@ -122,7 +149,6 @@ function AnnonceDetail() {
       });
       void sendEmail({ data: { subject: `[Ravito] Nouvelle candidature — ${eventName}`, html, replyTo: email } });
     } catch (e) { console.error("[candidature] email failed", e); }
-    setTimeout(() => navigate({ to: "/mes-candidatures" }), 2000);
   };
 
   if (loading) return (
@@ -233,6 +259,39 @@ function AnnonceDetail() {
                   </div>
                 ) : role === "organisateur" ? (
                   <p className="text-muted-foreground text-sm">Seuls les comptes bénévoles peuvent postuler.</p>
+                ) : checkingApplication ? (
+                  <div className="flex justify-center py-8"><Loader2 size={22} className="animate-spin text-muted-foreground" /></div>
+                ) : existingCandidatureId ? (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center py-6 text-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+                      <CheckCircle2 size={32} className="text-green-600" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-green-600">Vous avez déjà postulé</p>
+                      <p className="text-xs text-muted-foreground mt-1">Ta candidature a bien été enregistrée.</p>
+                    </div>
+                    {confirmingUnsubscribe ? (
+                      <div className="w-full space-y-3 mt-2">
+                        <p className="text-sm">Êtes-vous sûr de vouloir retirer votre candidature ?</p>
+                        <div className="flex gap-2">
+                          <button onClick={handleUnsubscribe} disabled={unsubscribing}
+                            className="flex-1 rounded-full bg-destructive text-destructive-foreground px-4 py-2.5 text-sm font-bold uppercase tracking-wider disabled:opacity-60 flex items-center justify-center gap-2">
+                            {unsubscribing ? <Loader2 size={15} className="animate-spin" /> : "Confirmer"}
+                          </button>
+                          <button onClick={() => setConfirmingUnsubscribe(false)} disabled={unsubscribing}
+                            className="flex-1 rounded-full border-2 border-border px-4 py-2.5 text-sm font-bold uppercase tracking-wider hover:bg-muted transition">
+                            Annuler
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button onClick={() => setConfirmingUnsubscribe(true)}
+                        className="rounded-full border-2 border-destructive text-destructive px-5 py-2.5 text-sm font-bold uppercase tracking-wider hover:bg-destructive hover:text-destructive-foreground transition">
+                        Se désinscrire
+                      </button>
+                    )}
+                  </motion.div>
                 ) : success ? (
                   <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                     className="flex flex-col items-center py-8 text-center gap-4">
@@ -241,7 +300,6 @@ function AnnonceDetail() {
                     </div>
                     <div>
                       <p className="font-bold text-green-600">Candidature envoyée !</p>
-                      <p className="text-xs text-muted-foreground mt-1">Redirection…</p>
                     </div>
                   </motion.div>
                 ) : (
