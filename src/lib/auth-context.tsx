@@ -20,12 +20,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<Role>(null);
   const [loading, setLoading] = useState(true);
 
-  const resolveRole = async (uid: string | undefined): Promise<Role> => {
-    if (!uid) return null;
-    const { data: b } = await supabase.from("benevoles").select("id").eq("id", uid).maybeSingle();
+  const resolveRole = async (u: User | undefined | null): Promise<Role> => {
+    if (!u) return null;
+    const { data: b } = await supabase.from("benevoles").select("id").eq("id", u.id).maybeSingle();
     if (b) return "benevole";
-    const { data: o } = await supabase.from("organisateurs").select("id").eq("id", uid).maybeSingle();
+    const { data: o } = await supabase.from("organisateurs").select("id").eq("id", u.id).maybeSingle();
     if (o) return "organisateur";
+    // Fallback to user_metadata.role (set at signUp) if profile row not yet readable
+    const meta = (u.user_metadata as { role?: string } | null)?.role;
+    if (meta === "benevole" || meta === "organisateur") return meta;
     return null;
   };
 
@@ -33,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
       if (s?.user) {
-        setTimeout(() => { resolveRole(s.user.id).then((r) => setRole(r)); }, 0);
+        setTimeout(() => { resolveRole(s.user).then((r) => { console.log("[auth] resolved role =", r); setRole(r); }); }, 0);
       } else {
         setRole(null);
       }
@@ -42,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       if (data.session?.user) {
-        resolveRole(data.session.user.id).then((r) => { setRole(r); setLoading(false); });
+        resolveRole(data.session.user).then((r) => { console.log("[auth] initial role =", r); setRole(r); setLoading(false); });
       } else {
         setLoading(false);
       }
