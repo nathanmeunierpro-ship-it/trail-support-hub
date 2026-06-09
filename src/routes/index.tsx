@@ -29,6 +29,7 @@ interface Ev {
   region?: string;
   date: string;
   type_sport: string;
+  photo_url?: string | null;
 }
 
 const HERO_IMG =
