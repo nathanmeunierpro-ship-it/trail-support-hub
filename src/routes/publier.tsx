@@ -46,8 +46,12 @@ function PublierPage() {
   const [region, setRegion] = useState("");
   const [nbBen, setNbBen] = useState(10);
   const [missions, setMissions] = useState<string[]>([]);
+  const [customMission, setCustomMission] = useState("");
   const [description, setDescription] = useState("");
   const [emailContact, setEmailContact] = useState("");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   // Validation
   const [errors, setErrors] = useState<Record<string, string>>({});
