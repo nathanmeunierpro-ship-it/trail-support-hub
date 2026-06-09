@@ -149,6 +149,7 @@ function SignupPage() {
 
     setLoading(false);
     toast.success("Compte créé !");
+    try { await refreshRole(); } catch (e) { console.error("[signup] refreshRole failed", e); }
     try {
       const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
       const html = htmlBlock(`Nouvelle inscription Ravito — ${role}`, {
