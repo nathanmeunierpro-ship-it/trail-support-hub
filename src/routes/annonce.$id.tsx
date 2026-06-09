@@ -149,7 +149,6 @@ function AnnonceDetail() {
       });
       void sendEmail({ data: { subject: `[Ravito] Nouvelle candidature — ${eventName}`, html, replyTo: email } });
     } catch (e) { console.error("[candidature] email failed", e); }
-    setTimeout(() => navigate({ to: "/mes-candidatures" }), 2000);
   };
 
   if (loading) return (
