@@ -210,26 +210,27 @@ function Home() {
             </Link>
           </motion.div>
           <motion.div {...fadeUp} className="relative md:order-2 order-1">
-            <div className="aspect-[4/5] overflow-hidden rounded-3xl shadow-xl relative">
+            <div className="aspect-[4/5] overflow-visible rounded-3xl shadow-xl relative">
               <img
                 src={IMG_TRAIL}
                 alt="Organisation d'une course nature"
                 className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
-              {/* Mobile overlay banner */}
+              {/* Pill badge overlaid at bottom-center */}
               <div
-                className="md:hidden absolute left-3 right-3 bottom-3 z-10"
+                className="absolute left-1/2 -translate-x-1/2 z-10"
                 style={{
-                  background: "#73CC30",
+                  bottom: "-16px",
+                  background: "#FFFFFF",
                   color: "#1A1A1A",
-                  fontWeight: 800,
-                  fontSize: 12,
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  textAlign: "center",
-                  letterSpacing: "1px",
+                  fontWeight: 700,
+                  fontSize: 11,
+                  padding: "8px 16px",
+                  borderRadius: "999px",
+                  whiteSpace: "nowrap",
+                  letterSpacing: "0.5px",
                   textTransform: "uppercase",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                 }}
               >
                 Gratuit pour les 20 premiers organisateurs
@@ -237,25 +238,6 @@ function Home() {
             </div>
           </motion.div>
         </div>
-        {/* Desktop full-width banner */}
-        <motion.div {...fadeUp} className="mt-12 mx-auto max-w-6xl hidden md:block">
-          <div
-            style={{
-              background: "#73CC30",
-              color: "#1A1A1A",
-              fontWeight: 800,
-              fontSize: 16,
-              padding: "16px 24px",
-              borderRadius: 16,
-              textAlign: "center",
-              letterSpacing: "1px",
-              textTransform: "uppercase",
-              width: "100%",
-            }}
-          >
-            Gratuit pour les 20 premiers organisateurs
-          </div>
-        </motion.div>
       </section>
 
       {/* ── EVENTS GRID ── */}
