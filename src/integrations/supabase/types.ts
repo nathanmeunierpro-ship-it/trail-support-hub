@@ -336,11 +336,20 @@ export type Database = {
       admin_export_benevoles: {
         Args: never
         Returns: {
+          avatar_url: string
+          bio: string
           created_at: string
-          data: Json
+          departement: string
+          dispo_text: string
+          disponibilites: string[]
           email: string
           id: string
-          user_id: string
+          niveau_trail: string
+          nom: string
+          phone: string
+          prenom: string
+          region: string
+          sports_pratiques: string[]
         }[]
       }
       admin_export_organisateurs: {
@@ -350,9 +359,9 @@ export type Database = {
           departement: string
           email: string
           id: string
-          nom: string
-          type: string
-          user_id: string
+          nom_organisation: string
+          site_web: string
+          type_organisation: string
         }[]
       }
       has_role: {
