@@ -48,9 +48,9 @@ export const exportOrganisateursCsv = createServerFn({ method: "GET" })
     const { data, error } = await supabaseAdmin.from("organisateurs").select("*");
     if (error) throw error;
     const rows = data ?? [];
-    const emails = await fetchEmails(rows.map((r) => r.user_id).filter(Boolean));
-    const enriched = rows.map((r) => ({ ...r, email: emails.get(r.user_id) ?? "" }));
-    const columns = Object.keys(enriched[0] ?? { id: "", user_id: "", email: "" });
+    const emails = await fetchEmails(rows.map((r) => r.id).filter(Boolean));
+    const enriched = rows.map((r) => ({ ...r, email: emails.get(r.id) ?? "" }));
+    const columns = Object.keys(enriched[0] ?? { id: "", email: "" });
     return { csv: toCsv(enriched, columns), count: enriched.length };
   });
 
@@ -62,9 +62,9 @@ export const exportBenevolesCsv = createServerFn({ method: "GET" })
     const { data, error } = await supabaseAdmin.from("benevoles").select("*");
     if (error) throw error;
     const rows = data ?? [];
-    const emails = await fetchEmails(rows.map((r) => r.user_id).filter(Boolean));
-    const enriched = rows.map((r) => ({ ...r, email: emails.get(r.user_id) ?? "" }));
-    const columns = Object.keys(enriched[0] ?? { id: "", user_id: "", email: "" });
+    const emails = await fetchEmails(rows.map((r) => r.id).filter(Boolean));
+    const enriched = rows.map((r) => ({ ...r, email: emails.get(r.id) ?? "" }));
+    const columns = Object.keys(enriched[0] ?? { id: "", email: "" });
     return { csv: toCsv(enriched, columns), count: enriched.length };
   });
 
