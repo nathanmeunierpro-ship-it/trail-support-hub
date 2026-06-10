@@ -1,13 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { Users, Building2 } from "lucide-react";
+import { Users, Building2, Download, Shield } from "lucide-react";
+import { useState } from "react";
 import { PageShell } from "@/components/PageShell";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { getStats } from "@/lib/stats.functions";
+import {
+  exportOrganisateursCsv,
+  exportBenevolesCsv,
+  bootstrapAdmin,
+} from "@/lib/admin.functions";
 
 const statsQueryOptions = queryOptions({
   queryKey: ["stats", "dashboard"],
   queryFn: () => getStats(),
 });
+
+function downloadCsv(filename: string, csv: string) {
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 export const Route = createFileRoute("/tableau-de-bord")({
   head: () => ({
