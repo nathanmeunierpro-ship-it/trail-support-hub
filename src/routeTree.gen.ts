@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as QuiSommesNousRouteImport } from './routes/qui-sommes-nous'
 import { Route as PublierRouteImport } from './routes/publier'
@@ -30,6 +31,11 @@ import { Route as ModifierAnnonceIdRouteImport } from './routes/modifier-annonce
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
 import { Route as ApiPublicQuoteRequestRouteImport } from './routes/api/public/quote-request'
 
+const TableauDeBordRoute = TableauDeBordRouteImport.update({
+  id: '/tableau-de-bord',
+  path: '/tableau-de-bord',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/publier'
     | '/qui-sommes-nous'
     | '/reset-password'
+    | '/tableau-de-bord'
     | '/annonce/$id'
     | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/publier'
     | '/qui-sommes-nous'
     | '/reset-password'
+    | '/tableau-de-bord'
     | '/annonce/$id'
     | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/publier'
     | '/qui-sommes-nous'
     | '/reset-password'
+    | '/tableau-de-bord'
     | '/annonce/$id'
     | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
@@ -281,6 +293,7 @@ export interface RootRouteChildren {
   PublierRoute: typeof PublierRoute
   QuiSommesNousRoute: typeof QuiSommesNousRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  TableauDeBordRoute: typeof TableauDeBordRoute
   AnnonceIdRoute: typeof AnnonceIdRoute
   ModifierAnnonceIdRoute: typeof ModifierAnnonceIdRoute
   ApiPublicQuoteRequestRoute: typeof ApiPublicQuoteRequestRoute
@@ -288,6 +301,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tableau-de-bord': {
+      id: '/tableau-de-bord'
+      path: '/tableau-de-bord'
+      fullPath: '/tableau-de-bord'
+      preLoaderRoute: typeof TableauDeBordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -462,6 +482,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublierRoute: PublierRoute,
   QuiSommesNousRoute: QuiSommesNousRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  TableauDeBordRoute: TableauDeBordRoute,
   AnnonceIdRoute: AnnonceIdRoute,
   ModifierAnnonceIdRoute: ModifierAnnonceIdRoute,
   ApiPublicQuoteRequestRoute: ApiPublicQuoteRequestRoute,
@@ -469,13 +490,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
