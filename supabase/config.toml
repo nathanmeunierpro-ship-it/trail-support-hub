@@ -1,1 +1,4 @@
 project_id = "xhtbflcuvsqxmbzvvtyh"
+
+[functions.notify-candidature]
+verify_jwt = false
