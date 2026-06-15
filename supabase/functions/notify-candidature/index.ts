@@ -14,16 +14,8 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const expectedSecret = Deno.env.get("CANDIDATURE_WEBHOOK_SECRET");
-    const providedSecret = req.headers.get("x-webhook-secret");
-    if (!expectedSecret || providedSecret !== expectedSecret) {
-      return new Response(JSON.stringify({ error: "unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    // Supabase DB webhook payload shape: { type, table, record, schema, old_record }
+    // Public endpoint: emails are only ever sent to the hardcoded admin address.
+    // Payload shape: { type, table, record, schema, old_record } (Supabase DB webhook)
     const payload = await req.json();
     const record = payload.record ?? payload;
     const { prenom, nom, event_id, created_at } = record;
