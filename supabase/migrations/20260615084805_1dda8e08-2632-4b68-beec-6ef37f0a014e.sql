@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.notify_new_candidature() FROM PUBLIC, anon, authenticated;
