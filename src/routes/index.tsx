@@ -113,6 +113,101 @@ function Home() {
         </div>
       </section>
 
+      {/* ── EVENTS GRID ── */}
+      <section className="py-24 px-6 section-light">
+        <div className="mx-auto max-w-7xl">
+          <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            <div>
+              <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
+                À l'affiche
+              </span>
+              <h2
+                className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-none"
+                style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)" }}
+              >
+                Les prochains
+                <br />
+                événements
+              </h2>
+            </div>
+            <Link
+              to="/annonces"
+              className="inline-flex items-center gap-2 text-[var(--color-text)] font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all"
+            >
+              Tout voir <ArrowRight size={16} />
+            </Link>
+          </motion.div>
+
+          {events.length === 0 ? (
+            <div className="text-center py-16 rounded-3xl bg-background">
+              <p className="text-muted-foreground mb-4">Aucune annonce pour le moment.</p>
+              <Link to="/publier" className="text-[var(--color-text)] font-bold hover:underline">
+                Publier le premier événement →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {events.map((ev, i) => {
+                const date = new Date(ev.date).toLocaleDateString("fr-FR", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                });
+                return (
+                  <motion.div
+                    key={ev.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Link
+                      to="/annonce/$id"
+                      params={{ id: ev.id }}
+                      className="group block relative h-[420px] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
+                    >
+                      <img
+                        src={ev.photo_url || CARD_IMGS[i % CARD_IMGS.length]}
+                        alt={ev.nom}
+                        className="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30" />
+                      <div className="absolute top-5 right-5">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-secondary text-secondary-foreground px-3 py-1 text-[11px] font-black uppercase tracking-wider">
+                          <Calendar size={11} /> {date}
+                        </span>
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 p-6 text-white">
+                        <h3
+                          className="leading-tight mb-4 line-clamp-3"
+                          style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.85rem", color: "#FFFFFF", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
+                        >
+                          {ev.nom}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                            style={{ background: "rgba(255,255,255,0.15)", color: "#FFFFFF", border: "1px solid #FFFFFF" }}
+                          >
+                            <MapPin size={11} /> {ev.ville}
+                          </span>
+                          <span
+                            className="inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                            style={{ background: "#73CC30", color: "#1A1A1A" }}
+                          >
+                            {ev.type_sport}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ── ALT 1 : image gauche / texte droite ── */}
       <section className="py-20 px-6 section-light">
         <div className="mx-auto max-w-7xl grid gap-12 md:grid-cols-2 items-center">
@@ -240,100 +335,6 @@ function Home() {
         </div>
       </section>
 
-      {/* ── EVENTS GRID ── */}
-      <section className="py-24 px-6 section-light">
-        <div className="mx-auto max-w-7xl">
-          <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div>
-              <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
-                À l'affiche
-              </span>
-              <h2
-                className="font-display font-black uppercase text-[var(--color-text)] mt-4 leading-none"
-                style={{ fontSize: "clamp(2rem, 4.5vw, 3.75rem)" }}
-              >
-                Les prochains
-                <br />
-                événements
-              </h2>
-            </div>
-            <Link
-              to="/annonces"
-              className="inline-flex items-center gap-2 text-[var(--color-text)] font-bold uppercase tracking-wider text-sm hover:gap-3 transition-all"
-            >
-              Tout voir <ArrowRight size={16} />
-            </Link>
-          </motion.div>
-
-          {events.length === 0 ? (
-            <div className="text-center py-16 rounded-3xl bg-background">
-              <p className="text-muted-foreground mb-4">Aucune annonce pour le moment.</p>
-              <Link to="/publier" className="text-[var(--color-text)] font-bold hover:underline">
-                Publier le premier événement →
-              </Link>
-            </div>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {events.map((ev, i) => {
-                const date = new Date(ev.date).toLocaleDateString("fr-FR", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                });
-                return (
-                  <motion.div
-                    key={ev.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <Link
-                      to="/annonce/$id"
-                      params={{ id: ev.id }}
-                      className="group block relative h-[420px] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-1"
-                    >
-                      <img
-                        src={ev.photo_url || CARD_IMGS[i % CARD_IMGS.length]}
-                        alt={ev.nom}
-                        className="absolute inset-0 h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30" />
-                      <div className="absolute top-5 right-5">
-                        <span className="inline-flex items-center gap-1 rounded-full bg-secondary text-secondary-foreground px-3 py-1 text-[11px] font-black uppercase tracking-wider">
-                          <Calendar size={11} /> {date}
-                        </span>
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                        <h3
-                          className="leading-tight mb-4 line-clamp-3"
-                          style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.85rem", color: "#FFFFFF", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
-                        >
-                          {ev.nom}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span
-                            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
-                            style={{ background: "rgba(255,255,255,0.15)", color: "#FFFFFF", border: "1px solid #FFFFFF" }}
-                          >
-                            <MapPin size={11} /> {ev.ville}
-                          </span>
-                          <span
-                            className="inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
-                            style={{ background: "#73CC30", color: "#1A1A1A" }}
-                          >
-                            {ev.type_sport}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
 
       {/* ── CTA FINAL ── */}
       <section className="relative py-32 px-6 overflow-hidden section-dark">
