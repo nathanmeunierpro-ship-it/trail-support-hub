@@ -115,9 +115,9 @@ function Home() {
       </section>
 
       {/* ── EVENTS GRID ── */}
-      <section className="py-24 px-6 section-light">
+      <section className="py-16 md:py-24 px-6 section-light">
         <div className="mx-auto max-w-7xl">
-          <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+          <motion.div {...fadeUp} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-6 md:mb-14">
             <div>
               <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-text)] opacity-60 font-semibold">
                 À l'affiche
