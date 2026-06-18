@@ -6,12 +6,13 @@ interface EventCarouselProps {
   interval?: number; // ms between auto-advances
 }
 
-export function EventCarousel({ children, interval = 5500 }: EventCarouselProps) {
+export function EventCarousel({ children, interval = 8000 }: EventCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const indexRef = useRef(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const items = Children.toArray(children);
 
@@ -44,7 +45,7 @@ export function EventCarousel({ children, interval = 5500 }: EventCarouselProps)
     const track = trackRef.current;
     if (!track) return;
     const step = getStep();
-    track.style.transition = animate ? "transform 650ms ease-in-out" : "none";
+    track.style.transition = animate ? "transform 900ms ease-in-out" : "none";
     track.style.transform = `translateX(${-newIndex * step}px)`;
     indexRef.current = newIndex;
   }, [getStep]);
@@ -102,10 +103,20 @@ export function EventCarousel({ children, interval = 5500 }: EventCarouselProps)
   // Auto-advance (desktop)
   useEffect(() => {
     if (isMobile || isPaused || isTransitioning) return;
-    const id = setInterval(() => {
+    // Clear any existing interval before creating a new one
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    intervalRef.current = setInterval(() => {
       advance(1);
     }, interval);
-    return () => clearInterval(id);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
   }, [isPaused, isTransitioning, interval, advance, isMobile]);
 
   // Swipe handling (desktop only — mobile uses continuous marquee)
@@ -121,6 +132,9 @@ export function EventCarousel({ children, interval = 5500 }: EventCarouselProps)
     }
   };
 
+  // Mobile marquee duration: ~8 seconds per card
+  const mobileDuration = Math.max(items.length * 8, 16);
+
   return (
     <div
       className="relative group"
@@ -133,7 +147,7 @@ export function EventCarousel({ children, interval = 5500 }: EventCarouselProps)
           to { transform: translateX(-50%); }
         }
         .event-carousel-marquee-track {
-          animation: event-carousel-marquee 24s linear infinite;
+          animation: event-carousel-marquee ${mobileDuration}s linear infinite;
         }
         .event-carousel-marquee-track:hover {
           animation-play-state: paused;
