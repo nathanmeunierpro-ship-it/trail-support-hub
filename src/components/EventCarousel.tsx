@@ -133,10 +133,21 @@ export function EventCarousel({ children, interval = 5500 }: EventCarouselProps)
           to { transform: translateX(-50%); }
         }
         .event-carousel-marquee-track {
-          animation: event-carousel-marquee 30s linear infinite;
+          animation: event-carousel-marquee 24s linear infinite;
         }
         .event-carousel-marquee-track:hover {
           animation-play-state: paused;
+        }
+        @media (max-width: 767px) {
+          .event-carousel-item a {
+            height: 300px !important;
+          }
+          .event-carousel-item h3 {
+            font-size: 1.15rem !important;
+          }
+          .event-carousel-item img {
+            object-fit: cover !important;
+          }
         }
       `}</style>
 
@@ -157,7 +168,7 @@ export function EventCarousel({ children, interval = 5500 }: EventCarouselProps)
           {(isMobile ? [...items, ...items] : loop).map((child, i) => (
             <div
               key={`item-${i}`}
-              className="flex-shrink-0 w-[65vw] sm:w-[380px] md:w-[400px] lg:w-[420px] transition-transform duration-300 hover:scale-[1.02]"
+              className="flex-shrink-0 w-[70vw] sm:w-[380px] md:w-[400px] lg:w-[420px] transition-transform duration-300 hover:scale-[1.02] event-carousel-item"
             >
               {child}
             </div>
