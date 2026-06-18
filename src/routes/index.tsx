@@ -5,6 +5,7 @@ import { ArrowRight, MapPin, Calendar, Heart, Users, Sparkles } from "lucide-rea
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { Ticker } from "@/components/Ticker";
+import { EventCarousel } from "@/components/EventCarousel";
 import volunteerTeamAsset from "@/assets/volunteer-team.jpeg.asset.json";
 import raceStartAsset from "@/assets/race-start.jpeg.asset.json";
 
@@ -146,7 +147,7 @@ function Home() {
               </Link>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <EventCarousel>
               {events.map((ev, i) => {
                 const date = new Date(ev.date).toLocaleDateString("fr-FR", {
                   day: "2-digit",
@@ -203,7 +204,7 @@ function Home() {
                   </motion.div>
                 );
               })}
-            </div>
+            </EventCarousel>
           )}
         </div>
       </section>
