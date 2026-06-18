@@ -1,141 +1,88 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, Children } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface EventCarouselProps {
   children: React.ReactNode[];
+  speed?: number; // seconds for one full loop
 }
 
-export function EventCarousel({ children }: EventCarouselProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [itemsPerPage, setItemsPerPage] = useState(3);
-  const touchStartX = useRef(0);
+export function EventCarousel({ children, speed = 40 }: EventCarouselProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth;
-      if (w < 768) setItemsPerPage(1);
-      else if (w < 1024) setItemsPerPage(2);
-      else setItemsPerPage(3);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+  const items = Children.toArray(children);
+  if (items.length === 0) return null;
 
-  const totalSlides = Math.max(1, Math.ceil(children.length / itemsPerPage));
+  // Duplicate items to create seamless infinite loop
+  const loop = [...items, ...items];
 
-  const scrollToPage = useCallback(
-    (pageIndex: number) => {
-      const clamped = Math.max(0, Math.min(pageIndex, totalSlides - 1));
-      setCurrentIndex(clamped);
-      const container = containerRef.current;
-      if (!container) return;
-      const itemIndex = clamped * itemsPerPage;
-      const child = container.children[itemIndex] as HTMLElement | undefined;
-      if (!child) return;
-      const containerRect = container.getBoundingClientRect();
-      const childRect = child.getBoundingClientRect();
-      const scrollLeft = container.scrollLeft + (childRect.left - containerRect.left);
-      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
-    },
-    [itemsPerPage, totalSlides]
-  );
-
-  useEffect(() => {
-    if (isHovered || children.length === 0) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => {
-        const next = (prev + 1) % totalSlides;
-        const container = containerRef.current;
-        if (container) {
-          const itemIndex = next * itemsPerPage;
-          const child = container.children[itemIndex] as HTMLElement | undefined;
-          if (child) {
-            const containerRect = container.getBoundingClientRect();
-            const childRect = child.getBoundingClientRect();
-            const scrollLeft = container.scrollLeft + (childRect.left - containerRect.left);
-            container.scrollTo({ left: scrollLeft, behavior: "smooth" });
-          }
-        }
-        return next;
-      });
-    }, 3500);
-    return () => clearInterval(interval);
-  }, [isHovered, children.length, totalSlides, itemsPerPage]);
-
-  const goPrev = () => scrollToPage(currentIndex - 1);
-  const goNext = () => scrollToPage(currentIndex + 1);
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+  const nudge = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const first = track.children[0] as HTMLElement | undefined;
+    const step = first ? first.offsetWidth + 24 : 320;
+    track.scrollBy({ left: dir * step, behavior: "smooth" });
   };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (diff > 50) goNext();
-    else if (diff < -50) goPrev();
-  };
-
-  if (children.length === 0) return null;
 
   return (
     <div
       className="relative group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
       <style>{`
-        .event-carousel::-webkit-scrollbar {
-          display: none;
+        @keyframes event-marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
+        .event-marquee-track {
+          animation: event-marquee linear infinite;
+          width: max-content;
+        }
+        .event-carousel-mask {
+          mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+        .event-carousel-mask::-webkit-scrollbar { display: none; }
       `}</style>
+
       <div
-        ref={containerRef}
-        className="event-carousel flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
+        ref={trackRef}
+        className="event-carousel-mask overflow-hidden"
+        style={{ scrollbarWidth: "none" }}
       >
-        {children.map((child, i) => (
-          <div
-            key={i}
-            className="flex-shrink-0 w-[85%] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start"
-          >
-            {child}
-          </div>
-        ))}
+        <div
+          className="event-marquee-track flex gap-6 py-4"
+          style={{
+            animationDuration: `${speed}s`,
+            animationPlayState: paused ? "paused" : "running",
+          }}
+        >
+          {loop.map((child, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 w-[85vw] sm:w-[380px] md:w-[400px] lg:w-[420px] transition-transform duration-300 hover:scale-[1.02]"
+            >
+              {child}
+            </div>
+          ))}
+        </div>
       </div>
 
       <button
-        onClick={goPrev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100"
+        onClick={() => nudge(-1)}
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 backdrop-blur-sm shadow-xl border border-black/5 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
         aria-label="Précédent"
       >
-        <ChevronLeft size={20} />
+        <ChevronLeft size={22} strokeWidth={2.5} />
       </button>
       <button
-        onClick={goNext}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center hover:bg-white transition-colors z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100"
+        onClick={() => nudge(1)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/95 backdrop-blur-sm shadow-xl border border-black/5 flex items-center justify-center hover:bg-white hover:scale-110 transition-all duration-300 z-10 opacity-0 group-hover:opacity-100"
         aria-label="Suivant"
       >
-        <ChevronRight size={20} />
+        <ChevronRight size={22} strokeWidth={2.5} />
       </button>
-
-      <div className="flex justify-center gap-2 mt-6">
-        {Array.from({ length: totalSlides }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => scrollToPage(i)}
-            className={`h-2.5 rounded-full transition-all duration-300 ${
-              i === currentIndex
-                ? "bg-[var(--color-text)] w-6"
-                : "bg-[var(--color-text)]/30 w-2.5"
-            }`}
-            aria-label={`Page ${i + 1}`}
-          />
-        ))}
-      </div>
     </div>
   );
 }
