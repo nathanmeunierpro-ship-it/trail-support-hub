@@ -68,7 +68,9 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
               payment_link?: string | null;
               payment_status?: string;
               client_reference_id?: string | null;
-              customer_details?: { email?: string | null } | null;
+              customer_details?: { email?: string | null; name?: string | null } | null;
+              custom_fields?: { key: string; text?: { value?: string | null } | null }[];
+              amount_total?: number | null;
             };
           };
         };
@@ -78,8 +80,29 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
         if (s.payment_link !== STRIPE_PAYMENT_LINK_ID) return Response.json({ ignored: true });
         if (s.payment_status !== "paid") return Response.json({ ignored: "unpaid" });
         const eventId = s.client_reference_id;
+        const nomCourse = s.custom_fields?.find((f) => f.key === "nomcourse")?.text?.value ?? "";
+
+        // Paiement non relié à une annonce : on prévient l'admin pour faire le lien à la main.
+        const alertAdmin = async (raison: string) => {
+          const m = await import("@/lib/mailer.server");
+          await m.sendMail({
+            to: m.ADMIN_EMAIL,
+            replyTo: s.customer_details?.email ?? undefined,
+            subject: `[Ravito] Paiement à rattacher : ${nomCourse || "course inconnue"}`,
+            html: m.layout(
+              "Paiement reçu sans annonce reliée",
+              `<p>${m.esc(raison)}</p>${m.table({
+                "Nom de la course (saisi)": nomCourse,
+                Client: s.customer_details?.name,
+                Email: s.customer_details?.email,
+                Montant: s.amount_total != null ? `${(s.amount_total / 100).toFixed(2)} €` : "",
+              })}<p>Retrouve l'annonce de cet organisateur et mets-la en ligne, ou réponds-lui directement à cet e-mail.</p>`,
+            ),
+          });
+        };
+
         if (!eventId || !UUID.test(eventId)) {
-          console.warn("[stripe] paiement Ravito sans annonce liée", s.customer_details?.email);
+          await alertAdmin("Le client a payé depuis un lien qui n'est relié à aucune annonce.");
           return Response.json({ ok: true, linked: false });
         }
 
@@ -96,7 +119,18 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
           return new Response("db error", { status: 500 }); // Stripe réessaiera
         }
 
-        if (ev?.email_contact) {
+        if (!ev) {
+          // Déjà active (Stripe renvoie parfois deux fois) ou annonce introuvable.
+          const { data: exists } = await supabaseAdmin
+            .from("events")
+            .select("statut")
+            .eq("id", eventId)
+            .maybeSingle();
+          if (!exists) await alertAdmin(`Annonce ${eventId} introuvable (supprimée ?).`);
+          return Response.json({ ok: true, activated: false });
+        }
+
+        if (ev.email_contact) {
           const m = await import("@/lib/mailer.server");
           await m.sendMail({
             to: ev.email_contact,
@@ -109,7 +143,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
             ),
           });
         }
-        return Response.json({ ok: true, activated: !!ev });
+        return Response.json({ ok: true, activated: true });
       },
     },
   },

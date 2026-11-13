@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/PageShell";
+import { PendingPayments } from "@/components/PendingPayments";
 import { Faq, faqJsonLd, type FaqItem } from "@/components/Faq";
 import {
   PRIX_ANNONCE,
@@ -134,6 +135,9 @@ function Page() {
       </section>
 
       <section className="-mt-10 px-6 pb-20 md:-mt-14">
+        <div className="relative z-10 mx-auto mb-6 max-w-5xl">
+          <PendingPayments />
+        </div>
         <div className="mx-auto grid max-w-5xl items-stretch gap-6 md:grid-cols-[1.35fr_1fr]">
           {/* Pack Organisateur */}
           <motion.div
