@@ -51,7 +51,7 @@ function LoginPage() {
       style={{ background: "#F2FAE8" }}
     >
       <Link to="/" className="mb-8">
-        <img src={ravitoLogoGreen.url} alt="Ravito" className="h-40 w-auto mx-auto" />
+        <img src={ravitoLogoGreen.url} alt="Ravito" className="h-16 w-auto mx-auto" />
       </Link>
 
       <motion.div

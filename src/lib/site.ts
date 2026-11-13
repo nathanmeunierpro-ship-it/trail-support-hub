@@ -5,7 +5,7 @@
 export const SITE_URL = "https://ravito.fr";
 export const SITE_NAME = "Ravito";
 export const DEFAULT_OG_IMAGE =
-  "https://storage.googleapis.com/gpt-engineer-file-uploads/QskU7NuD1QMJFvtudcEZBTvsPfR2/social-images/social-1780997538956-IMG_1008.webp";
+  "https://ravito.fr/images/og-image.jpg";
 
 /** Prix du Pack Organisateur (une annonce, tout compris). */
 export const PRIX_ANNONCE = "29,99 €";

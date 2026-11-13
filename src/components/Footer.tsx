@@ -51,13 +51,13 @@ export function Footer() {
             <img
               src={ravitoLogoWhite.url}
               alt="Ravito"
-              width={160}
-              height={160}
-              className="-my-10 h-36 w-auto"
+              width={587}
+              height={244}
+              className="h-14 w-auto"
               loading="lazy"
             />
           </Link>
-          <p className="mt-2 max-w-xs text-sm leading-relaxed text-white/60">
+          <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
             La plateforme qui met en relation bénévoles et organisateurs de trails, courses,
             triathlons et cyclosportives partout en France.
           </p>
