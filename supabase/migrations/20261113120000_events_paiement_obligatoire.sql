@@ -31,6 +31,8 @@ CREATE TRIGGER events_enforce_payment
 BEFORE INSERT OR UPDATE ON public.events
 FOR EACH ROW EXECUTE FUNCTION public.events_enforce_payment();
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
+
 -- Mise en ligne après paiement (jeton vérifié par empreinte SHA-256).
 CREATE OR REPLACE FUNCTION public.activate_paid_event(p_event_id uuid, p_token text)
 RETURNS TABLE (id uuid, nom text, email_contact text, activated boolean)
@@ -38,6 +40,7 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public, extensions
 AS $$
+#variable_conflict use_column
 BEGIN
   IF encode(extensions.digest(p_token, 'sha256'), 'hex') <> '6a202785e3201b8266106fa5824f38acaa44cf26508a0c2eeab737ea4373e0aa' THEN
     RAISE EXCEPTION 'unauthorized' USING ERRCODE = '42501';
