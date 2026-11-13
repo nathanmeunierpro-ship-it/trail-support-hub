@@ -56,10 +56,8 @@ export const Route = createFileRoute("/")({
   loader: () => fetchUpcomingEvents(6),
   head: () => ({
     ...seo({
-      title:
-        "Ravito — Trouve des bénévoles ou deviens bénévole sur un trail, une course, un triathlon",
-      description:
-        "Ravito met en relation bénévoles et organisateurs de trails, courses à pied, triathlons et cyclosportives partout en France. +200 bénévoles inscrits, gratuit pour les bénévoles.",
+      title: "Ravito : bénévoles pour trails, courses et triathlons",
+      description: `Deviens bénévole sur un trail, une course à pied ou un triathlon près de chez toi, ou trouve des bénévoles pour ta course. +${NB_BENEVOLES} bénévoles inscrits en France.`,
       path: "/",
     }),
     scripts: [jsonLd(faqJsonLd(FAQ))],

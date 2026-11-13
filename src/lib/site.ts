@@ -53,6 +53,14 @@ export interface SeoInput {
   type?: "website" | "article" | "event";
 }
 
+/** Coupe une description trop longue (Google en affiche ~155 caractères) sur un mot entier. */
+function clampDescription(text: string, max = 158): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[\s,;:.—-]+$/, "")}…`;
+}
+
 /** Génère les balises meta/link d'une page (title, description, canonical, Open Graph, Twitter). */
 export function seo({ title, description, path, image, noindex, type = "website" }: SeoInput): {
   meta: MetaTag[];
@@ -60,6 +68,7 @@ export function seo({ title, description, path, image, noindex, type = "website"
 } {
   const url = `${SITE_URL}${path}`;
   const img = image || DEFAULT_OG_IMAGE;
+  description = clampDescription(description);
   const meta: MetaTag[] = [
     { title },
     { name: "description", content: description },

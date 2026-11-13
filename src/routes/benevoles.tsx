@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search, Send, Clock, Users, ArrowRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { seo, NB_BENEVOLES } from "@/lib/site";
+import { DISCIPLINES } from "@/lib/disciplines";
 
 export const Route = createFileRoute("/benevoles")({
   head: () =>
@@ -81,6 +82,20 @@ function BenevolesPage() {
               Voir les événements
             </Link>
           </motion.div>
+
+          <h2 className="font-display text-2xl font-black mt-16 mb-4">Bénévole sur quel sport ?</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {DISCIPLINES.map((d) => (
+              <Link
+                key={d.slug}
+                to="/benevole/$discipline"
+                params={{ discipline: d.slug }}
+                className="flex items-center justify-between rounded-2xl border border-border bg-card p-5 font-bold hover:border-primary hover:text-primary"
+              >
+                {d.h1} <ArrowRight size={16} />
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </PageShell>

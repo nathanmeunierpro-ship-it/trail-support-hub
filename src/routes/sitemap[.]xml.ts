@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { fetchUpcomingEvents } from "@/lib/events";
 import { SITE_URL } from "@/lib/site";
+import { DISCIPLINES } from "@/lib/disciplines";
 
 /** Sitemap dynamique : pages fixes + toutes les courses à venir (les courses passées en sortent automatiquement). */
 const STATIC_PAGES: { path: string; freq: string; priority: string }[] = [
   { path: "/", freq: "daily", priority: "1.0" },
   { path: "/annonces", freq: "daily", priority: "0.9" },
   { path: "/benevoles", freq: "monthly", priority: "0.7" },
+  ...DISCIPLINES.map((d) => ({ path: `/benevole/${d.slug}`, freq: "weekly", priority: "0.8" })),
   { path: "/organisateurs/comment-ca-marche", freq: "monthly", priority: "0.7" },
   { path: "/organisateurs/nos-offres", freq: "monthly", priority: "0.8" },
   { path: "/qui-sommes-nous", freq: "monthly", priority: "0.5" },

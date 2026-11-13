@@ -9,6 +9,10 @@ const COLS: { title: string; links: { to: string; label: string }[] }[] = [
     links: [
       { to: "/annonces", label: "Toutes les courses" },
       { to: "/benevoles", label: "Devenir bénévole" },
+      { to: "/benevole/trail", label: "Bénévole trail" },
+      { to: "/benevole/course-a-pied", label: "Bénévole course à pied" },
+      { to: "/benevole/triathlon", label: "Bénévole triathlon" },
+      { to: "/benevole/cyclisme", label: "Bénévole cyclisme" },
       { to: "/mes-candidatures", label: "Mes candidatures" },
     ],
   },

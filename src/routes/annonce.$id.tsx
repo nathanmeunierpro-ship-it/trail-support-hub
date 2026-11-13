@@ -25,7 +25,8 @@ export const Route = createFileRoute("/annonce/$id")({
     if (!ev) return { meta: [{ title: "Annonce introuvable | Ravito" }, { name: "robots", content: "noindex" }] };
     const past = isPast(ev.date);
     const dateTxt = formatDate(ev.date);
-    const title = `Bénévole ${ev.type_sport} à ${ev.ville} — ${ev.nom} (${dateTxt}) | Ravito`;
+    const core = `${ev.nom} : bénévoles à ${ev.ville} (${dateTxt})`;
+    const title = core.length <= 52 ? `${core} | Ravito` : core;
     const missions = ev.missions?.length ? ` Missions : ${ev.missions.join(", ").toLowerCase()}.` : "";
     const description = `${ev.nom} recherche ${ev.nb_benevoles ?? ""} bénévoles le ${dateTxt} à ${ev.ville} (${ev.region}).${missions} Postule gratuitement sur Ravito.`
       .replace(/\s+/g, " ")

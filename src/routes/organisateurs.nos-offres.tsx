@@ -49,7 +49,7 @@ const FAQ: FaqItem[] = [
 export const Route = createFileRoute("/organisateurs/nos-offres")({
   head: () => ({
     ...seo({
-      title: `Tarif organisateur : trouver des bénévoles pour ta course — ${PRIX_ANNONCE} | Ravito`,
+      title: `Trouver des bénévoles pour sa course : ${PRIX_ANNONCE} | Ravito`,
       description: `Publie ta course sur Ravito avec le Pack Organisateur à ${PRIX_ANNONCE} : annonce vue par +${NB_BENEVOLES} bénévoles inscrits en France, candidatures illimitées, tableau de bord. Sans abonnement.`,
       path: "/organisateurs/nos-offres",
     }),

@@ -27,6 +27,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
+import { Route as BenevoleDisciplineRouteImport } from './routes/benevole.$discipline'
 import { Route as ModifierAnnonceIdRouteImport } from './routes/modifier-annonce.$id'
 import { Route as OrganisateursIndexRouteImport } from './routes/organisateurs.index'
 import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
@@ -124,6 +125,11 @@ const AnnonceIdRoute = AnnonceIdRouteImport.update({
   path: '/annonce/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BenevoleDisciplineRoute = BenevoleDisciplineRouteImport.update({
+  id: '/benevole/$discipline',
+  path: '/benevole/$discipline',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModifierAnnonceIdRoute = ModifierAnnonceIdRouteImport.update({
   id: '/modifier-annonce/$id',
   path: '/modifier-annonce/$id',
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/benevole/$discipline': typeof BenevoleDisciplineRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/benevole/$discipline': typeof BenevoleDisciplineRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
+  '/benevole/$discipline': typeof BenevoleDisciplineRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
   '/organisateurs/comment-ca-marche': typeof OrganisateursCommentCaMarcheRoute
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tableau-de-bord'
     | '/annonce/$id'
+    | '/benevole/$discipline'
     | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tableau-de-bord'
     | '/annonce/$id'
+    | '/benevole/$discipline'
     | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/tableau-de-bord'
     | '/annonce/$id'
+    | '/benevole/$discipline'
     | '/modifier-annonce/$id'
     | '/organisateurs/comment-ca-marche'
     | '/organisateurs/nos-offres'
@@ -333,6 +345,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TableauDeBordRoute: typeof TableauDeBordRoute
   AnnonceIdRoute: typeof AnnonceIdRoute
+  BenevoleDisciplineRoute: typeof BenevoleDisciplineRoute
   ModifierAnnonceIdRoute: typeof ModifierAnnonceIdRoute
   ApiPublicQuoteRequestRoute: typeof ApiPublicQuoteRequestRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
@@ -466,6 +479,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnnonceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/benevole/$discipline': {
+      id: '/benevole/$discipline'
+      path: '/benevole/$discipline'
+      fullPath: '/benevole/$discipline'
+      preLoaderRoute: typeof BenevoleDisciplineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/modifier-annonce/$id': {
       id: '/modifier-annonce/$id'
       path: '/modifier-annonce/$id'
@@ -546,6 +566,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TableauDeBordRoute: TableauDeBordRoute,
   AnnonceIdRoute: AnnonceIdRoute,
+  BenevoleDisciplineRoute: BenevoleDisciplineRoute,
   ModifierAnnonceIdRoute: ModifierAnnonceIdRoute,
   ApiPublicQuoteRequestRoute: ApiPublicQuoteRequestRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,

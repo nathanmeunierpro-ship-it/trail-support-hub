@@ -25,7 +25,7 @@ export const Route = createFileRoute("/annonces")({
     const events = loaderData ?? [];
     return {
       ...seo({
-        title: "Courses qui recherchent des bénévoles — Trail, running, triathlon | Ravito",
+        title: "Courses qui recherchent des bénévoles | Ravito",
         description: `${events.length > 0 ? `${events.length} événement${events.length > 1 ? "s" : ""} sportif${events.length > 1 ? "s" : ""} à venir` : "Les événements sportifs"} recherchent des bénévoles : trails, courses à pied, triathlons et cyclosportives partout en France. Postule gratuitement en 2 clics.`,
         path: "/annonces",
       }),
