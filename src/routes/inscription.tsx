@@ -9,7 +9,7 @@ import { DEPARTEMENTS_FR } from "@/lib/regions";
 import ravitoLogoGreen from "@/assets/ravito-logo-green.png.asset.json";
 
 export const Route = createFileRoute("/inscription")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { role?: "benevole" | "organisateur" } => ({
     role: (search.role === "benevole" || search.role === "organisateur") ? search.role : undefined,
   }),
   head: () => ({

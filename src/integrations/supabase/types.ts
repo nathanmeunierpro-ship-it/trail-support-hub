@@ -333,6 +333,15 @@ export type Database = {
       }
     }
     Functions: {
+      activate_paid_event: {
+        Args: { p_event_id: string; p_token: string }
+        Returns: {
+          activated: boolean
+          email_contact: string
+          id: string
+          nom: string
+        }[]
+      }
       admin_export_benevoles: {
         Args: never
         Returns: {
