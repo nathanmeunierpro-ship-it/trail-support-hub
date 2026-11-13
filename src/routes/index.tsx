@@ -314,9 +314,11 @@ function Home() {
               <span className="font-display text-7xl leading-none text-primary">
                 {PRIX_ANNONCE}
               </span>
-              <span className="mb-1 font-display text-3xl leading-none text-white/35 line-through">
-                {PRIX_BARRE}
-              </span>
+              {PRIX_BARRE && (
+                <span className="mb-1 font-display text-3xl leading-none text-white/35 line-through">
+                  {PRIX_BARRE}
+                </span>
+              )}
             </div>
             <span className="mt-1 text-sm text-white/60">
               tout compris, par événement, sans abonnement

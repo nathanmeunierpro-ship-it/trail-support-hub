@@ -162,12 +162,16 @@ function Page() {
             </p>
             <div className="mt-6 flex flex-wrap items-end gap-x-3 gap-y-1">
               <span className="font-display text-7xl leading-none">{PRIX_ANNONCE}</span>
-              <span className="mb-1 font-display text-3xl leading-none text-black/35 line-through decoration-2">
-                {PRIX_BARRE}
-              </span>
-              <span className="mb-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">
-                -13 %
-              </span>
+              {PRIX_BARRE && (
+                <>
+                  <span className="mb-1 font-display text-3xl leading-none text-black/35 line-through decoration-2">
+                    {PRIX_BARRE}
+                  </span>
+                  <span className="mb-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">
+                    -13 %
+                  </span>
+                </>
+              )}
             </div>
             <p className="mt-2 text-sm text-black/60">
               TTC, tout compris, par événement · sans abonnement
