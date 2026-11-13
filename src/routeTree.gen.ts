@@ -32,6 +32,7 @@ import { Route as OrganisateursIndexRouteImport } from './routes/organisateurs.i
 import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
 import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateurs.nos-offres'
 import { Route as ApiPublicQuoteRequestRouteImport } from './routes/api/public/quote-request'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -149,6 +150,11 @@ const ApiPublicQuoteRequestRoute = ApiPublicQuoteRequestRouteImport.update({
   path: '/api/public/quote-request',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs/': typeof OrganisateursIndexRoute
   '/api/public/quote-request': typeof ApiPublicQuoteRequestRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByTo {
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs': typeof OrganisateursIndexRoute
   '/api/public/quote-request': typeof ApiPublicQuoteRequestRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -224,6 +232,7 @@ export interface FileRoutesById {
   '/organisateurs/nos-offres': typeof OrganisateursNosOffresRoute
   '/organisateurs/': typeof OrganisateursIndexRoute
   '/api/public/quote-request': typeof ApiPublicQuoteRequestRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -251,6 +260,7 @@ export interface FileRouteTypes {
     | '/organisateurs/nos-offres'
     | '/organisateurs/'
     | '/api/public/quote-request'
+    | '/api/public/stripe-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -275,6 +285,7 @@ export interface FileRouteTypes {
     | '/organisateurs/nos-offres'
     | '/organisateurs'
     | '/api/public/quote-request'
+    | '/api/public/stripe-webhook'
   id:
     | '__root__'
     | '/'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '/organisateurs/nos-offres'
     | '/organisateurs/'
     | '/api/public/quote-request'
+    | '/api/public/stripe-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -323,6 +335,7 @@ export interface RootRouteChildren {
   AnnonceIdRoute: typeof AnnonceIdRoute
   ModifierAnnonceIdRoute: typeof ModifierAnnonceIdRoute
   ApiPublicQuoteRequestRoute: typeof ApiPublicQuoteRequestRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -488,6 +501,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicQuoteRequestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -528,6 +548,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnnonceIdRoute: AnnonceIdRoute,
   ModifierAnnonceIdRoute: ModifierAnnonceIdRoute,
   ApiPublicQuoteRequestRoute: ApiPublicQuoteRequestRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,8 +4,7 @@
  */
 export const SITE_URL = "https://ravito.fr";
 export const SITE_NAME = "Ravito";
-export const DEFAULT_OG_IMAGE =
-  "https://ravito.fr/images/og-image.jpg";
+export const DEFAULT_OG_IMAGE = "https://ravito.fr/images/og-image.jpg";
 
 /** Prix du Pack Organisateur (une annonce, tout compris). */
 export const PRIX_ANNONCE = "29,99 €";
@@ -17,6 +16,20 @@ export const NB_BENEVOLES_LABEL = "Plus de 200 bénévoles inscrits en France";
 
 /** Lien de paiement Stripe du Pack Organisateur (29,99 €). */
 export const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/dRmdR9dcG6O41USf5dgrS01";
+
+/** Identifiant du lien de paiement (sert à reconnaître les paiements Ravito dans Stripe). */
+export const STRIPE_PAYMENT_LINK_ID = "plink_1UbHCWFdTBVhzLf1JQ2CmNdG";
+
+/** Statut d'une annonce enregistrée mais pas encore payée (invisible sur le site). */
+export const STATUT_ATTENTE_PAIEMENT = "en_attente_paiement";
+
+/** Lien de paiement relié à une annonce précise (Stripe la remet en ligne après paiement). */
+export function paymentUrl(eventId: string, email?: string | null) {
+  const u = new URL(STRIPE_PAYMENT_LINK);
+  u.searchParams.set("client_reference_id", eventId);
+  if (email) u.searchParams.set("prefilled_email", email);
+  return u.toString();
+}
 
 export const CONTACT_EMAIL = "nathanmeunierpro@gmail.com";
 

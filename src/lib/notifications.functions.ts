@@ -155,7 +155,7 @@ export const notifyWelcome = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const m = await import("./mailer.server");
-    const { PRIX_ANNONCE, STRIPE_PAYMENT_LINK } = await import("./site");
+    const { PRIX_ANNONCE } = await import("./site");
     const email = (context.claims as { email?: string }).email;
     if (!email) return { ok: false };
     const hello = data.prenom ? `Bienvenue sur Ravito, ${data.prenom} !` : "Bienvenue sur Ravito !";
@@ -174,7 +174,7 @@ export const notifyWelcome = createServerFn({ method: "POST" })
             `<p>Ton compte organisateur est prêt. Publie ta course et touche directement les +200 bénévoles inscrits sur Ravito.</p>
              <p><strong>Offre de lancement — ${m.esc(PRIX_ANNONCE)} tout compris :</strong> annonce en ligne jusqu'au jour J, candidatures illimitées, espace pour gérer les candidatures, mise en avant dans notre newsletter et sur Instagram.</p>
              ${m.button("Publier ma course", m.siteUrl("/publier"))}
-             <p style="font-size:13px;color:#666">Paiement sécurisé par Stripe : <a href="${m.esc(STRIPE_PAYMENT_LINK)}" style="color:#3d6e1a">régler le Pack Organisateur</a>.</p>`,
+             <p style="font-size:13px;color:#666">Tu publies ta course, tu règles en ligne par carte (paiement sécurisé Stripe) et elle est aussitôt visible par les bénévoles.</p>`,
           );
 
     await Promise.all([
@@ -198,7 +198,7 @@ export const notifyEventPublished = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const m = await import("./mailer.server");
-    const { PRIX_ANNONCE, STRIPE_PAYMENT_LINK } = await import("./site");
+    const { PRIX_ANNONCE, STATUT_ATTENTE_PAIEMENT, paymentUrl } = await import("./site");
 
     const { data: ev } = await supabaseAdmin
       .from("events")
@@ -223,8 +223,8 @@ export const notifyEventPublished = createServerFn({ method: "POST" })
             html: m.layout(
               "Ton annonce est enregistrée ✅",
               `<p>Merci ! Voici le récapitulatif de ton annonce :</p>${details}
-               <p>Pour finaliser la publication, règle ton <strong>Pack Organisateur (${m.esc(PRIX_ANNONCE)})</strong> en ligne, par carte bancaire, en toute sécurité :</p>
-               ${m.button(`Payer ${PRIX_ANNONCE}`, STRIPE_PAYMENT_LINK)}
+               <p>${ev.statut === STATUT_ATTENTE_PAIEMENT ? "Ton annonce sera <strong>mise en ligne automatiquement dès le paiement</strong>" : "Pour finaliser la publication, règle"} ton <strong>Pack Organisateur (${m.esc(PRIX_ANNONCE)})</strong> en ligne, par carte bancaire, en toute sécurité :</p>
+               ${m.button(`Payer ${PRIX_ANNONCE}`, paymentUrl(ev.id, email))}
                <p>Tu recevras un e-mail à chaque nouvelle candidature. Tu peux modifier ton annonce à tout moment depuis <a href="${m.siteUrl("/mon-espace")}" style="color:#3d6e1a">ton espace</a>.</p>`,
             ),
           })

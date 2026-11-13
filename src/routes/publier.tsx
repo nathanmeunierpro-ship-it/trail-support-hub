@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { REGIONS_FR, TYPES_SPORT, MISSIONS } from "@/lib/regions";
 import { useAuth } from "@/lib/auth-context";
-import { PRIX_ANNONCE, NB_BENEVOLES, STRIPE_PAYMENT_LINK } from "@/lib/site";
+import { PRIX_ANNONCE, NB_BENEVOLES, STATUT_ATTENTE_PAIEMENT, paymentUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/publier")({
   head: () => ({
@@ -39,6 +39,8 @@ function PublierPage() {
   const [direction, setDirection] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [payLink, setPayLink] = useState<string | null>(null);
+  const [needsPayment, setNeedsPayment] = useState(false);
 
   const [nom, setNom] = useState("");
   const [type, setType] = useState("Trail");
@@ -139,17 +141,28 @@ function PublierPage() {
       }
     }
 
+    // Paiement obligatoire avant mise en ligne (si le serveur est configuré pour)
+    let gate = false;
+    try {
+      const { getPaymentConfig } = await import("@/lib/payment.functions");
+      gate = (await getPaymentConfig()).gateEnabled;
+    } catch (e) { console.error("[publier] config paiement", e); }
+
     const { data: created, error } = await supabase.from("events").insert({
       user_id: session.user.id,
       nom, type_sport: type, date, ville, region,
       nb_benevoles: nbBen, missions, description,
       email_contact: emailContact,
       photo_url: photoUrl,
+      ...(gate ? { statut: STATUT_ATTENTE_PAIEMENT } : {}),
     } as any).select("id").single();
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
+    const newId = (created as { id?: string } | null)?.id;
+    if (newId) setPayLink(paymentUrl(newId, emailContact || session.user.email));
+    setNeedsPayment(gate);
     setSuccess(true);
-    toast.success("Annonce publiée !");
+    toast.success(gate ? "Annonce enregistrée, plus qu'à payer !" : "Annonce publiée !");
     try {
       const eventId = (created as { id?: string } | null)?.id;
       if (eventId) {
@@ -401,15 +414,21 @@ function PublierPage() {
                           <CheckCircle2 size={40} className="text-green-600" />
                         </motion.div>
                         <div>
-                          <h2 className="font-display text-3xl text-[#1A1A1A] mb-2">Annonce enregistrée !</h2>
+                          <h2 className="font-display text-3xl text-[#1A1A1A] mb-2">
+                            {needsPayment ? "Plus qu'une étape !" : "Annonce enregistrée !"}
+                          </h2>
                           <p className="text-muted-foreground text-sm max-w-sm mx-auto">
-                            Dernière étape : règle ton Pack Organisateur ({PRIX_ANNONCE}) pour finaliser la publication.
-                            Tu as aussi reçu le lien par e-mail.
+                            {needsPayment
+                              ? `Ton annonce est prête. Elle sera mise en ligne automatiquement dès le paiement de ton Pack Organisateur (${PRIX_ANNONCE}).`
+                              : `Règle ton Pack Organisateur (${PRIX_ANNONCE}) pour finaliser la publication. Tu as aussi reçu le lien par e-mail.`}
                           </p>
                         </div>
-                        <a href={STRIPE_PAYMENT_LINK} target="_blank" rel="noopener" className="btn-primary gap-2">
-                          Payer {PRIX_ANNONCE} par carte
-                        </a>
+                        {payLink && (
+                          <a href={payLink} className="btn-primary gap-2">
+                            Payer {PRIX_ANNONCE} et mettre en ligne
+                          </a>
+                        )}
+                        <p className="text-xs text-muted-foreground">Paiement sécurisé par carte via Stripe · facture envoyée par e-mail</p>
                         <Link to="/mon-espace" className="text-sm font-semibold underline underline-offset-4">
                           Aller à mon espace
                         </Link>

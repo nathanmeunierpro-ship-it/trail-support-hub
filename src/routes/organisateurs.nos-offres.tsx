@@ -19,7 +19,6 @@ import {
   PRIX_ANNONCE,
   PRIX_ANNONCE_NUM,
   NB_BENEVOLES,
-  STRIPE_PAYMENT_LINK,
   SITE_URL,
   seo,
   jsonLd,
@@ -167,17 +166,12 @@ function Page() {
               <Link to="/publier" className="btn-primary gap-2">
                 Publier ma course <ArrowRight size={16} />
               </Link>
-              <a
-                href={STRIPE_PAYMENT_LINK}
-                target="_blank"
-                rel="noopener"
-                className="btn-secondary gap-2"
-              >
-                <Lock size={14} /> Payer {PRIX_ANNONCE}
-              </a>
+              <Link to="/organisateurs/comment-ca-marche" className="btn-secondary gap-2">
+                Comment ça marche
+              </Link>
             </div>
             <p className="mt-4 flex items-center gap-2 text-xs text-black/50">
-              <Lock size={12} /> Paiement sécurisé par carte via Stripe · facture envoyée par e-mail
+              <Lock size={12} /> Tu publies, tu paies en ligne, ta course est en ligne · paiement sécurisé Stripe
             </p>
           </motion.div>
 

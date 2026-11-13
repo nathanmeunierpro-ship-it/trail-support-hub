@@ -9,6 +9,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { useAuth } from "@/lib/auth-context";
+import { PRIX_ANNONCE, STATUT_ATTENTE_PAIEMENT, paymentUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/mon-espace")({
   head: () => ({
@@ -315,9 +316,16 @@ function MonEspace() {
                               <span className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
                                 CLÔTURÉE
                               </span>
+                            ) : ev.statut === STATUT_ATTENTE_PAIEMENT ? (
+                              <a
+                                href={paymentUrl(ev.id, session?.user.email)}
+                                className="text-xs font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200"
+                              >
+                                En attente de paiement · Payer {PRIX_ANNONCE} →
+                              </a>
                             ) : (
-                              <span className={`text-xs font-semibold ${ev.statut === "publie" ? "text-green-600" : "text-muted-foreground"}`}>
-                                {ev.statut === "publie" ? "Publié" : ev.statut}
+                              <span className="text-xs font-semibold text-green-600">
+                                {ev.statut === "actif" || ev.statut === "publie" ? "En ligne" : ev.statut}
                               </span>
                             )}
                           </div>
