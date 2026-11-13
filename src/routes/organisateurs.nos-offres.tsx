@@ -10,6 +10,7 @@ import {
   Mail,
   LayoutDashboard,
   BadgeCheck,
+  Megaphone,
 } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/PageShell";
@@ -27,7 +28,7 @@ import {
 const FAQ: FaqItem[] = [
   {
     q: "Que comprend le Pack Organisateur ?",
-    a: `Pour ${PRIX_ANNONCE} par événement : la publication de ton annonce jusqu'au jour de la course, sa diffusion auprès des +${NB_BENEVOLES} bénévoles inscrits, des candidatures illimitées, un e-mail à chaque nouvelle candidature, un tableau de bord pour accepter ou refuser chaque bénévole et le badge « Événement vérifié ».`,
+    a: `Pour ${PRIX_ANNONCE} par événement : la publication de ton annonce jusqu'au jour de la course, sa diffusion auprès des +${NB_BENEVOLES} bénévoles inscrits, une mise en avant dans notre newsletter et sur nos réseaux (Instagram, posts et stories), des candidatures illimitées, un e-mail à chaque nouvelle candidature, un tableau de bord pour accepter ou refuser chaque bénévole.`,
   },
   {
     q: "Comment se passe le paiement ?",
@@ -74,10 +75,10 @@ export const Route = createFileRoute("/organisateurs/nos-offres")({
 
 const PACK_FEATURES = [
   { icon: <Users size={18} />, t: `Annonce vue par +${NB_BENEVOLES} bénévoles inscrits` },
+  { icon: <Megaphone size={18} />, t: "Mise en avant dans notre newsletter et sur Instagram (posts, stories)" },
+  { icon: <LayoutDashboard size={18} />, t: "Espace centralisé pour recevoir et gérer les candidatures" },
   { icon: <Mail size={18} />, t: "E-mail à chaque nouvelle candidature" },
-  { icon: <LayoutDashboard size={18} />, t: "Tableau de bord : accepter / refuser en un clic" },
-  { icon: <Check size={18} />, t: "Candidatures illimitées, en ligne jusqu'au jour J" },
-  { icon: <BadgeCheck size={18} />, t: "Badge « Événement vérifié »" },
+  { icon: <BadgeCheck size={18} />, t: "Candidatures illimitées, en ligne jusqu'au jour J" },
 ];
 
 const SPORTS = ["Trail", "Running", "Vélo", "Triathlon", "Cyclosportive", "Autre"];
@@ -142,7 +143,7 @@ function Page() {
             className="relative flex flex-col rounded-[2rem] bg-white p-8 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.35)] ring-2 ring-primary md:p-10"
           >
             <span className="absolute -top-3 left-8 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A]">
-              Le plus choisi
+              🎁 Offre de lancement
             </span>
             <h2 className="text-4xl">Pack Organisateur</h2>
             <p className="mt-1 text-sm text-black/60">
@@ -150,7 +151,7 @@ function Page() {
             </p>
             <div className="mt-6 flex items-baseline gap-2">
               <span className="font-display text-7xl leading-none">{PRIX_ANNONCE}</span>
-              <span className="text-sm text-black/60">par événement · sans abonnement</span>
+              <span className="text-sm text-black/60">tout compris, par événement · sans abonnement</span>
             </div>
             <ul className="mt-8 flex-1 space-y-3">
               {PACK_FEATURES.map((f) => (

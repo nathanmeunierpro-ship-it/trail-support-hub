@@ -7,6 +7,9 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Sur Vercel (variable VERCEL=1 pendant le build), on produit une sortie Vercel.
+  // Ailleurs (Lovable), on garde le comportement par défaut.
+  ...(process.env.VERCEL ? { nitro: { preset: "vercel" } } : {}),
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

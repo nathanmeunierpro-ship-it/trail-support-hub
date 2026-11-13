@@ -313,14 +313,14 @@ function Home() {
             <div className="mt-2 font-display text-7xl leading-none text-primary">
               {PRIX_ANNONCE}
             </div>
-            <span className="mt-1 text-sm text-white/60">par événement, sans abonnement</span>
+            <span className="mt-1 text-sm text-white/60">tout compris, par événement, sans abonnement</span>
             <ul className="mt-6 space-y-2 text-sm">
               {[
-                `Visible par +${NB_BENEVOLES} bénévoles inscrits`,
+                `Diffusion auprès de +${NB_BENEVOLES} bénévoles`,
+                "Newsletter + Instagram (posts, stories)",
                 "Annonce en ligne jusqu'au jour J",
                 "Candidatures illimitées",
-                "Tableau de bord complet",
-                "Badge événement vérifié",
+                "Espace de gestion des candidatures",
               ].map((f) => (
                 <li key={f} className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="shrink-0 text-primary" /> {f}

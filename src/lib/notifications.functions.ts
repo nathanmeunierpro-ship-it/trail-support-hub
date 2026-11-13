@@ -172,7 +172,7 @@ export const notifyWelcome = createServerFn({ method: "POST" })
         : m.layout(
             hello,
             `<p>Ton compte organisateur est prêt. Publie ta course et touche directement les +200 bénévoles inscrits sur Ravito.</p>
-             <p><strong>Pack Organisateur — ${m.esc(PRIX_ANNONCE)} par événement :</strong> annonce en ligne jusqu'au jour J, candidatures illimitées, tableau de bord pour accepter ou refuser chaque bénévole, badge événement vérifié.</p>
+             <p><strong>Offre de lancement — ${m.esc(PRIX_ANNONCE)} tout compris :</strong> annonce en ligne jusqu'au jour J, candidatures illimitées, espace pour gérer les candidatures, mise en avant dans notre newsletter et sur Instagram.</p>
              ${m.button("Publier ma course", m.siteUrl("/publier"))}
              <p style="font-size:13px;color:#666">Paiement sécurisé par Stripe : <a href="${m.esc(STRIPE_PAYMENT_LINK)}" style="color:#3d6e1a">régler le Pack Organisateur</a>.</p>`,
           );

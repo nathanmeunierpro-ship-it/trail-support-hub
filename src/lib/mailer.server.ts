@@ -21,19 +21,26 @@ export interface Mail {
 export async function sendMail(mail: Mail): Promise<boolean> {
   const lovableKey = process.env.LOVABLE_API_KEY;
   const resendKey = process.env.RESEND_API_KEY;
-  if (!lovableKey || !resendKey) {
-    console.error("[mail] clés manquantes", { hasLovable: !!lovableKey, hasResend: !!resendKey });
+  if (!resendKey) {
+    console.error("[mail] RESEND_API_KEY manquante");
     return false;
   }
   const from = process.env.EMAIL_FROM || "Ravito <onboarding@resend.dev>";
-  try {
-    const res = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
-      method: "POST",
-      headers: {
+  // Sur Lovable : passerelle Lovable. Ailleurs (Vercel…) : API Resend directe.
+  const url = lovableKey
+    ? "https://connector-gateway.lovable.dev/resend/emails"
+    : "https://api.resend.com/emails";
+  const headers: Record<string, string> = lovableKey
+    ? {
         "Content-Type": "application/json",
         Authorization: `Bearer ${lovableKey}`,
         "X-Connection-Api-Key": resendKey,
-      },
+      }
+    : { "Content-Type": "application/json", Authorization: `Bearer ${resendKey}` };
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers,
       body: JSON.stringify({
         from,
         to: Array.isArray(mail.to) ? mail.to : [mail.to],
@@ -43,7 +50,7 @@ export async function sendMail(mail: Mail): Promise<boolean> {
       }),
     });
     if (!res.ok) {
-      console.error("[mail] erreur passerelle", res.status, await res.text().catch(() => ""));
+      console.error("[mail] erreur d'envoi", res.status, await res.text().catch(() => ""));
       return false;
     }
     return true;
