@@ -46,7 +46,7 @@ export async function sendMail(mail: Mail): Promise<boolean> {
         to: Array.isArray(mail.to) ? mail.to : [mail.to],
         subject: mail.subject,
         html: mail.html,
-        reply_to: mail.replyTo,
+        reply_to: mail.replyTo ?? ADMIN_EMAIL, // les réponses arrivent sur la boîte de Nathan
       }),
     });
     if (!res.ok) {
