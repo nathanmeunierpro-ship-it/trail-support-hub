@@ -40,7 +40,7 @@ export const Route = createFileRoute("/tableau-de-bord")({
   errorComponent: ({ error }) => (
     <PageShell>
       <div className="max-w-3xl mx-auto py-16 px-4">
-        <p className="text-red-600">Erreur : {error.message}</p>
+        <p className="text-red-600">Erreur : {error instanceof Error ? error.message : String(error)}</p>
       </div>
     </PageShell>
   ),
