@@ -22,7 +22,7 @@ import { EventCard } from "@/components/EventCard";
 import { Faq, faqJsonLd, type FaqItem } from "@/components/Faq";
 import { fetchUpcomingEvents } from "@/lib/events";
 import { REGIONS_FR, TYPES_SPORT } from "@/lib/regions";
-import { PRIX_ANNONCE, NB_BENEVOLES, seo, jsonLd } from "@/lib/site";
+import { PRIX_ANNONCE, PRIX_BARRE, NB_BENEVOLES, seo, jsonLd } from "@/lib/site";
 import volunteerTeamAsset from "@/assets/volunteer-team.jpeg.asset.json";
 import raceStartAsset from "@/assets/race-start.jpeg.asset.json";
 
@@ -310,10 +310,17 @@ function Home() {
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-white/50">
               Pack Organisateur
             </span>
-            <div className="mt-2 font-display text-7xl leading-none text-primary">
-              {PRIX_ANNONCE}
+            <div className="mt-2 flex items-end gap-3">
+              <span className="font-display text-7xl leading-none text-primary">
+                {PRIX_ANNONCE}
+              </span>
+              <span className="mb-1 font-display text-3xl leading-none text-white/35 line-through">
+                {PRIX_BARRE}
+              </span>
             </div>
-            <span className="mt-1 text-sm text-white/60">tout compris, par événement, sans abonnement</span>
+            <span className="mt-1 text-sm text-white/60">
+              tout compris, par événement, sans abonnement
+            </span>
             <ul className="mt-6 space-y-2 text-sm">
               {[
                 `Diffusion auprès de +${NB_BENEVOLES} bénévoles`,

@@ -19,6 +19,8 @@ import { Faq, faqJsonLd, type FaqItem } from "@/components/Faq";
 import {
   PRIX_ANNONCE,
   PRIX_ANNONCE_NUM,
+  PRIX_BARRE,
+  CONTACT_EMAIL,
   NB_BENEVOLES,
   SITE_URL,
   seo,
@@ -75,8 +77,14 @@ export const Route = createFileRoute("/organisateurs/nos-offres")({
 
 const PACK_FEATURES = [
   { icon: <Users size={18} />, t: `Annonce vue par +${NB_BENEVOLES} bénévoles inscrits` },
-  { icon: <Megaphone size={18} />, t: "Mise en avant dans notre newsletter et sur Instagram (posts, stories)" },
-  { icon: <LayoutDashboard size={18} />, t: "Espace centralisé pour recevoir et gérer les candidatures" },
+  {
+    icon: <Megaphone size={18} />,
+    t: "Mise en avant dans notre newsletter et sur Instagram (posts, stories)",
+  },
+  {
+    icon: <LayoutDashboard size={18} />,
+    t: "Espace centralisé pour recevoir et gérer les candidatures",
+  },
   { icon: <Mail size={18} />, t: "E-mail à chaque nouvelle candidature" },
   { icon: <BadgeCheck size={18} />, t: "Candidatures illimitées, en ligne jusqu'au jour J" },
 ];
@@ -146,16 +154,24 @@ function Page() {
             className="relative flex flex-col rounded-[2rem] bg-white p-8 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.35)] ring-2 ring-primary md:p-10"
           >
             <span className="absolute -top-3 left-8 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A]">
-              🎁 Offre de lancement
+              ⭐ Le plus choisi
             </span>
             <h2 className="text-4xl">Pack Organisateur</h2>
             <p className="mt-1 text-sm text-black/60">
               Tout ce qu'il faut pour recruter tes bénévoles.
             </p>
-            <div className="mt-6 flex items-baseline gap-2">
+            <div className="mt-6 flex flex-wrap items-end gap-x-3 gap-y-1">
               <span className="font-display text-7xl leading-none">{PRIX_ANNONCE}</span>
-              <span className="text-sm text-black/60">tout compris, par événement · sans abonnement</span>
+              <span className="mb-1 font-display text-3xl leading-none text-black/35 line-through decoration-2">
+                {PRIX_BARRE}
+              </span>
+              <span className="mb-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-bold text-red-600">
+                -13 %
+              </span>
             </div>
+            <p className="mt-2 text-sm text-black/60">
+              TTC, tout compris, par événement · sans abonnement
+            </p>
             <ul className="mt-8 flex-1 space-y-3">
               {PACK_FEATURES.map((f) => (
                 <li key={f.t} className="flex items-center gap-3 text-[15px]">
@@ -174,8 +190,24 @@ function Page() {
                 Comment ça marche
               </Link>
             </div>
-            <p className="mt-4 flex items-center gap-2 text-xs text-black/50">
-              <Lock size={12} /> Tu publies, tu paies en ligne, ta course est en ligne · paiement sécurisé Stripe
+            <div className="mt-5 grid grid-cols-2 gap-2 text-xs text-black/60 sm:grid-cols-4">
+              {[
+                ["🔒", "Paiement sécurisé Stripe"],
+                ["🧾", "Facture envoyée par e-mail"],
+                ["⚡", "En ligne dès le paiement"],
+                ["💬", "Contact direct avec le fondateur"],
+              ].map(([i, t]) => (
+                <div
+                  key={t}
+                  className="flex items-center gap-1.5 rounded-xl bg-muted/70 px-2.5 py-2"
+                >
+                  <span>{i}</span>
+                  <span>{t}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-black/45">
+              Carte bancaire · Visa · Mastercard · CB · Apple Pay · Google Pay
             </p>
           </motion.div>
 
@@ -272,6 +304,7 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
   const update = (k: keyof FormState, v: string) => {
     setForm((f) => ({ ...f, [k]: v }));
@@ -299,28 +332,18 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
     if (!validate() || !offer) return;
     setSending(true);
     try {
-      await fetch("/api/public/quote-request", {
+      const res = await fetch("/api/public/quote-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          offer,
-          organisation: form.organisation,
-          responsable: form.responsable,
-          email: form.email,
-          telephone: form.telephone,
-          evenement: form.evenement,
-          sport: form.sport,
-          date: form.date,
-          ville: form.ville,
-          benevoles: form.benevoles,
-          message: form.message,
-        }),
+        body: JSON.stringify({ offer, ...form }),
       });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setSent(true);
     } catch (e) {
       console.error("[devis] send failed", e);
+      setSendError(true);
     } finally {
       setSending(false);
-      setSent(true);
     }
   };
 
@@ -331,6 +354,7 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
       setErrors({});
       setSent(false);
       setSending(false);
+      setSendError(false);
     }, 200);
   };
 
@@ -477,6 +501,18 @@ function QuoteModal({ offer, onClose }: { offer: string | null; onClose: () => v
                     />
                   </Field>
 
+                  {sendError && (
+                    <p className="rounded-xl bg-red-50 p-3 text-sm text-red-700">
+                      L'envoi n'a pas abouti. Écris-nous directement à{" "}
+                      <a
+                        className="font-semibold underline"
+                        href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Devis Ravito — ${offer}`)}`}
+                      >
+                        {CONTACT_EMAIL}
+                      </a>
+                      .
+                    </p>
+                  )}
                   <button
                     type="submit"
                     disabled={sending}

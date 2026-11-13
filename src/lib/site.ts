@@ -7,8 +7,10 @@ export const SITE_NAME = "Ravito";
 export const DEFAULT_OG_IMAGE = "https://ravito-benevoles.fr/images/og-image.jpg";
 
 /** Prix du Pack Organisateur (une annonce, tout compris). */
-export const PRIX_ANNONCE = "29,99 €";
-export const PRIX_ANNONCE_NUM = 29.99;
+export const PRIX_ANNONCE = "25,99 €";
+export const PRIX_ANNONCE_NUM = 25.99;
+/** Prix de référence affiché barré à côté du prix actuel. */
+export const PRIX_BARRE = "29,99 €";
 
 /** Nombre de bénévoles inscrits mis en avant sur le site. */
 export const NB_BENEVOLES = "200";
