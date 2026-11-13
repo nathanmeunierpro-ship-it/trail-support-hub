@@ -62,7 +62,7 @@ function CguPage() {
 
           <Section title="7. Données personnelles">
             <p>Ravito collecte et traite les données personnelles conformément à sa politique de confidentialité et au RGPD (Règlement Général sur la Protection des Données). Voir les Mentions Légales pour plus d'informations.</p>
-            <p>L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et de portabilité de ses données en contactant : <strong>contact@ravito.fr</strong>.</p>
+            <p>L'utilisateur dispose d'un droit d'accès, de rectification, de suppression et de portabilité de ses données en contactant : <strong>nathanmeunierpro@gmail.com</strong>.</p>
           </Section>
 
           <Section title="8. Cookies">

@@ -12,4 +12,4 @@ Disallow: /mot-de-passe-oublie
 Disallow: /paiement-confirme
 Disallow: /api/
 
-Sitemap: https://ravito.fr/sitemap.xml
+Sitemap: https://ravito-benevoles.fr/sitemap.xml

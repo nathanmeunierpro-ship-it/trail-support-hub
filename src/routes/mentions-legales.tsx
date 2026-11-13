@@ -32,7 +32,7 @@ function MentionsLegalesPage() {
           <Section title="1. Éditeur du site">
             <p><strong>Dénomination :</strong> Ravito</p>
             <p><strong>Forme juridique :</strong> Entreprise individuelle</p>
-            <p><strong>Email :</strong> contact@ravito.fr</p>
+            <p><strong>Email :</strong> nathanmeunierpro@gmail.com</p>
             <p><strong>Directeur de la publication :</strong> L'équipe Ravito</p>
           </Section>
 
@@ -48,7 +48,7 @@ function MentionsLegalesPage() {
 
           <Section title="4. Données personnelles et RGPD">
             <p>Ravito traite des données personnelles dans le cadre de la mise en relation entre bénévoles et organisateurs d'événements sportifs.</p>
-            <p><strong>Responsable du traitement :</strong> Ravito — contact@ravito.fr</p>
+            <p><strong>Responsable du traitement :</strong> Ravito — nathanmeunierpro@gmail.com</p>
             <p><strong>Finalités du traitement :</strong></p>
             <ul className="list-disc list-inside ml-4 space-y-1">
               <li>Gestion des comptes utilisateurs (bénévoles et organisateurs)</li>
@@ -57,7 +57,7 @@ function MentionsLegalesPage() {
             </ul>
             <p><strong>Base légale :</strong> Exécution d'un contrat (CGU) et intérêt légitime.</p>
             <p><strong>Conservation des données :</strong> Les données sont conservées pendant la durée d'utilisation du compte, puis archivées 3 ans après la suppression du compte conformément aux obligations légales.</p>
-            <p><strong>Vos droits :</strong> Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, de suppression, de portabilité et d'opposition. Pour exercer ces droits : <strong>contact@ravito.fr</strong>.</p>
+            <p><strong>Vos droits :</strong> Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, de suppression, de portabilité et d'opposition. Pour exercer ces droits : <strong>nathanmeunierpro@gmail.com</strong>.</p>
             <p>Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" className="text-primary hover:underline">cnil.fr</a>).</p>
           </Section>
 

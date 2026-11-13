@@ -5,11 +5,11 @@ import process from "node:process";
  *
  * IMPORTANT : tant que l'expéditeur est "onboarding@resend.dev", Resend ne
  * délivre QUE vers l'adresse du compte Resend. Pour écrire aux organisateurs
- * et bénévoles, vérifier le domaine ravito.fr dans Resend puis définir la
- * variable d'environnement EMAIL_FROM, ex. "Ravito <contact@ravito.fr>".
+ * et bénévoles, vérifier le domaine ravito-benevoles.fr dans Resend puis définir la
+ * variable d'environnement EMAIL_FROM, ex. "Ravito <contact@ravito-benevoles.fr>".
  */
 export const ADMIN_EMAIL = "nathanmeunierpro@gmail.com";
-const SITE = "https://ravito.fr";
+const SITE = "https://ravito-benevoles.fr";
 
 export interface Mail {
   to: string | string[];
@@ -93,7 +93,7 @@ export function layout(title: string, body: string) {
       <div style="font-size:15px;line-height:1.6;color:#333">${body}</div>
     </div>
     <div style="padding:18px 28px;background:#F2FAE8;font-size:12px;color:#666">
-      Ravito — bénévoles et organisateurs d'événements sportifs en France · <a href="${SITE}" style="color:#3d6e1a">ravito.fr</a>
+      Ravito — bénévoles et organisateurs d'événements sportifs en France · <a href="${SITE}" style="color:#3d6e1a">ravito-benevoles.fr</a>
     </div>
   </div></body></html>`;
 }

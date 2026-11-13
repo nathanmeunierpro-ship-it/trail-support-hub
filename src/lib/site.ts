@@ -2,9 +2,9 @@
  * Configuration centrale du site (SEO, tarifs, liens).
  * Modifier ici pour que le changement s'applique partout.
  */
-export const SITE_URL = "https://ravito.fr";
+export const SITE_URL = "https://ravito-benevoles.fr";
 export const SITE_NAME = "Ravito";
-export const DEFAULT_OG_IMAGE = "https://ravito.fr/images/og-image.jpg";
+export const DEFAULT_OG_IMAGE = "https://ravito-benevoles.fr/images/og-image.jpg";
 
 /** Prix du Pack Organisateur (une annonce, tout compris). */
 export const PRIX_ANNONCE = "29,99 €";
