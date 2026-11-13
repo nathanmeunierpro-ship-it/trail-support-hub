@@ -202,6 +202,9 @@ function MonEspace() {
       return;
     }
     setConfirming((s) => ({ ...s, [candId]: statut }));
+    import("@/lib/notifications.functions")
+      .then(({ notifyCandidatureStatus }) => notifyCandidatureStatus({ data: { candidatureId: candId } }))
+      .catch((e) => console.error("[statut] email failed", e));
     setTimeout(() => {
       setConfirming((s) => { const n = { ...s }; delete n[candId]; return n; });
       setCands((prev) => prev.map((c) => c.id === candId ? { ...c, statut } : c));

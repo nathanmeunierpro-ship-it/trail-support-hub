@@ -2,18 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Search, Send, Clock, Users, ArrowRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { seo, NB_BENEVOLES } from "@/lib/site";
 
 export const Route = createFileRoute("/benevoles")({
-  head: () => ({
-    meta: [
-      { title: "Bénévoles — Ravito" },
-      {
-        name: "description",
-        content:
-          "Trouve un trail, une course à pied ou un triathlon près de chez toi et engage-toi comme bénévole. Communauté sportive partout en France.",
-      },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Devenir bénévole sur un trail, une course ou un triathlon | Ravito",
+      description: `Envie de vivre une course de l'intérieur ? Deviens bénévole sur un trail, une course à pied ou un triathlon près de chez toi. Rejoins gratuitement les +${NB_BENEVOLES} bénévoles Ravito.`,
+      path: "/benevoles",
+    }),
   component: BenevolesPage,
 });
 
@@ -36,7 +33,7 @@ const STEPS = [
   {
     icon: <Users size={22} />,
     title: "Rejoins la communauté",
-    desc: "Des milliers de bénévoles passionnés partout en France, sur tous types d'événements sportifs.",
+    desc: `Plus de ${NB_BENEVOLES} bénévoles passionnés déjà inscrits partout en France, sur tous types d'événements sportifs.`,
   },
 ];
 
@@ -48,7 +45,7 @@ function BenevolesPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="font-display text-4xl md:text-6xl font-black mb-6">Deviens bénévole sur un événement sportif</h1>
             <p className="text-lg text-muted-foreground mb-14 max-w-2xl leading-relaxed">
-              Tu adores l'ambiance des événements sportifs et tu veux contribuer ? Rejoins le réseau Ravito et choisis parmi des centaines d'annonces : trails, courses à pied, vélo, triathlon, cyclosportives et bien plus.
+              Tu adores l'ambiance des événements sportifs et tu veux contribuer ? Rejoins le réseau Ravito et trouve ta prochaine mission : trails, courses à pied, vélo, triathlon, cyclosportives et bien plus.
             </p>
           </motion.div>
 
@@ -77,7 +74,7 @@ function BenevolesPage() {
             transition={{ delay: 0.4 }}
             className="flex flex-wrap gap-4"
           >
-            <Link to="/inscription" className="btn-cta inline-flex items-center gap-2">
+            <Link to="/inscription" search={{ role: "benevole" }} className="btn-cta inline-flex items-center gap-2">
               Créer mon compte <ArrowRight size={16} />
             </Link>
             <Link to="/annonces" className="btn-outline inline-flex items-center gap-2">

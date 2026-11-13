@@ -5,7 +5,6 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 const SendEmailSchema = z.object({
   subject: z.string().min(1).max(300),
   html: z.string().min(1).max(100_000),
-  to: z.string().email().optional(),
   replyTo: z.string().email().optional(),
 });
 
@@ -32,7 +31,7 @@ export const sendEmail = createServerFn({ method: "POST" })
       },
       body: JSON.stringify({
         from: FROM,
-        to: [data.to ?? DEFAULT_TO],
+        to: [DEFAULT_TO], // toujours l'admin : jamais une adresse fournie par le navigateur
         subject: data.subject,
         html: data.html,
         reply_to: data.replyTo,

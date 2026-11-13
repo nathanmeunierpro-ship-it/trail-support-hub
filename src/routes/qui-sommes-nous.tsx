@@ -2,18 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Heart, Target, Zap } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { seo } from "@/lib/site";
 
 export const Route = createFileRoute("/qui-sommes-nous")({
-  head: () => ({
-    meta: [
-      { title: "Qui sommes-nous ? — Ravito" },
-      {
-        name: "description",
-        content:
-          "Ravito connecte les bénévoles passionnés aux organisateurs de trails, courses, triathlons et cyclosportives partout en France.",
-      },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Qui sommes-nous ? L'équipe derrière Ravito",
+      description: "Ravito connecte les bénévoles passionnés aux organisateurs de trails, courses, triathlons et cyclosportives partout en France. Découvre notre histoire et nos valeurs.",
+      path: "/qui-sommes-nous",
+    }),
   component: QuiSommesNous,
 });
 
@@ -30,8 +27,8 @@ const VALUES = [
   },
   {
     icon: <Zap size={32} />,
-    title: "Gratuit, toujours",
-    desc: "Ni frais d'inscription, ni commissions. Ravito restera toujours gratuit pour les bénévoles et les organisateurs.",
+    title: "Gratuit pour les bénévoles",
+    desc: "Ni frais d'inscription, ni commission : Ravito est et restera 100 % gratuit pour les bénévoles. Les organisateurs paient un prix juste et transparent par événement.",
   },
 ];
 
@@ -134,7 +131,7 @@ function QuiSommesNous() {
               <p style={{ marginBottom: 20 }}>
                 Notre mission est claire : créer la plus grande communauté de
                 bénévoles sport en France, et permettre aux organisateurs de
-                trouver du renfort en quelques clics, gratuitement, sans
+                trouver du renfort en quelques clics, sans
                 friction.
               </p>
               <p style={{ marginBottom: 0 }}>

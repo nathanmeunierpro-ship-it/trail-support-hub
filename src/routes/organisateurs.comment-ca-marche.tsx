@@ -2,24 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, FileText, Mail, CheckCircle } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { seo, NB_BENEVOLES, PRIX_ANNONCE } from "@/lib/site";
 
 export const Route = createFileRoute("/organisateurs/comment-ca-marche")({
-  head: () => ({
-    meta: [
-      { title: "Comment ça marche — Ravito" },
-      {
-        name: "description",
-        content:
-          "3 étapes simples pour publier ton événement et trouver des bénévoles motivés sur Ravito.",
-      },
-      { property: "og:title", content: "Comment ça marche — Ravito" },
-      {
-        property: "og:description",
-        content:
-          "3 étapes simples pour publier ton événement et trouver des bénévoles motivés sur Ravito.",
-      },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Trouver des bénévoles pour sa course : comment ça marche | Ravito",
+      description: `Organisateur de trail, course ou triathlon ? Publie ton annonce, reçois les candidatures de +${NB_BENEVOLES} bénévoles inscrits et valide ton équipe en un clic. Pack à ${PRIX_ANNONCE}.`,
+      path: "/organisateurs/comment-ca-marche",
+    }),
   component: Page,
 });
 

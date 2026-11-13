@@ -9,9 +9,8 @@ import { DEPARTEMENTS_FR } from "@/lib/regions";
 import ravitoLogoGreen from "@/assets/ravito-logo-green.png.asset.json";
 
 export const Route = createFileRoute("/inscription")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    role: (search.role === "benevole" || search.role === "organisateur") ? search.role : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { role?: "benevole" | "organisateur" } =>
+    search.role === "benevole" || search.role === "organisateur" ? { role: search.role } : {},
   head: () => ({
     meta: [
       { title: "Créer un compte — Ravito" },
@@ -151,11 +150,8 @@ function SignupPage() {
     toast.success("Compte créé !");
     try { await refreshRole(); } catch (e) { console.error("[signup] refreshRole failed", e); }
     try {
-      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
-      const html = htmlBlock(`Nouvelle inscription Ravito — ${role}`, {
-        "Rôle": role, "Email": email, "Prénom": prenom, "Nom": nom,
-      });
-      void sendEmail({ data: { subject: `[Ravito] Nouvelle inscription — ${prenom} ${nom}`, html, replyTo: email } });
+      const { notifyWelcome } = await import("@/lib/notifications.functions");
+      void notifyWelcome({ data: { role, prenom: prenom || undefined } }).catch((e) => console.error("[signup] email failed", e));
     } catch (e) { console.error("[signup] email failed", e); }
     navigate({ to: role === "organisateur" ? "/mon-espace" : "/mes-candidatures" });
   };

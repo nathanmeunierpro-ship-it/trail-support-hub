@@ -1,83 +1,74 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Calendar, Users, ChevronDown, Check, Loader2, Filter, Search, Heart } from "lucide-react";
+import { motion } from "framer-motion";
+import { Search, X, SlidersHorizontal } from "lucide-react";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
+import { EventCard } from "@/components/EventCard";
+import { fetchUpcomingEvents } from "@/lib/events";
 import { REGIONS_FR, TYPES_SPORT } from "@/lib/regions";
 import { useAuth } from "@/lib/auth-context";
+import { NB_BENEVOLES, seo, jsonLd, SITE_URL } from "@/lib/site";
 
-interface EventCard {
-  id: string;
-  nom: string;
-  ville: string;
-  region: string;
-  date: string;
-  type_sport: string;
-  nb_benevoles: number | null;
-  missions: string[] | null;
-  photo_url: string | null;
-}
+const searchSchema = z.object({
+  region: z.string().optional(),
+  sport: z.string().optional(),
+  q: z.string().optional(),
+  page: z.number().int().min(1).optional(),
+});
 
 export const Route = createFileRoute("/annonces")({
-  head: () => ({
-    meta: [
-      { title: "Événements sportifs — Ravito" },
-      {
-        name: "description",
-        content:
-          "Parcours les annonces de trails, running, vélo et triathlon en France. Postule comme bénévole en quelques clics.",
-      },
-    ],
-  }),
+  validateSearch: (s) => searchSchema.parse(s),
+  loader: () => fetchUpcomingEvents(),
+  head: ({ loaderData }) => {
+    const events = loaderData ?? [];
+    return {
+      ...seo({
+        title: "Courses qui recherchent des bénévoles — Trail, running, triathlon | Ravito",
+        description: `${events.length > 0 ? `${events.length} événement${events.length > 1 ? "s" : ""} sportif${events.length > 1 ? "s" : ""} à venir` : "Les événements sportifs"} recherchent des bénévoles : trails, courses à pied, triathlons et cyclosportives partout en France. Postule gratuitement en 2 clics.`,
+        path: "/annonces",
+      }),
+      scripts: [
+        jsonLd({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Événements sportifs qui recherchent des bénévoles",
+          itemListElement: events.slice(0, 30).map((e, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: `${SITE_URL}/annonce/${e.id}`,
+            name: e.nom,
+          })),
+        }),
+      ],
+    };
+  },
   component: AnnoncesPage,
 });
 
 const PAGE_SIZE = 12;
 
-const TYPE_COLORS: Record<string, string> = {
-  Trail: "bg-primary text-primary-foreground",
-  Running: "bg-primary text-primary-foreground",
-  Triathlon: "bg-primary text-primary-foreground",
-  Cyclosportive: "bg-primary text-primary-foreground",
-  Autre: "bg-muted text-foreground",
-};
-
-type ApplyStatus = "idle" | "loading" | "success";
+const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 function AnnoncesPage() {
-  const { user, role, loading: authLoading } = useAuth();
-  console.log("[annonces] auth role =", role, "loading =", authLoading);
-  const navigate = useNavigate();
-  const [events, setEvents] = useState<EventCard[]>([]);
+  const events = Route.useLoaderData();
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: "/annonces" });
+  const { user } = useAuth();
+
+  const region = search.region ?? "";
+  const sport = search.sport ?? "";
+  const page = search.page ?? 1;
+  const [q, setQ] = useState(search.q ?? "");
+
   const [postules, setPostules] = useState<Set<string>>(new Set());
-  const [applyStatus, setApplyStatus] = useState<Record<string, ApplyStatus>>({});
-  const [benProfile, setBenProfile] = useState<{ prenom: string; nom: string } | null>(null);
   const [favoris, setFavoris] = useState<Set<string>>(new Set());
   const [favoriLoading, setFavoriLoading] = useState<Set<string>>(new Set());
-  const [loadingData, setLoadingData] = useState(true);
-  const [region, setRegion] = useState("");
-  const [type, setType] = useState("");
-  const [dateMin, setDateMin] = useState("");
-  const [page, setPage] = useState(1);
-  const [showFilters, setShowFilters] = useState(false);
-
-  useEffect(() => {
-    supabase
-      .from("events_public")
-      .select("id, nom, ville, region, date, type_sport, nb_benevoles, missions, photo_url")
-      .order("date", { ascending: true })
-      .then(({ data }) => {
-        setEvents((data as EventCard[]) ?? []);
-        setLoadingData(false);
-      });
-  }, []);
 
   useEffect(() => {
     if (!user) {
       setPostules(new Set());
-      setBenProfile(null);
       setFavoris(new Set());
       return;
     }
@@ -86,394 +77,233 @@ function AnnoncesPage() {
       .select("event_id")
       .eq("benevole_id", user.id)
       .then(({ data }) =>
-        setPostules(new Set((data ?? []).map((c: any) => c.event_id)))
+        setPostules(new Set((data ?? []).map((c: { event_id: string }) => c.event_id))),
       );
     supabase
       .from("favoris")
       .select("event_id")
       .eq("benevole_id", user.id)
       .then(({ data }) =>
-        setFavoris(new Set((data ?? []).map((f: any) => f.event_id)))
+        setFavoris(new Set((data ?? []).map((f: { event_id: string }) => f.event_id))),
       );
-    if (role === "benevole") {
-      supabase
-        .from("benevoles")
-        .select("prenom, nom")
-        .eq("id", user.id)
-        .maybeSingle()
-        .then(({ data }) => setBenProfile(data as any));
-    }
-  }, [user, role]);
+  }, [user]);
+
+  // Recherche texte (nom / ville) avec un léger délai, synchronisée dans l'URL.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if ((search.q ?? "") !== q)
+        navigate({ search: (s) => ({ ...s, q: q || undefined, page: undefined }), replace: true });
+    }, 300);
+    return () => clearTimeout(t);
+  }, [q]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const setFilter = (key: "region" | "sport", value: string) =>
+    navigate({ search: (s) => ({ ...s, [key]: value || undefined, page: undefined }) });
 
   const toggleFavori = async (eventId: string) => {
-    if (!user) { navigate({ to: "/connexion" }); return; }
-    setFavoriLoading((s) => new Set([...s, eventId]));
-    if (favoris.has(eventId)) {
-      await supabase.from("favoris").delete().eq("benevole_id", user.id).eq("event_id", eventId);
-      setFavoris((s) => { const n = new Set(s); n.delete(eventId); return n; });
-    } else {
-      await supabase.from("favoris").insert({ benevole_id: user.id, event_id: eventId });
-      setFavoris((s) => new Set([...s, eventId]));
-    }
-    setFavoriLoading((s) => { const n = new Set(s); n.delete(eventId); return n; });
-  };
-
-  const filtered = useMemo(
-    () =>
-      events.filter((e) => {
-        if (region && e.region !== region) return false;
-        if (type && e.type_sport !== type) return false;
-        if (dateMin && e.date < dateMin) return false;
-        return true;
-      }),
-    [events, region, type, dateMin]
-  );
-
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
-  const quickApply = async (eventId: string) => {
     if (!user) {
       navigate({ to: "/connexion" });
       return;
     }
-    if (authLoading) {
-      toast.info("Chargement de ton profil…");
-      return;
+    setFavoriLoading((s) => new Set([...s, eventId]));
+    if (favoris.has(eventId)) {
+      await supabase.from("favoris").delete().eq("benevole_id", user.id).eq("event_id", eventId);
+      setFavoris((s) => {
+        const n = new Set(s);
+        n.delete(eventId);
+        return n;
+      });
+    } else {
+      await supabase.from("favoris").insert({ benevole_id: user.id, event_id: eventId });
+      setFavoris((s) => new Set([...s, eventId]));
     }
-    if (role === "organisateur") {
-      toast.error("Seuls les bénévoles peuvent postuler.");
-      return;
-    }
-    setApplyStatus((s) => ({ ...s, [eventId]: "loading" }));
-
-    const profile = benProfile;
-    if (!profile) {
-      toast.error("Profil introuvable. Reconnecte-toi.");
-      setApplyStatus((s) => ({ ...s, [eventId]: "idle" }));
-      return;
-    }
-
-    const { error } = await supabase.from("candidatures").insert({
-      event_id: eventId,
-      benevole_id: user.id,
-      prenom: profile.prenom,
-      nom: profile.nom,
-      email: user.email!,
-      disponibilite: true,
+    setFavoriLoading((s) => {
+      const n = new Set(s);
+      n.delete(eventId);
+      return n;
     });
-
-    if (error) {
-      console.error("[candidature quick-apply] error:", error);
-      const msg =
-        error.code === "23505"
-          ? "Tu as déjà postulé à cet événement."
-          : error.code === "42501" || /row-level|permission/i.test(error.message)
-            ? "Accès refusé : ton profil bénévole est incomplet. Reconnecte-toi."
-            : error.message || "Une erreur est survenue. Réessaie.";
-      toast.error(msg);
-      setApplyStatus((s) => ({ ...s, [eventId]: "idle" }));
-      return;
-    }
-    setApplyStatus((s) => ({ ...s, [eventId]: "success" }));
-    setPostules((p) => new Set([...p, eventId]));
-    toast.success("Candidature envoyée !");
-    setTimeout(
-      () => setApplyStatus((s) => ({ ...s, [eventId]: "idle" })),
-      2500
-    );
   };
 
-  const activeFilters = [region, type, dateMin].filter(Boolean).length;
+  const filtered = useMemo(() => {
+    const nq = norm(search.q ?? "");
+    return events.filter((e) => {
+      if (region && e.region !== region) return false;
+      if (sport && e.type_sport !== sport) return false;
+      if (nq && !norm(`${e.nom} ${e.ville}`).includes(nq)) return false;
+      return true;
+    });
+  }, [events, region, sport, search.q]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const activeFilters = [region, sport, search.q].filter(Boolean).length;
 
   return (
-    <PageShell>
-      <section className="px-6 py-12">
+    <PageShell padTop={false}>
+      {/* En-tête */}
+      <section className="keep-pad section-dark px-6 pb-14 pt-32 md:pb-20 md:pt-40">
         <div className="mx-auto max-w-7xl">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10"
+            className="max-w-3xl"
           >
-            <div>
-              <h1 className="font-display text-4xl md:text-6xl font-black mb-2">
-                Les événements qui cherchent des bénévoles
-              </h1>
-              <p className="text-muted-foreground">
-                {loadingData
-                  ? "Chargement des annonces…"
-                  : `${filtered.length} événement${filtered.length !== 1 ? "s" : ""} disponible${filtered.length !== 1 ? "s" : ""}`}
-              </p>
-            </div>
-
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-border bg-card text-sm font-semibold transition-colors hover:border-primary self-start md:self-auto"
-            >
-              <Filter size={16} />
-              Filtres
-              {activeFilters > 0 && (
-                <span className="w-5 h-5 rounded-full bg-secondary text-secondary-foreground text-xs font-bold flex items-center justify-center">
-                  {activeFilters}
-                </span>
-              )}
-              <ChevronDown
-                size={14}
-                className={`transition-transform duration-200 ${showFilters ? "rotate-180" : ""}`}
-              />
-            </motion.button>
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+              Les courses
+            </span>
+            <h1 className="mt-3 text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.9] !text-white">
+              Deviens bénévole sur une course près de chez toi
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg text-white/70">
+              Trails, courses sur route, triathlons et cyclosportives : ces organisateurs
+              recherchent des bénévoles. Rejoins les +{NB_BENEVOLES} bénévoles déjà inscrits et
+              postule gratuitement en 2 clics.
+            </p>
           </motion.div>
 
-          {/* Filters */}
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="overflow-hidden mb-8"
+          {/* Barre de filtres */}
+          <div className="mt-10 grid gap-2 rounded-3xl bg-white p-2 text-[#1A1A1A] md:grid-cols-[1.4fr_1fr_1fr]">
+            <label className="flex items-center gap-3 rounded-2xl px-4 py-3 hover:bg-muted">
+              <Search size={18} className="shrink-0 text-black/40" />
+              <input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Nom de course ou ville…"
+                aria-label="Rechercher une course ou une ville"
+                className="w-full bg-transparent text-sm font-semibold outline-none placeholder:font-normal placeholder:text-black/40"
+              />
+            </label>
+            <label className="flex flex-col rounded-2xl px-4 py-2 hover:bg-muted">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">
+                Région
+              </span>
+              <select
+                value={region}
+                onChange={(e) => setFilter("region", e.target.value)}
+                className="bg-transparent py-0.5 text-sm font-semibold outline-none"
               >
-                <div
-                  className="p-6 rounded-2xl bg-card border border-border grid gap-4 md:grid-cols-3"
-                  style={{ boxShadow: "var(--shadow-card)" }}
-                >
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">
-                      Région
-                    </label>
-                    <select
-                      value={region}
-                      onChange={(e) => {
-                        setRegion(e.target.value);
-                        setPage(1);
-                      }}
-                      className="inp"
-                    >
-                      <option value="">Toutes les régions</option>
-                      {REGIONS_FR.map((r) => (
-                        <option key={r} value={r}>
-                          {r}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">
-                      Type de sport
-                    </label>
-                    <select
-                      value={type}
-                      onChange={(e) => {
-                        setType(e.target.value);
-                        setPage(1);
-                      }}
-                      className="inp"
-                    >
-                      <option value="">Tous les sports</option>
-                      {TYPES_SPORT.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-muted-foreground">
-                      À partir du
-                    </label>
-                    <input
-                      type="date"
-                      value={dateMin}
-                      onChange={(e) => {
-                        setDateMin(e.target.value);
-                        setPage(1);
-                      }}
-                      className="inp"
-                    />
-                  </div>
-                  {activeFilters > 0 && (
-                    <button
-                      onClick={() => {
-                        setRegion("");
-                        setType("");
-                        setDateMin("");
-                        setPage(1);
-                      }}
-                      className="md:col-span-3 text-sm text-primary font-semibold hover:underline text-left"
-                    >
-                      ✕ Effacer tous les filtres
-                    </button>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <option value="">Toute la France</option>
+                {REGIONS_FR.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="flex flex-col rounded-2xl px-4 py-2 hover:bg-muted">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">
+                Sport
+              </span>
+              <select
+                value={sport}
+                onChange={(e) => setFilter("sport", e.target.value)}
+                className="bg-transparent py-0.5 text-sm font-semibold outline-none"
+              >
+                <option value="">Tous les sports</option>
+                {TYPES_SPORT.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
 
-          {/* Cards grid */}
-          {loadingData ? (
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-52 rounded-2xl bg-muted animate-pulse" />
+          {/* Raccourcis sport */}
+          <div className="mt-4 flex flex-wrap gap-2">
+            {["", ...TYPES_SPORT].map((t) => (
+              <button
+                key={t || "all"}
+                onClick={() => setFilter("sport", t)}
+                className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition ${
+                  sport === t
+                    ? "bg-primary text-[#1A1A1A]"
+                    : "bg-white/10 text-white hover:bg-white/20"
+                }`}
+              >
+                {t || "Tous"}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-12 md:py-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <p className="text-sm font-semibold text-black/60">
+              <SlidersHorizontal size={14} className="mr-2 inline" />
+              {filtered.length} course{filtered.length !== 1 ? "s" : ""} à venir
+              {region ? ` en ${region}` : ""}
+            </p>
+            {activeFilters > 0 && (
+              <button
+                onClick={() => {
+                  setQ("");
+                  navigate({ search: {} });
+                }}
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-[#3d6e1a] hover:underline"
+              >
+                <X size={14} /> Effacer les filtres
+              </button>
+            )}
+          </div>
+
+          {shown.length === 0 ? (
+            <div className="rounded-3xl bg-white px-6 py-16 text-center ring-1 ring-black/5">
+              <Search size={36} className="mx-auto mb-4 text-black/30" />
+              <h2 className="text-3xl">
+                {events.length === 0
+                  ? "De nouvelles courses arrivent bientôt"
+                  : "Aucune course ne correspond"}
+              </h2>
+              <p className="mx-auto mt-2 max-w-md text-muted-foreground">
+                {events.length === 0
+                  ? "Crée ton compte bénévole pour être prêt dès la publication des prochaines annonces."
+                  : "Essaie une autre région ou un autre sport."}
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <Link to="/inscription" search={{ role: "benevole" }} className="btn-primary">
+                  Je deviens bénévole
+                </Link>
+                <Link to="/organisateurs/nos-offres" className="btn-outline">
+                  Publier ma course
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {shown.map((ev, i) => (
+                <EventCard
+                  key={ev.id}
+                  ev={ev}
+                  eager={i < 3}
+                  applied={postules.has(ev.id)}
+                  favori={favoris.has(ev.id)}
+                  favoriDisabled={favoriLoading.has(ev.id)}
+                  onToggleFavori={() => toggleFavori(ev.id)}
+                />
               ))}
             </div>
-          ) : shown.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
-              <Search size={40} className="text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground text-lg mb-2">
-                Aucun événement correspondant.
-              </p>
-              {activeFilters > 0 && (
-                <button
-                  onClick={() => {
-                    setRegion("");
-                    setType("");
-                    setDateMin("");
-                  }}
-                  className="text-primary font-semibold hover:underline text-sm"
-                >
-                  Effacer les filtres
-                </button>
-              )}
-            </motion.div>
-          ) : (
-            <motion.div
-              className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
-              initial="hidden"
-              animate="visible"
-              variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
-            >
-              {shown.map((ev) => {
-                const alreadyApplied = postules.has(ev.id);
-                const status: ApplyStatus = applyStatus[ev.id] ?? "idle";
-                const dateFmt = new Date(ev.date).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                });
-
-                return (
-                  <motion.div
-                    key={ev.id}
-                    variants={{
-                      hidden: { opacity: 0, y: 24 },
-                      visible: { opacity: 1, y: 0 },
-                    }}
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className="bg-card rounded-2xl border border-border overflow-hidden flex flex-col group"
-                    style={{ boxShadow: "var(--shadow-card)" }}
-                  >
-                    {/* Photo or top accent */}
-                    {ev.photo_url ? (
-                      <div className="h-40 overflow-hidden bg-muted">
-                        <img src={ev.photo_url} alt={ev.nom} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      </div>
-                    ) : (
-                      <div className="h-1.5 bg-secondary" />
-                    )}
-
-                    <div className="p-6 flex flex-col flex-1">
-                      <div className="flex items-center justify-between mb-3">
-                        <span
-                          className={`inline-flex w-fit text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full ${TYPE_COLORS[ev.type_sport] ?? "bg-muted text-foreground"}`}
-                        >
-                          {ev.type_sport}
-                        </span>
-                        <motion.button
-                          whileTap={{ scale: 0.85 }}
-                          onClick={() => toggleFavori(ev.id)}
-                          disabled={favoriLoading.has(ev.id)}
-                          title={favoris.has(ev.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
-                          className="p-1.5 rounded-full transition-colors hover:bg-muted disabled:opacity-50"
-                        >
-                          <Heart
-                            size={18}
-                            className={favoris.has(ev.id) ? "text-red-500" : "text-muted-foreground"}
-                            fill={favoris.has(ev.id) ? "currentColor" : "none"}
-                          />
-                        </motion.button>
-                      </div>
-
-                      <h2 className="font-display text-xl font-black text-foreground group-hover:text-primary transition-colors mb-3 leading-tight line-clamp-2">
-                        {ev.nom}
-                      </h2>
-
-                      <div className="flex flex-col gap-1.5 text-sm text-muted-foreground mb-5">
-                        <span className="flex items-center gap-2">
-                          <MapPin size={13} className="text-primary flex-shrink-0" />
-                          {ev.ville}
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <Calendar size={13} className="text-primary flex-shrink-0" />
-                          {dateFmt}
-                        </span>
-                        {ev.nb_benevoles && (
-                          <span className="flex items-center gap-2">
-                            <Users size={13} style={{ color: "#73CC30" }} className="flex-shrink-0" />
-                            {ev.nb_benevoles} bénévoles recherchés
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Missions tags */}
-                      {ev.missions && ev.missions.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mb-4">
-                          {ev.missions.slice(0, 4).map((m) => (
-                            <span key={m} className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold border border-border bg-muted text-muted-foreground">
-                              {m}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Actions */}
-                      <div className="mt-auto flex gap-3">
-                        <Link
-                          to="/annonce/$id"
-                          params={{ id: ev.id }}
-                          className="flex-1 py-2.5 rounded-xl text-center text-sm font-bold uppercase tracking-wider bg-primary text-primary-foreground hover:opacity-90 transition-all"
-                        >
-                          {alreadyApplied ? "Candidature envoyée" : "Voir l'annonce"}
-                        </Link>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
           )}
 
-          {/* Pagination */}
           {pageCount > 1 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-12 flex justify-center gap-2"
-            >
+            <nav aria-label="Pagination" className="mt-12 flex justify-center gap-2">
               {Array.from({ length: pageCount }).map((_, i) => (
-                <motion.button
+                <Link
                   key={i}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => {
-                    setPage(i + 1);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
-                  className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${
+                  to="/annonces"
+                  search={(s) => ({ ...s, page: i + 1 === 1 ? undefined : i + 1 })}
+                  className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold transition ${
                     page === i + 1
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-card border border-border text-muted-foreground hover:border-primary"
+                      ? "bg-[#1A1A1A] text-white"
+                      : "bg-white ring-1 ring-black/10 hover:ring-primary"
                   }`}
                 >
                   {i + 1}
-                </motion.button>
+                </Link>
               ))}
-            </motion.div>
+            </nav>
           )}
         </div>
       </section>

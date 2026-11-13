@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,12 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { REGIONS_FR, TYPES_SPORT, MISSIONS } from "@/lib/regions";
 import { useAuth } from "@/lib/auth-context";
+import { PRIX_ANNONCE, NB_BENEVOLES, STRIPE_PAYMENT_LINK } from "@/lib/site";
 
 export const Route = createFileRoute("/publier")({
   head: () => ({
     meta: [
       { title: "Publier un événement sportif — Ravito" },
-      { name: "description", content: "Publiez gratuitement votre annonce de bénévolat pour trail, course, cyclosportive ou triathlon et recevez des candidatures." },
+      { name: "description", content: "Publiez votre annonce de recherche de bénévoles pour un trail, une course, une cyclosportive ou un triathlon et recevez des candidatures." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -138,26 +139,24 @@ function PublierPage() {
       }
     }
 
-    const { error } = await supabase.from("events").insert({
+    const { data: created, error } = await supabase.from("events").insert({
       user_id: session.user.id,
       nom, type_sport: type, date, ville, region,
       nb_benevoles: nbBen, missions, description,
       email_contact: emailContact,
       photo_url: photoUrl,
-    } as any);
+    } as any).select("id").single();
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
     setSuccess(true);
     toast.success("Annonce publiée !");
     try {
-      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
-      const html = htmlBlock(`Nouvel événement publié — ${nom}`, {
-        "Événement": nom, "Sport": type, "Date": date, "Ville": ville, "Région": region,
-        "Bénévoles": String(nbBen), "Email contact": emailContact, "Description": description,
-      });
-      void sendEmail({ data: { subject: `[Ravito] Événement publié — ${nom}`, html, replyTo: emailContact } });
+      const eventId = (created as { id?: string } | null)?.id;
+      if (eventId) {
+        const { notifyEventPublished } = await import("@/lib/notifications.functions");
+        void notifyEventPublished({ data: { eventId } }).catch((e) => console.error("[publier] email failed", e));
+      }
     } catch (e) { console.error("[publier] email failed", e); }
-    setTimeout(() => navigate({ to: "/mon-espace" }), 2000);
   };
 
   if (!session) return <PageShell><div className="px-6 py-20 text-center">Redirection…</div></PageShell>;
@@ -169,7 +168,7 @@ function PublierPage() {
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
             <h1 className="font-display text-4xl md:text-5xl font-black mb-2">Publier une annonce</h1>
-            <p className="text-muted-foreground">Gratuit. En 2 minutes.</p>
+            <p className="text-muted-foreground">Pack Organisateur : {PRIX_ANNONCE} par événement. Visible par +{NB_BENEVOLES} bénévoles inscrits.</p>
           </motion.div>
 
           {/* Step progress */}
@@ -402,9 +401,18 @@ function PublierPage() {
                           <CheckCircle2 size={40} className="text-green-600" />
                         </motion.div>
                         <div>
-                          <h2 className="font-display text-2xl font-black text-green-600 mb-1">Annonce publiée !</h2>
-                          <p className="text-muted-foreground text-sm">Redirection vers votre espace…</p>
+                          <h2 className="font-display text-3xl text-[#1A1A1A] mb-2">Annonce enregistrée !</h2>
+                          <p className="text-muted-foreground text-sm max-w-sm mx-auto">
+                            Dernière étape : règle ton Pack Organisateur ({PRIX_ANNONCE}) pour finaliser la publication.
+                            Tu as aussi reçu le lien par e-mail.
+                          </p>
                         </div>
+                        <a href={STRIPE_PAYMENT_LINK} target="_blank" rel="noopener" className="btn-primary gap-2">
+                          Payer {PRIX_ANNONCE} par carte
+                        </a>
+                        <Link to="/mon-espace" className="text-sm font-semibold underline underline-offset-4">
+                          Aller à mon espace
+                        </Link>
                       </motion.div>
                     ) : (
                       <motion.div key="recap" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

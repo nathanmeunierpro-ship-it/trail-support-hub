@@ -1,8 +1,15 @@
 User-agent: *
 Allow: /
 
+# Espaces privés et formulaires
 Disallow: /mon-espace
 Disallow: /mes-candidatures
 Disallow: /publier
+Disallow: /modifier-annonce/
+Disallow: /tableau-de-bord
+Disallow: /reset-password
+Disallow: /mot-de-passe-oublie
+Disallow: /paiement-confirme
+Disallow: /api/
 
 Sitemap: https://ravito.fr/sitemap.xml

@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
+import { seo } from "@/lib/site";
 
 export const Route = createFileRoute("/cgu")({
-  head: () => ({
-    meta: [
-      { title: "Conditions Générales d'Utilisation — Ravito" },
-      { name: "description", content: "Conditions générales d'utilisation de la plateforme Ravito." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Conditions générales d'utilisation | Ravito",
+      description: "Conditions générales d'utilisation de la plateforme Ravito.",
+      path: "/cgu",
+    }),
   component: CguPage,
 });
 

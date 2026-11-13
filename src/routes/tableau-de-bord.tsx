@@ -32,6 +32,7 @@ export const Route = createFileRoute("/tableau-de-bord")({
     meta: [
       { title: "Tableau de bord — Ravito" },
       { name: "description", content: "Statistiques des bénévoles et organisateurs Ravito." },
+      { name: "robots", content: "noindex, nofollow" },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(statsQueryOptions),

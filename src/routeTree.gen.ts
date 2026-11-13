@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as QuiSommesNousRouteImport } from './routes/qui-sommes-nous'
 import { Route as PublierRouteImport } from './routes/publier'
+import { Route as PaiementConfirmeRouteImport } from './routes/paiement-confirme'
 import { Route as OrganisateursRouteImport } from './routes/organisateurs'
 import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
 import { Route as MonEspaceRouteImport } from './routes/mon-espace'
@@ -36,6 +38,11 @@ const TableauDeBordRoute = TableauDeBordRouteImport.update({
   path: '/tableau-de-bord',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -49,6 +56,11 @@ const QuiSommesNousRoute = QuiSommesNousRouteImport.update({
 const PublierRoute = PublierRouteImport.update({
   id: '/publier',
   path: '/publier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaiementConfirmeRoute = PaiementConfirmeRouteImport.update({
+  id: '/paiement-confirme',
+  path: '/paiement-confirme',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrganisateursRoute = OrganisateursRouteImport.update({
@@ -150,9 +162,11 @@ export interface FileRoutesByFullPath {
   '/mon-espace': typeof MonEspaceRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/organisateurs': typeof OrganisateursRouteWithChildren
+  '/paiement-confirme': typeof PaiementConfirmeRoute
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
@@ -172,9 +186,11 @@ export interface FileRoutesByTo {
   '/mes-candidatures': typeof MesCandidaturesRoute
   '/mon-espace': typeof MonEspaceRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
+  '/paiement-confirme': typeof PaiementConfirmeRoute
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
@@ -196,9 +212,11 @@ export interface FileRoutesById {
   '/mon-espace': typeof MonEspaceRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/organisateurs': typeof OrganisateursRouteWithChildren
+  '/paiement-confirme': typeof PaiementConfirmeRoute
   '/publier': typeof PublierRoute
   '/qui-sommes-nous': typeof QuiSommesNousRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tableau-de-bord': typeof TableauDeBordRoute
   '/annonce/$id': typeof AnnonceIdRoute
   '/modifier-annonce/$id': typeof ModifierAnnonceIdRoute
@@ -221,9 +239,11 @@ export interface FileRouteTypes {
     | '/mon-espace'
     | '/mot-de-passe-oublie'
     | '/organisateurs'
+    | '/paiement-confirme'
     | '/publier'
     | '/qui-sommes-nous'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/tableau-de-bord'
     | '/annonce/$id'
     | '/modifier-annonce/$id'
@@ -243,9 +263,11 @@ export interface FileRouteTypes {
     | '/mes-candidatures'
     | '/mon-espace'
     | '/mot-de-passe-oublie'
+    | '/paiement-confirme'
     | '/publier'
     | '/qui-sommes-nous'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/tableau-de-bord'
     | '/annonce/$id'
     | '/modifier-annonce/$id'
@@ -266,9 +288,11 @@ export interface FileRouteTypes {
     | '/mon-espace'
     | '/mot-de-passe-oublie'
     | '/organisateurs'
+    | '/paiement-confirme'
     | '/publier'
     | '/qui-sommes-nous'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/tableau-de-bord'
     | '/annonce/$id'
     | '/modifier-annonce/$id'
@@ -290,9 +314,11 @@ export interface RootRouteChildren {
   MonEspaceRoute: typeof MonEspaceRoute
   MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   OrganisateursRoute: typeof OrganisateursRouteWithChildren
+  PaiementConfirmeRoute: typeof PaiementConfirmeRoute
   PublierRoute: typeof PublierRoute
   QuiSommesNousRoute: typeof QuiSommesNousRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TableauDeBordRoute: typeof TableauDeBordRoute
   AnnonceIdRoute: typeof AnnonceIdRoute
   ModifierAnnonceIdRoute: typeof ModifierAnnonceIdRoute
@@ -306,6 +332,13 @@ declare module '@tanstack/react-router' {
       path: '/tableau-de-bord'
       fullPath: '/tableau-de-bord'
       preLoaderRoute: typeof TableauDeBordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -327,6 +360,13 @@ declare module '@tanstack/react-router' {
       path: '/publier'
       fullPath: '/publier'
       preLoaderRoute: typeof PublierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paiement-confirme': {
+      id: '/paiement-confirme'
+      path: '/paiement-confirme'
+      fullPath: '/paiement-confirme'
+      preLoaderRoute: typeof PaiementConfirmeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/organisateurs': {
@@ -479,9 +519,11 @@ const rootRouteChildren: RootRouteChildren = {
   MonEspaceRoute: MonEspaceRoute,
   MotDePasseOublieRoute: MotDePasseOublieRoute,
   OrganisateursRoute: OrganisateursRouteWithChildren,
+  PaiementConfirmeRoute: PaiementConfirmeRoute,
   PublierRoute: PublierRoute,
   QuiSommesNousRoute: QuiSommesNousRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TableauDeBordRoute: TableauDeBordRoute,
   AnnonceIdRoute: AnnonceIdRoute,
   ModifierAnnonceIdRoute: ModifierAnnonceIdRoute,
@@ -490,3 +532,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

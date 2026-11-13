@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -6,6 +6,8 @@ import { MapPin, Calendar, Users, Tag, ArrowLeft, ArrowRight, Loader2, CheckCirc
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/PageShell";
 import { useAuth } from "@/lib/auth-context";
+import { fetchEvent, formatDate, isPast, eventImage } from "@/lib/events";
+import { seo, jsonLd, SITE_URL, NB_BENEVOLES } from "@/lib/site";
 
 interface Ev {
   id: string; nom: string; ville: string; region: string; date: string;
@@ -14,12 +16,53 @@ interface Ev {
 }
 
 export const Route = createFileRoute("/annonce/$id")({
-  head: () => ({
-    meta: [
-      { title: "Détail de l'événement — Ravito" },
-      { name: "description", content: "Consultez les détails de cet événement sportif et postulez comme bénévole en quelques clics." },
-    ],
-  }),
+  loader: async ({ params }) => {
+    const ev = await fetchEvent(params.id);
+    if (!ev) throw notFound();
+    return ev as Ev;
+  },
+  head: ({ loaderData: ev }) => {
+    if (!ev) return { meta: [{ title: "Annonce introuvable | Ravito" }, { name: "robots", content: "noindex" }] };
+    const past = isPast(ev.date);
+    const dateTxt = formatDate(ev.date);
+    const title = `Bénévole ${ev.type_sport} à ${ev.ville} — ${ev.nom} (${dateTxt}) | Ravito`;
+    const missions = ev.missions?.length ? ` Missions : ${ev.missions.join(", ").toLowerCase()}.` : "";
+    const description = `${ev.nom} recherche ${ev.nb_benevoles ?? ""} bénévoles le ${dateTxt} à ${ev.ville} (${ev.region}).${missions} Postule gratuitement sur Ravito.`
+      .replace(/\s+/g, " ")
+      .slice(0, 300);
+    const base = seo({ title, description, path: `/annonce/${ev.id}`, image: ev.photo_url, noindex: past, type: "event" });
+    return {
+      ...base,
+      scripts: [
+        jsonLd({
+          "@context": "https://schema.org",
+          "@type": "Event",
+          name: ev.nom,
+          description: ev.description || description,
+          startDate: ev.date,
+          eventStatus: "https://schema.org/EventScheduled",
+          eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+          image: [eventImage(ev)],
+          url: `${SITE_URL}/annonce/${ev.id}`,
+          location: {
+            "@type": "Place",
+            name: ev.ville,
+            address: { "@type": "PostalAddress", addressLocality: ev.ville, addressRegion: ev.region, addressCountry: "FR" },
+          },
+          sport: ev.type_sport,
+        }),
+        jsonLd({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "Les courses", item: `${SITE_URL}/annonces` },
+            { "@type": "ListItem", position: 3, name: ev.nom, item: `${SITE_URL}/annonce/${ev.id}` },
+          ],
+        }),
+      ],
+    };
+  },
   component: AnnonceDetail,
 });
 
@@ -27,8 +70,8 @@ function AnnonceDetail() {
   const { id } = Route.useParams();
   const { user, role, refreshRole } = useAuth();
   const navigate = useNavigate();
-  const [ev, setEv] = useState<Ev | null>(null);
-  const [loading, setLoading] = useState(true);
+  const ev = Route.useLoaderData();
+  const past = isPast(ev.date);
   const [success, setSuccess] = useState(false);
 
   const [prenom, setPrenom] = useState("");
@@ -69,11 +112,6 @@ function AnnonceDetail() {
     setConfirmingUnsubscribe(false);
     setSuccess(false);
   };
-
-  useEffect(() => {
-    supabase.from("events_public").select("*").eq("id", id).maybeSingle()
-      .then(({ data }) => { setEv(data as Ev | null); setLoading(false); });
-  }, [id]);
 
   // Pre-fill from bénévole profile
   useEffect(() => {
@@ -134,58 +172,25 @@ function AnnonceDetail() {
     }
     setSuccess(true);
     toast.success("Candidature envoyée !");
-    // Notification email (fire-and-forget)
+    // E-mails : organisateur + confirmation au bénévole (fire-and-forget)
     try {
-      const { sendEmail, htmlBlock } = await import("@/lib/email.functions");
-      const eventName = (event as any)?.titre || (event as any)?.nom || "Événement";
-      const html = htmlBlock(`Nouvelle candidature — ${eventName}`, {
-        "Événement": eventName,
-        "Bénévole": `${prenom} ${nom}`.trim(),
-        "Email": email,
-        "Téléphone": telephone,
-        "Mission souhaitée": mission,
-        "Disponibilité": dispoHoraire,
-        "Transport": transport,
-        "Niveau": niveau,
-        "Message": messagePerso,
-      });
-      void sendEmail({ data: { subject: `[Ravito] Nouvelle candidature — ${eventName}`, html, replyTo: email } });
+      const { notifyNewCandidature } = await import("@/lib/notifications.functions");
+      void notifyNewCandidature({ data: { eventId: id } }).catch((e) => console.error("[candidature] email failed", e));
     } catch (e) { console.error("[candidature] email failed", e); }
   };
 
-  if (loading) return (
-    <PageShell>
-      <div className="px-6 py-20 max-w-4xl mx-auto">
-        <div className="h-8 w-48 bg-muted animate-pulse rounded-lg mb-6" />
-        <div className="h-72 bg-muted animate-pulse rounded-2xl mb-8" />
-        <div className="space-y-4">
-          {[1,2,3].map(i => <div key={i} className="h-4 bg-muted animate-pulse rounded" />)}
-        </div>
-      </div>
-    </PageShell>
-  );
-
-  if (!ev) return (
-    <PageShell>
-      <div className="px-6 py-20 text-center">
-        <p className="text-muted-foreground text-lg">Annonce introuvable.</p>
-        <Link to="/annonces" className="text-primary font-semibold hover:underline mt-4 inline-block">← Retour aux annonces</Link>
-      </div>
-    </PageShell>
-  );
-
-  const dateFmt = new Date(ev.date).toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
+  const dateFmt = formatDate(ev.date, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
   return (
     <PageShell>
       {/* Hero image */}
       <div className="w-full h-64 md:h-80 overflow-hidden relative">
         <img
-          src={ev.photo_url || "https://images.unsplash.com/photo-1486218119243-13883505764c?w=1600&q=80"}
+          src={eventImage(ev)}
           alt={ev.nom}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(255,248,240,0.95))" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, var(--background))" }} />
         <div className="absolute bottom-6 left-6">
           <span className="inline-block bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
             {ev.type_sport}
@@ -239,11 +244,22 @@ function AnnonceDetail() {
               className="md:col-span-2"
             >
               <div className="bg-card border border-border rounded-2xl p-6 sticky top-24" style={{ boxShadow: "var(--shadow-card)" }}>
-                <h2 className="font-display text-xl font-black mb-5">Postuler</h2>
+                <h2 className="font-display text-xl font-black mb-5">{past ? "Événement terminé" : "Postuler"}</h2>
 
-                {!user ? (
+                {past ? (
+                  <div className="py-4 text-center">
+                    <p className="text-muted-foreground text-sm mb-5">
+                      Cette course a déjà eu lieu, les candidatures sont fermées. D'autres événements recherchent des bénévoles !
+                    </p>
+                    <Link to="/annonces" className="btn-cta inline-flex w-full items-center justify-center gap-2">
+                      Voir les courses à venir <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                ) : !user ? (
                   <div className="text-center py-6">
-                    <p className="text-muted-foreground text-sm mb-5">Connecte-toi pour postuler à cette annonce.</p>
+                    <p className="text-muted-foreground text-sm mb-5">
+                      Crée ton compte gratuit pour postuler, comme les +{NB_BENEVOLES} bénévoles déjà inscrits.
+                    </p>
                     <Link
                       to="/inscription"
                       search={{ role: "benevole" }}

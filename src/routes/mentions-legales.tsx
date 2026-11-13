@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
+import { seo } from "@/lib/site";
 
 export const Route = createFileRoute("/mentions-legales")({
-  head: () => ({
-    meta: [
-      { title: "Mentions Légales — Ravito" },
-      { name: "description", content: "Mentions légales de la plateforme Ravito." },
-    ],
-  }),
+  head: () =>
+    seo({
+      title: "Mentions légales | Ravito",
+      description: "Mentions légales de la plateforme Ravito.",
+      path: "/mentions-legales",
+    }),
   component: MentionsLegalesPage,
 });
 
