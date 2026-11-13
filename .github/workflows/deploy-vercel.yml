@@ -1,0 +1,35 @@
+# Déploie le site Ravito sur Vercel (production) à chaque envoi sur main.
+# Indépendant de l'intégration Git de Vercel : le code est envoyé à Vercel,
+# qui le construit avec les réglages et variables du projet "ravito".
+# Prérequis : secret GitHub VERCEL_TOKEN (Settings → Secrets and variables → Actions).
+name: Déploiement Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: team_rk8lmsOLVLz2IspigP9yrnQn
+      VERCEL_PROJECT_ID: prj_0spJ9tPwGjqcK2TPpKw3LnvwBWAr
+    steps:
+      - name: Vérifier le secret
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Ajoute le secret VERCEL_TOKEN dans Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Envoyer sur Vercel (production)
+        run: npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
