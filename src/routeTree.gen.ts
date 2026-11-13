@@ -9,91 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as QuiSommesNousRouteImport } from './routes/qui-sommes-nous'
-import { Route as PublierRouteImport } from './routes/publier'
-import { Route as OrganisateursRouteImport } from './routes/organisateurs'
-import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
-import { Route as MonEspaceRouteImport } from './routes/mon-espace'
-import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
-import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
-import { Route as InscriptionRouteImport } from './routes/inscription'
-import { Route as ConnexionRouteImport } from './routes/connexion'
-import { Route as CguRouteImport } from './routes/cgu'
-import { Route as BenevolesRouteImport } from './routes/benevoles'
-import { Route as AnnoncesRouteImport } from './routes/annonces'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OrganisateursIndexRouteImport } from './routes/organisateurs.index'
-import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateurs.nos-offres'
-import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
-import { Route as ModifierAnnonceIdRouteImport } from './routes/modifier-annonce.$id'
+import { Route as AnnoncesRouteImport } from './routes/annonces'
+import { Route as BenevolesRouteImport } from './routes/benevoles'
+import { Route as CguRouteImport } from './routes/cgu'
+import { Route as ConnexionRouteImport } from './routes/connexion'
+import { Route as InscriptionRouteImport } from './routes/inscription'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
+import { Route as MesCandidaturesRouteImport } from './routes/mes-candidatures'
+import { Route as MonEspaceRouteImport } from './routes/mon-espace'
+import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
+import { Route as OrganisateursRouteImport } from './routes/organisateurs'
+import { Route as PublierRouteImport } from './routes/publier'
+import { Route as QuiSommesNousRouteImport } from './routes/qui-sommes-nous'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as TableauDeBordRouteImport } from './routes/tableau-de-bord'
 import { Route as AnnonceIdRouteImport } from './routes/annonce.$id'
+import { Route as ModifierAnnonceIdRouteImport } from './routes/modifier-annonce.$id'
+import { Route as OrganisateursIndexRouteImport } from './routes/organisateurs.index'
+import { Route as OrganisateursCommentCaMarcheRouteImport } from './routes/organisateurs.comment-ca-marche'
+import { Route as OrganisateursNosOffresRouteImport } from './routes/organisateurs.nos-offres'
 import { Route as ApiPublicQuoteRequestRouteImport } from './routes/api/public/quote-request'
 
-const TableauDeBordRoute = TableauDeBordRouteImport.update({
-  id: '/tableau-de-bord',
-  path: '/tableau-de-bord',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuiSommesNousRoute = QuiSommesNousRouteImport.update({
-  id: '/qui-sommes-nous',
-  path: '/qui-sommes-nous',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PublierRoute = PublierRouteImport.update({
-  id: '/publier',
-  path: '/publier',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OrganisateursRoute = OrganisateursRouteImport.update({
-  id: '/organisateurs',
-  path: '/organisateurs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
-  id: '/mot-de-passe-oublie',
-  path: '/mot-de-passe-oublie',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MonEspaceRoute = MonEspaceRouteImport.update({
-  id: '/mon-espace',
-  path: '/mon-espace',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
-  id: '/mes-candidatures',
-  path: '/mes-candidatures',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
-  id: '/mentions-legales',
-  path: '/mentions-legales',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InscriptionRoute = InscriptionRouteImport.update({
-  id: '/inscription',
-  path: '/inscription',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConnexionRoute = ConnexionRouteImport.update({
-  id: '/connexion',
-  path: '/connexion',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CguRoute = CguRouteImport.update({
-  id: '/cgu',
-  path: '/cgu',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BenevolesRoute = BenevolesRouteImport.update({
-  id: '/benevoles',
-  path: '/benevoles',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnnoncesRoute = AnnoncesRouteImport.update({
@@ -101,19 +41,84 @@ const AnnoncesRoute = AnnoncesRouteImport.update({
   path: '/annonces',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BenevolesRoute = BenevolesRouteImport.update({
+  id: '/benevoles',
+  path: '/benevoles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CguRoute = CguRouteImport.update({
+  id: '/cgu',
+  path: '/cgu',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MesCandidaturesRoute = MesCandidaturesRouteImport.update({
+  id: '/mes-candidatures',
+  path: '/mes-candidatures',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonEspaceRoute = MonEspaceRouteImport.update({
+  id: '/mon-espace',
+  path: '/mon-espace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
+  id: '/mot-de-passe-oublie',
+  path: '/mot-de-passe-oublie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganisateursRoute = OrganisateursRouteImport.update({
+  id: '/organisateurs',
+  path: '/organisateurs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublierRoute = PublierRouteImport.update({
+  id: '/publier',
+  path: '/publier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuiSommesNousRoute = QuiSommesNousRouteImport.update({
+  id: '/qui-sommes-nous',
+  path: '/qui-sommes-nous',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TableauDeBordRoute = TableauDeBordRouteImport.update({
+  id: '/tableau-de-bord',
+  path: '/tableau-de-bord',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnnonceIdRoute = AnnonceIdRouteImport.update({
+  id: '/annonce/$id',
+  path: '/annonce/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModifierAnnonceIdRoute = ModifierAnnonceIdRouteImport.update({
+  id: '/modifier-annonce/$id',
+  path: '/modifier-annonce/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrganisateursIndexRoute = OrganisateursIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => OrganisateursRoute,
-} as any)
-const OrganisateursNosOffresRoute = OrganisateursNosOffresRouteImport.update({
-  id: '/nos-offres',
-  path: '/nos-offres',
   getParentRoute: () => OrganisateursRoute,
 } as any)
 const OrganisateursCommentCaMarcheRoute =
@@ -122,15 +127,10 @@ const OrganisateursCommentCaMarcheRoute =
     path: '/comment-ca-marche',
     getParentRoute: () => OrganisateursRoute,
   } as any)
-const ModifierAnnonceIdRoute = ModifierAnnonceIdRouteImport.update({
-  id: '/modifier-annonce/$id',
-  path: '/modifier-annonce/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnnonceIdRoute = AnnonceIdRouteImport.update({
-  id: '/annonce/$id',
-  path: '/annonce/$id',
-  getParentRoute: () => rootRouteImport,
+const OrganisateursNosOffresRoute = OrganisateursNosOffresRouteImport.update({
+  id: '/nos-offres',
+  path: '/nos-offres',
+  getParentRoute: () => OrganisateursRoute,
 } as any)
 const ApiPublicQuoteRequestRoute = ApiPublicQuoteRequestRouteImport.update({
   id: '/api/public/quote-request',
@@ -301,95 +301,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tableau-de-bord': {
-      id: '/tableau-de-bord'
-      path: '/tableau-de-bord'
-      fullPath: '/tableau-de-bord'
-      preLoaderRoute: typeof TableauDeBordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/qui-sommes-nous': {
-      id: '/qui-sommes-nous'
-      path: '/qui-sommes-nous'
-      fullPath: '/qui-sommes-nous'
-      preLoaderRoute: typeof QuiSommesNousRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/publier': {
-      id: '/publier'
-      path: '/publier'
-      fullPath: '/publier'
-      preLoaderRoute: typeof PublierRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/organisateurs': {
-      id: '/organisateurs'
-      path: '/organisateurs'
-      fullPath: '/organisateurs'
-      preLoaderRoute: typeof OrganisateursRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mot-de-passe-oublie': {
-      id: '/mot-de-passe-oublie'
-      path: '/mot-de-passe-oublie'
-      fullPath: '/mot-de-passe-oublie'
-      preLoaderRoute: typeof MotDePasseOublieRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mon-espace': {
-      id: '/mon-espace'
-      path: '/mon-espace'
-      fullPath: '/mon-espace'
-      preLoaderRoute: typeof MonEspaceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mes-candidatures': {
-      id: '/mes-candidatures'
-      path: '/mes-candidatures'
-      fullPath: '/mes-candidatures'
-      preLoaderRoute: typeof MesCandidaturesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mentions-legales': {
-      id: '/mentions-legales'
-      path: '/mentions-legales'
-      fullPath: '/mentions-legales'
-      preLoaderRoute: typeof MentionsLegalesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inscription': {
-      id: '/inscription'
-      path: '/inscription'
-      fullPath: '/inscription'
-      preLoaderRoute: typeof InscriptionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/connexion': {
-      id: '/connexion'
-      path: '/connexion'
-      fullPath: '/connexion'
-      preLoaderRoute: typeof ConnexionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cgu': {
-      id: '/cgu'
-      path: '/cgu'
-      fullPath: '/cgu'
-      preLoaderRoute: typeof CguRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/benevoles': {
-      id: '/benevoles'
-      path: '/benevoles'
-      fullPath: '/benevoles'
-      preLoaderRoute: typeof BenevolesRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/annonces': {
@@ -399,11 +315,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnnoncesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/benevoles': {
+      id: '/benevoles'
+      path: '/benevoles'
+      fullPath: '/benevoles'
+      preLoaderRoute: typeof BenevolesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cgu': {
+      id: '/cgu'
+      path: '/cgu'
+      fullPath: '/cgu'
+      preLoaderRoute: typeof CguRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mes-candidatures': {
+      id: '/mes-candidatures'
+      path: '/mes-candidatures'
+      fullPath: '/mes-candidatures'
+      preLoaderRoute: typeof MesCandidaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mon-espace': {
+      id: '/mon-espace'
+      path: '/mon-espace'
+      fullPath: '/mon-espace'
+      preLoaderRoute: typeof MonEspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mot-de-passe-oublie': {
+      id: '/mot-de-passe-oublie'
+      path: '/mot-de-passe-oublie'
+      fullPath: '/mot-de-passe-oublie'
+      preLoaderRoute: typeof MotDePasseOublieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organisateurs': {
+      id: '/organisateurs'
+      path: '/organisateurs'
+      fullPath: '/organisateurs'
+      preLoaderRoute: typeof OrganisateursRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publier': {
+      id: '/publier'
+      path: '/publier'
+      fullPath: '/publier'
+      preLoaderRoute: typeof PublierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/qui-sommes-nous': {
+      id: '/qui-sommes-nous'
+      path: '/qui-sommes-nous'
+      fullPath: '/qui-sommes-nous'
+      preLoaderRoute: typeof QuiSommesNousRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tableau-de-bord': {
+      id: '/tableau-de-bord'
+      path: '/tableau-de-bord'
+      fullPath: '/tableau-de-bord'
+      preLoaderRoute: typeof TableauDeBordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/annonce/$id': {
+      id: '/annonce/$id'
+      path: '/annonce/$id'
+      fullPath: '/annonce/$id'
+      preLoaderRoute: typeof AnnonceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modifier-annonce/$id': {
+      id: '/modifier-annonce/$id'
+      path: '/modifier-annonce/$id'
+      fullPath: '/modifier-annonce/$id'
+      preLoaderRoute: typeof ModifierAnnonceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/organisateurs/': {
@@ -413,13 +427,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganisateursIndexRouteImport
       parentRoute: typeof OrganisateursRoute
     }
-    '/organisateurs/nos-offres': {
-      id: '/organisateurs/nos-offres'
-      path: '/nos-offres'
-      fullPath: '/organisateurs/nos-offres'
-      preLoaderRoute: typeof OrganisateursNosOffresRouteImport
-      parentRoute: typeof OrganisateursRoute
-    }
     '/organisateurs/comment-ca-marche': {
       id: '/organisateurs/comment-ca-marche'
       path: '/comment-ca-marche'
@@ -427,19 +434,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganisateursCommentCaMarcheRouteImport
       parentRoute: typeof OrganisateursRoute
     }
-    '/modifier-annonce/$id': {
-      id: '/modifier-annonce/$id'
-      path: '/modifier-annonce/$id'
-      fullPath: '/modifier-annonce/$id'
-      preLoaderRoute: typeof ModifierAnnonceIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/annonce/$id': {
-      id: '/annonce/$id'
-      path: '/annonce/$id'
-      fullPath: '/annonce/$id'
-      preLoaderRoute: typeof AnnonceIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/organisateurs/nos-offres': {
+      id: '/organisateurs/nos-offres'
+      path: '/nos-offres'
+      fullPath: '/organisateurs/nos-offres'
+      preLoaderRoute: typeof OrganisateursNosOffresRouteImport
+      parentRoute: typeof OrganisateursRoute
     }
     '/api/public/quote-request': {
       id: '/api/public/quote-request'
@@ -490,3 +490,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
