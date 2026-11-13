@@ -85,7 +85,7 @@ export function dateParts(date: string) {
 
 /** Images de secours par sport quand l'organisateur n'a pas mis de photo. */
 const FALLBACK: Record<string, string> = {
-  Trail: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=900&q=75&auto=format",
+  Trail: "https://images.unsplash.com/photo-1594882645126-14020914d58d?w=900&q=75&auto=format",
   Running: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900&q=75&auto=format",
   Triathlon: "https://images.unsplash.com/photo-1530549387789-4c1017266635?w=900&q=75&auto=format",
   Cyclosportive:
