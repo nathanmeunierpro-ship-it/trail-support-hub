@@ -60,7 +60,7 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
           return new Response("bad signature", { status: 400 });
         }
 
-        const { STRIPE_PAYMENT_LINK_ID, STATUT_ATTENTE_PAIEMENT } = await import("@/lib/site");
+        const { STRIPE_PAYMENT_LINK_ID } = await import("@/lib/site");
         const event = JSON.parse(raw) as {
           type: string;
           data: {
@@ -106,29 +106,25 @@ export const Route = createFileRoute("/api/public/stripe-webhook")({
           return Response.json({ ok: true, linked: false });
         }
 
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data: ev, error } = await supabaseAdmin
-          .from("events")
-          .update({ statut: "actif" })
-          .eq("id", eventId)
-          .eq("statut", STATUT_ATTENTE_PAIEMENT)
-          .select("id, nom, email_contact")
-          .maybeSingle();
-        if (error) {
+        let ev: {
+          id: string;
+          nom: string;
+          email_contact: string | null;
+          activated: boolean;
+        } | null;
+        try {
+          const { activatePaidEvent } = await import("@/lib/activation.server");
+          ev = await activatePaidEvent(eventId);
+        } catch (error) {
           console.error("[stripe] activation impossible", error);
-          return new Response("db error", { status: 500 }); // Stripe réessaiera
+          return new Response("activation error", { status: 500 }); // Stripe réessaiera
         }
 
         if (!ev) {
-          // Déjà active (Stripe renvoie parfois deux fois) ou annonce introuvable.
-          const { data: exists } = await supabaseAdmin
-            .from("events")
-            .select("statut")
-            .eq("id", eventId)
-            .maybeSingle();
-          if (!exists) await alertAdmin(`Annonce ${eventId} introuvable (supprimée ?).`);
+          await alertAdmin(`Annonce ${eventId} introuvable (supprimée ?).`);
           return Response.json({ ok: true, activated: false });
         }
+        if (!ev.activated) return Response.json({ ok: true, activated: false, already: true });
 
         if (ev.email_contact) {
           const m = await import("@/lib/mailer.server");
